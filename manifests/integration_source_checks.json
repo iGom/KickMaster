@@ -1,0 +1,28 @@
+{
+  "MesenCE_commit": "4b8a196e299b3de297b204fd1208d2981562c89b",
+  "GhidraNes_commit": "4c419644c51c650d2507920e2f083d288056c6f0",
+  "files": [
+    {
+      "name": "MesenLabelFile.cs",
+      "sha256": "8ccb752c78d6c622ea01d0d9f8280e2892fa3c1b35ed6dc3e31e7a531fc8ab10",
+      "size_bytes": 1646
+    },
+    {
+      "name": "CodeLabel.cs",
+      "sha256": "9980158265de0b80f5b27668be16d7cb2d3bd8776cc331dcc382c45a5bdf2bbb",
+      "size_bytes": 4854
+    },
+    {
+      "name": "NesRomHeader.java",
+      "sha256": "83077fa4aebbf5392c331cda6a526e56250c7e960b076c1b690303ab3ee89af8",
+      "size_bytes": 3439
+    },
+    {
+      "name": "GhidraNesLoaderBase.java",
+      "sha256": "0f93d635b9322c81d1fe2308ba5e7a31f50b065f9a534e2fb1b586c66838e624",
+      "size_bytes": 7795
+    }
+  ],
+  "Ghidra_header_observation": "Parser contains empty NES 2.0 TODO; for this input legacy size/mapper fields still yield mapper 4 and 128KiB/128KiB. Source inspection only; actual import not run.",
+  "javac_available": false
+}

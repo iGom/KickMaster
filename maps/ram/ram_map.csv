@@ -1,0 +1,36 @@
+address,size,name,description,encoding,accessing_routines,status,alias_caveat
+0x0044,6,ChrBankRegisters,MMC3 R0..R5 shadow values; each byte is a bank number,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x004A,1,PpuCtrlShadowBase,First PPUCTRL shadow; indexed usage has unresolved array bounds,"byte(s), no decimal assumption",A12;A13;A16,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0051,1,ScrollXShadowBase,First horizontal scroll shadow; indexed bounds unresolved,"byte(s), no decimal assumption",A13;A23;A24,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0058,1,ScrollYShadowBase,First vertical scroll shadow; indexed bounds unresolved,"byte(s), no decimal assumption",A13;A23;A24,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x005F,1,PpuMaskShadowBase,First PPUMASK shadow; indexed bounds unresolved,"byte(s), no decimal assumption",A13;A19,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0066,1,SplitPpuMaskShadow,Mask used by terminal split handler,"byte(s), no decimal assumption",A19;A26,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0067,1,IrqSplitIndex,Index advanced by IRQ split handlers,"byte(s), no decimal assumption",A13;A23;A24,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0068,1,NmiSplitSelector,Selects NMI scroll/control indexing path,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x006A,1,SplitControlIndexBase,Index source; table extent unresolved,"byte(s), no decimal assumption",A13;A24,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x007F,1,IrqLatchBase,First IRQ count/latch byte; indexed bounds unresolved,"byte(s), no decimal assumption",A12;A13;A24,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0095,1,NmiChrStartIndexShadow,Receives X before NMI CHR writes; broader role unresolved,"byte(s), no decimal assumption",A12;A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0096,1,NmiIrqSetupFlag,Controls NMI IRQ setup; tested values 0 and 1 only,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0099,1,OamUsedSpriteIndex,Index used to hide remaining sprites; valid count below 64,"byte(s), no decimal assumption",A07,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x009B,2,PpuUploadAddress,Little-endian upload destination used by 27-byte stack transfer,"byte(s), no decimal assumption",A16,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00A0,1,NmiPpuTaskCommand,Command masked with 1E for pointer-table index; consumed by NMI,"byte(s), no decimal assumption",A14,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00A6,1,MapperInterruptEpoch,Incremented by NMI/IRQ; cleared and compared by mapper writer,"byte(s), no decimal assumption",A08;A13;A25;A26,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00DC,2,IrqHandlerSource,Little-endian source copied to E5/E6 during NMI IRQ setup,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E2,1,IrqSavedA,IRQ A save slot,"byte(s), no decimal assumption",A22;A25,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E3,1,IrqSavedX,IRQ X save slot,"byte(s), no decimal assumption",A22;A25,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E4,1,IrqSavedY,IRQ Y save slot,"byte(s), no decimal assumption",A22;A25,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E5,2,SharedDispatchPointer,Shared little-endian PPU-task/IRQ target; lifetime-dependent meaning,"byte(s), no decimal assumption",A13;A14;A22,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E7,1,NmiSavedA,NMI A save slot,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E8,1,NmiSavedX,NMI X save slot,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x00E9,1,NmiSavedY,NMI Y save slot,"byte(s), no decimal assumption",A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0100,1,ResetRetainedMarker,Value 68 suppresses retained default copy; not cleared by RESET,"byte(s), no decimal assumption",A04;A12,STATIC_REVIEWED_LOCAL_ROLE,page 01 overlaps CPU stack
+0x0101,27,PpuUpload27Buffer,27 bytes streamed using temporary SP=00; page is also CPU stack,"byte(s), no decimal assumption",A16,STATIC_REVIEWED_LOCAL_ROLE,page 01 overlaps CPU stack
+0x0143,32,PaletteUploadBuffer,32 bytes streamed using temporary SP=42; page is also CPU stack,"byte(s), no decimal assumption",A12;A18,STATIC_REVIEWED_LOCAL_ROLE,page 01 overlaps CPU stack
+0x0170,1,TransferSavedStackPointer,Real SP saved during PPU stack-based transfers,"byte(s), no decimal assumption",A16;A18,STATIC_REVIEWED_LOCAL_ROLE,page 01 overlaps CPU stack
+0x0200,256,OamDmaBuffer,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4","byte(s), no decimal assumption",A06;A07;A13,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x0300,8,ResetRetainedBlock,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,"byte(s), no decimal assumption",A04;A12,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x04EA,2,FarCallTarget,Little-endian target CPU address,"byte(s), no decimal assumption",A21,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x04EC,1,FarCallTargetBankA000,MMC3 R7 bank value for far call,"byte(s), no decimal assumption",A20,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x04ED,1,FarCallSavedBankA000,Bank identity read from BFFF,"byte(s), no decimal assumption",A20,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x04EE,1,FarCallSavedBank8000,Bank identity read from 9FFF,"byte(s), no decimal assumption",A20,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded
+0x06EE,1,PaletteUploadPostFlag,"If initially nonzero, palette upload replaces with FF; wider meaning unresolved","byte(s), no decimal assumption",A18,STATIC_REVIEWED_LOCAL_ROLE,other-state reuse not excluded

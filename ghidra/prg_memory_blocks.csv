@@ -1,0 +1,17 @@
+name,file_offset,size,cpu_base,base_status,overlay_required
+PRG00,0x000010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG01,0x002010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG02,0x004010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG03,0x006010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG04,0x008010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG05,0x00A010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG06,0x00C010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG07,0x00E010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG08,0x010010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG09,0x012010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG0A,0x014010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG0B,0x016010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG0C,0x018010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG0D,0x01A010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG0E,0x01C010,0x2000,0xC000,fixed under mode 0,True
+PRG0F,0x01E010,0x2000,0xE000,fixed,True

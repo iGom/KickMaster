@@ -43,7 +43,7 @@ def main():
     with zipfile.ZipFile(path,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as z:
         for p in files+[manifest]:
             zi=zipfile.ZipInfo(ROOT.name+'/'+p.relative_to(ROOT).as_posix(),date_time=(2026,10,19,0,0,0));zi.compress_type=zipfile.ZIP_DEFLATED
-            zi.external_attr=0o100644<<16;z.writestr(zi,p.read_bytes())
+            zi.external_attr=(p.stat().st_mode & 0xFFFF)<<16;z.writestr(zi,p.read_bytes())
     receipt=verify(path)
     path.with_suffix('.verification.json').write_text(json.dumps(receipt,indent=2)+'\n')
     path.with_suffix('.sha256').write_text(receipt['sha256']+'  '+path.name+'\n')

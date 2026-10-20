@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "reviewed ranges non-overlapping",
+    "PRG/file address conversion",
+    "969 reviewed PRG bytes",
+    "62 unique symbol names",
+    "all gameplay claims retain rom_verified=false",
+    "57 CPU cases passed",
+    "full byte comparison passed",
+    "complete file classification has no gaps/overlap"
+  ],
+  "result": "PASS",
+  "full_Ghidra_Mesen_import": "NOT_TESTED"
+}

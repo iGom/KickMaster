@@ -1,0 +1,41 @@
+[
+  {
+    "source_bank": "0E",
+    "source_cpu": "0xD6D9",
+    "source_prg_offset": "0x01D6D9",
+    "source_file_offset": "0x01D6E9",
+    "target_bank": "0C",
+    "target_cpu": "0x8000",
+    "target_bank_offset": "0x0000",
+    "target_prg_offset": "0x018000",
+    "target_file_offset": "0x018010",
+    "condition": "R6=0C, PRG mode 0 after MapperWriteRetry",
+    "evidence": "A09"
+  },
+  {
+    "source_bank": "0E",
+    "source_cpu": "0xD6E3",
+    "source_prg_offset": "0x01D6E3",
+    "source_file_offset": "0x01D6F3",
+    "target_bank": "0C",
+    "target_cpu": "0x8003",
+    "target_bank_offset": "0x0003",
+    "target_prg_offset": "0x018003",
+    "target_file_offset": "0x018013",
+    "condition": "R6=0C, PRG mode 0 after MapperWriteRetry",
+    "evidence": "A10"
+  },
+  {
+    "source_bank": "0E",
+    "source_cpu": "0xD6ED",
+    "source_prg_offset": "0x01D6ED",
+    "source_file_offset": "0x01D6FD",
+    "target_bank": "0C",
+    "target_cpu": "0x8006",
+    "target_bank_offset": "0x0006",
+    "target_prg_offset": "0x018006",
+    "target_file_offset": "0x018016",
+    "condition": "R6=0C, PRG mode 0 after MapperWriteRetry",
+    "evidence": "A11"
+  }
+]

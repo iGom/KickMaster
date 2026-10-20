@@ -1,0 +1,39 @@
+[
+  {
+    "argv": [
+      "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/tools/bin/ca65",
+      "-g",
+      "-I",
+      "disassembly",
+      "-I",
+      ".",
+      "disassembly/main.asm",
+      "-o",
+      "builds/main.o",
+      "-l",
+      "builds/main.lst"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/tools/bin/ld65",
+      "-C",
+      "disassembly/linker.cfg",
+      "builds/main.o",
+      "-o",
+      "builds/kickmaster-rebuilt.nes",
+      "--dbgfile",
+      "builds/kickmaster.dbg",
+      "-m",
+      "builds/kickmaster.map",
+      "-Ln",
+      "builds/kickmaster.lbl"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

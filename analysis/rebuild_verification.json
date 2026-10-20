@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "comparison": "complete byte-for-byte comparison",
+  "requires_original_ROM": true,
+  "original": {
+    "size": 262160,
+    "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+    "sha1": "e329254370f4a66b110fee46988da585989a586e",
+    "crc32": "EABD6104"
+  },
+  "rebuilt": {
+    "size": 262160,
+    "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+    "sha1": "e329254370f4a66b110fee46988da585989a586e",
+    "crc32": "EABD6104"
+  },
+  "binary_reconstruction_bytes": 262160,
+  "interpretation": "Input-dependent mixed assembly/incbin scaffold. Exact reconstruction does not establish semantic understanding.",
+  "original_and_rebuilt_ROM_in_checkpoint": false
+}

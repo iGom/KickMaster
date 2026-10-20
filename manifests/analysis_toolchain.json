@@ -1,0 +1,13 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "py65": "1.2.0 vendored with distribution metadata/license",
+  "cc65_commit": "8d86ca7e7ed15300cc4bfaba61a40a3d00f3114d",
+  "cc65_source": "https://github.com/cc65/cc65",
+  "cc65_build_command": "make -j2 ca65 ld65 da65",
+  "ca65_version": "ca65 V2.19 - Git 8d86ca7",
+  "ld65_version": "ld65 V2.19 - Git 8d86ca7",
+  "bundled_binary_platform": "Linux x86_64",
+  "Ghidra": "not installed/not tested",
+  "MesenCE": "not installed/not tested",
+  "NES_gameplay_execution": false
+}

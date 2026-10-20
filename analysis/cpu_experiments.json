@@ -1,0 +1,2104 @@
+{
+  "emulator": "py65 1.2.0 NMOS 6502 core",
+  "full_NES_emulation": false,
+  "limitations": [
+    "No PPU rendering, scanline or APU timing",
+    "PPUSTATUS returns alternating 80/00 on reads",
+    "Mapper logic is a deliberately bounded test double",
+    "Interrupt interference is explicitly injected, not cycle-scheduled",
+    "Only selected routines and stated preconditions exercised"
+  ],
+  "experiment_count": 57,
+  "passed": 57,
+  "results": [
+    {
+      "id": "CPU01_RESET_TO_RAM_CLEAR",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 2700,
+      "observations": {
+        "retained_ram": [
+          "0x0100",
+          "0x0300",
+          "0x0301",
+          "0x0302",
+          "0x0303",
+          "0x0304",
+          "0x0305",
+          "0x0306",
+          "0x0307"
+        ],
+        "R6": 4,
+        "R7": 5,
+        "status_reads": 9,
+        "stop_before_call": "PRG0F:F094"
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF013",
+          "address": "0xE000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF017",
+          "address": "0x8000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF01A",
+          "address": "0xA000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF01D",
+          "address": "0x2000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF020",
+          "address": "0x2001",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF038",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xF03B",
+          "address": "0x8001",
+          "value": "0x04"
+        },
+        {
+          "pc": "0xF040",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xF043",
+          "address": "0x8001",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xF048",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF04B",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF04E",
+          "address": "0xE000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF051",
+          "address": "0x4010",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF054",
+          "address": "0xA000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF05A",
+          "address": "0x4015",
+          "value": "0x0F"
+        },
+        {
+          "pc": "0xF05F",
+          "address": "0x4017",
+          "value": "0x40"
+        },
+        {
+          "pc": "0xF062",
+          "address": "0xA001",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF06B",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF06E",
+          "address": "0x2006",
+          "value": "0x00"
+        }
+      ]
+    },
+    {
+      "id": "CPU02_RETENTION_MARKER_68",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 3,
+      "observations": {
+        "retained_block": [
+          165,
+          165,
+          165,
+          165,
+          165,
+          165
+        ],
+        "stop_before_unreviewed_call": "PRG0E:D623"
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU02_RETENTION_MARKER_A5",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 30,
+      "observations": {
+        "retained_block": [
+          32,
+          32,
+          32,
+          32,
+          33,
+          32
+        ],
+        "stop_before_unreviewed_call": "PRG0E:D623"
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU03_MAPPER_R6_BASELINE",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": null,
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6C3",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6C3",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C3",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C3",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6C5",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6C5",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C5",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C5",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6C7",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6C7",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6CA",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6CA",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6CD",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6CD",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6CD",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CD",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6CF",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6CF",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6CF",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CF",
+          "address": "0x8001",
+          "value": "0x22"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R6_INTERFERENCE_D6D1",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 6,
+        "final_bank": 12,
+        "synthetic_interference_at": "0xD6D1",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6D1",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6D1",
+          "address": "0x8001",
+          "value": "0x22"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_BASELINE",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": null,
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6C3",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6C3",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C3",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C3",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6C5",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6C5",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C5",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C5",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6C7",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6C7",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6CA",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6CA",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6CD",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6CD",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xD6CD",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CD",
+          "address": "0x8001",
+          "value": "0x22"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6CF",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6CF",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xD6CF",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6CF",
+          "address": "0x8001",
+          "value": "0x22"
+        }
+      ]
+    },
+    {
+      "id": "CPU03_MAPPER_R7_INTERFERENCE_D6D1",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 7,
+      "observations": {
+        "target_register": 7,
+        "final_bank": 13,
+        "synthetic_interference_at": "0xD6D1",
+        "actual_interrupt_delivery": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xD6D1",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xD6D1",
+          "address": "0x8001",
+          "value": "0x22"
+        }
+      ]
+    },
+    {
+      "id": "CPU04_PALETTE_FLAG_0",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 99,
+      "observations": {
+        "ppu_data_sequence": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "stack_after_return": 255,
+        "flag_after": 0
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF24D",
+          "address": "0x2006",
+          "value": "0x3F"
+        },
+        {
+          "pc": "0xF250",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x03"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x04"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x08"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x09"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x0A"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x0B"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x0E"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x0F"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x11"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x12"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x13"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x14"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x15"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x16"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x17"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x18"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x19"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x1A"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x1B"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x1C"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x1D"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x1E"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x1F"
+        },
+        {
+          "pc": "0xF271",
+          "address": "0x2006",
+          "value": "0x3F"
+        },
+        {
+          "pc": "0xF276",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF279",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF27C",
+          "address": "0x2006",
+          "value": "0x00"
+        }
+      ]
+    },
+    {
+      "id": "CPU04_PALETTE_FLAG_1",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 101,
+      "observations": {
+        "ppu_data_sequence": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30,
+          31
+        ],
+        "stack_after_return": 255,
+        "flag_after": 255
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF24D",
+          "address": "0x2006",
+          "value": "0x3F"
+        },
+        {
+          "pc": "0xF250",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x03"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x04"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x08"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x09"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x0A"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x0B"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x0D"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x0E"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x0F"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x11"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x12"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x13"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x14"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x15"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x16"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x17"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x18"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x19"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x1A"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x1B"
+        },
+        {
+          "pc": "0xF25D",
+          "address": "0x2007",
+          "value": "0x1C"
+        },
+        {
+          "pc": "0xF261",
+          "address": "0x2007",
+          "value": "0x1D"
+        },
+        {
+          "pc": "0xF265",
+          "address": "0x2007",
+          "value": "0x1E"
+        },
+        {
+          "pc": "0xF269",
+          "address": "0x2007",
+          "value": "0x1F"
+        },
+        {
+          "pc": "0xF271",
+          "address": "0x2006",
+          "value": "0x3F"
+        },
+        {
+          "pc": "0xF276",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF279",
+          "address": "0x2006",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF27C",
+          "address": "0x2006",
+          "value": "0x00"
+        }
+      ]
+    },
+    {
+      "id": "CPU05_DISPATCH_00",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 0,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_01",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 1,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_02",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 2,
+        "target": "0xF18A",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_03",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 3,
+        "target": "0xF18A",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_04",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 4,
+        "target": "0xF1EA",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_05",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 5,
+        "target": "0xF1EA",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_06",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 6,
+        "target": "0xF1B8",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_07",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 7,
+        "target": "0xF1B8",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_08",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 8,
+        "target": "0xF20E",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_09",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 9,
+        "target": "0xF20E",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0A",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 10,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0B",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 11,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0C",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 12,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0D",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 13,
+        "target": "0xF1B7",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0E",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 14,
+        "target": "0xF24B",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_0F",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 15,
+        "target": "0xF24B",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_10",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 16,
+        "target": "0xF378",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_11",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 17,
+        "target": "0xF378",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_12",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 18,
+        "target": "0xF365",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_13",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 19,
+        "target": "0xF365",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_14",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 20,
+        "target": "0xF3AA",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_15",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 21,
+        "target": "0xF3AA",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_16",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 22,
+        "target": "0xFBE0",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_17",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 23,
+        "target": "0xFBE0",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_18",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 24,
+        "target": "0xFAC8",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_19",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 25,
+        "target": "0xFAC8",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1A",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 26,
+        "target": "0xFCCD",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1B",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 27,
+        "target": "0xFCCD",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1C",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 28,
+        "target": "0xFD12",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1D",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 29,
+        "target": "0xFD12",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1E",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 30,
+        "target": "0xFD71",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU05_DISPATCH_1F",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 9,
+      "observations": {
+        "command": 31,
+        "target": "0xFD71",
+        "command_after": 0
+      },
+      "hardware_writes": []
+    },
+    {
+      "id": "CPU06_NMI_IRQ_ENABLED_0",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 67,
+      "observations": {
+        "registers_preserved": true,
+        "CHR_registers": [
+          16,
+          32,
+          48,
+          64,
+          80,
+          96
+        ],
+        "prg_banks_preserved": [
+          4,
+          5
+        ],
+        "epoch_after": 5,
+        "OAM_DMA_page": 2,
+        "conditions": "A0=0,D9=0,68=0,6A=0,96 in {0,1}"
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF0C6",
+          "address": "0x2003",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF0CB",
+          "address": "0x4014",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF0E5",
+          "address": "0x2000",
+          "value": "0x88"
+        },
+        {
+          "pc": "0xF0E8",
+          "address": "0x2000",
+          "value": "0x88"
+        },
+        {
+          "pc": "0xF0EE",
+          "address": "0x2001",
+          "value": "0x1E"
+        },
+        {
+          "pc": "0xF0F3",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF0F8",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF11A",
+          "address": "0x8000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF11D",
+          "address": "0x8001",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF123",
+          "address": "0x8000",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF126",
+          "address": "0x8001",
+          "value": "0x20"
+        },
+        {
+          "pc": "0xF12C",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF12F",
+          "address": "0x8001",
+          "value": "0x30"
+        },
+        {
+          "pc": "0xF135",
+          "address": "0x8000",
+          "value": "0x03"
+        },
+        {
+          "pc": "0xF138",
+          "address": "0x8001",
+          "value": "0x40"
+        },
+        {
+          "pc": "0xF13E",
+          "address": "0x8000",
+          "value": "0x04"
+        },
+        {
+          "pc": "0xF141",
+          "address": "0x8001",
+          "value": "0x50"
+        },
+        {
+          "pc": "0xF147",
+          "address": "0x8000",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xF14A",
+          "address": "0x8001",
+          "value": "0x60"
+        }
+      ]
+    },
+    {
+      "id": "CPU06_NMI_IRQ_ENABLED_1",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 77,
+      "observations": {
+        "registers_preserved": true,
+        "CHR_registers": [
+          16,
+          32,
+          48,
+          64,
+          80,
+          96
+        ],
+        "prg_banks_preserved": [
+          4,
+          5
+        ],
+        "epoch_after": 5,
+        "OAM_DMA_page": 2,
+        "conditions": "A0=0,D9=0,68=0,6A=0,96 in {0,1}"
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF0C6",
+          "address": "0x2003",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF0CB",
+          "address": "0x4014",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF0E5",
+          "address": "0x2000",
+          "value": "0x88"
+        },
+        {
+          "pc": "0xF0E8",
+          "address": "0x2000",
+          "value": "0x88"
+        },
+        {
+          "pc": "0xF0EE",
+          "address": "0x2001",
+          "value": "0x1E"
+        },
+        {
+          "pc": "0xF0F3",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF0F8",
+          "address": "0x2005",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF10A",
+          "address": "0xC000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF10F",
+          "address": "0xC001",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF113",
+          "address": "0xE001",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF11A",
+          "address": "0x8000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF11D",
+          "address": "0x8001",
+          "value": "0x10"
+        },
+        {
+          "pc": "0xF123",
+          "address": "0x8000",
+          "value": "0x01"
+        },
+        {
+          "pc": "0xF126",
+          "address": "0x8001",
+          "value": "0x20"
+        },
+        {
+          "pc": "0xF12C",
+          "address": "0x8000",
+          "value": "0x02"
+        },
+        {
+          "pc": "0xF12F",
+          "address": "0x8001",
+          "value": "0x30"
+        },
+        {
+          "pc": "0xF135",
+          "address": "0x8000",
+          "value": "0x03"
+        },
+        {
+          "pc": "0xF138",
+          "address": "0x8001",
+          "value": "0x40"
+        },
+        {
+          "pc": "0xF13E",
+          "address": "0x8000",
+          "value": "0x04"
+        },
+        {
+          "pc": "0xF141",
+          "address": "0x8001",
+          "value": "0x50"
+        },
+        {
+          "pc": "0xF147",
+          "address": "0x8000",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xF14A",
+          "address": "0x8001",
+          "value": "0x60"
+        }
+      ]
+    },
+    {
+      "id": "CPU07_FAR_CALL_WITH_RAM_STUB",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 76,
+      "observations": {
+        "synthetic_RAM_callee_hex": "a206a90c20c3d6a955a266a0771860",
+        "target_bank": 9,
+        "restored_banks": [
+          4,
+          5
+        ],
+        "callee_outputs_preserved": [
+          85,
+          102,
+          119
+        ],
+        "carry_after": 0,
+        "nesting_tested": false
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x09"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x0C"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x07"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x05"
+        },
+        {
+          "pc": "0xD6C7",
+          "address": "0x8000",
+          "value": "0x06"
+        },
+        {
+          "pc": "0xD6CA",
+          "address": "0x8001",
+          "value": "0x04"
+        }
+      ]
+    },
+    {
+      "id": "CPU08_IRQ_DISPATCH_AND_RETURN",
+      "class": "CPU_TEST",
+      "status": "PASS",
+      "steps": 12,
+      "observations": {
+        "registers_preserved": true,
+        "dispatch_target": "F834",
+        "epoch_after": 1
+      },
+      "hardware_writes": [
+        {
+          "pc": "0xF7B9",
+          "address": "0xE000",
+          "value": "0x00"
+        },
+        {
+          "pc": "0xF7BC",
+          "address": "0xE001",
+          "value": "0x00"
+        }
+      ]
+    }
+  ]
+}

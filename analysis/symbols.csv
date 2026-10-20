@@ -1,0 +1,63 @@
+name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
+ApuInitialize,code,0E,0xCC84,0x0C84,0x01CC84,0x01CC94,MMC3 PRG mode 0,39,Initialize APU registers and call two five-entry index initializers.,STATIC_REVIEWED,A01
+InitializeAudioIndicesA,code,0E,0xCCAB,0x0CAB,0x01CCAB,0x01CCBB,MMC3 PRG mode 0,15,"Fill 0015..0019 with 05,0B,11,17,1D; audio role from A01 caller.",STATIC_REVIEWED,A02
+InitializeAudioIndicesB,code,0E,0xCCBA,0x0CBA,0x01CCBA,0x01CCCA,MMC3 PRG mode 0,15,"Fill 001A..001E with 23,29,2F,35,3B.",STATIC_REVIEWED,A03
+ResetRetentionCheck,code,0E,0xD60C,0x160C,0x01D60C,0x01D61C,MMC3 PRG mode 0,27,Check retained 0100 marker 68; otherwise load six bytes at 0300; call D2F7.,STATIC_REVIEWED,A04
+ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
+HideAllSprites,code,0E,0xD62D,0x162D,0x01D62D,0x01D63D,MMC3 PRG mode 0,14,Write F1 to every OAM Y byte in page 02.,STATIC_REVIEWED,A06
+HideSpritesFromIndex,code,0E,0xD63B,0x163B,0x01D63B,0x01D64B,MMC3 PRG mode 0,19,"For index 99 below 64, fill remaining OAM Y bytes with F3.",STATIC_REVIEWED,A07
+MapperWriteRetry,code,0E,0xD6C3,0x16C3,0x01D6C3,0x01D6D3,MMC3 PRG mode 0,15,Write X to 8000 and A to 8001; retry if interrupt activity changes A6.,STATIC_REVIEWED,A08
+Bank0CEntry0,code,0E,0xD6D2,0x16D2,0x01D6D2,0x01D6E2,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8000.",STATIC_REVIEWED,A09
+Bank0CEntry3,code,0E,0xD6DC,0x16DC,0x01D6DC,0x01D6EC,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8003.",STATIC_REVIEWED,A10
+Bank0CEntry6,code,0E,0xD6E6,0x16E6,0x01D6E6,0x01D6F6,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8006.",STATIC_REVIEWED,A11
+ResetEntry,code,0F,0xF010,0x1010,0x01F010,0x01F020,last bank fixed at E000,171,"Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.",STATIC_REVIEWED,A12
+NmiEntry,code,0F,0xF0BB,0x10BB,0x01F0BB,0x01F0CB,last bank fixed at E000,155,"Save A/X/Y, OAM DMA, PPU task, scrolling, optional IRQ setup, CHR writes, epoch increment and RTI.",STATIC_REVIEWED,A13
+DispatchPpuTask,code,0F,0xF156,0x1156,0x01F156,0x01F166,last bank fixed at E000,20,Clear A0 using Y; select one of sixteen little-endian pointers with old A0 & 1E.,STATIC_REVIEWED,A14
+PpuTaskPointers,data,0F,0xF16A,0x116A,0x01F16A,0x01F17A,last bank fixed at E000,32,16 little-endian pointers; indices are command&1E divided by 2.,STATIC_REVIEWED,A15
+PpuUpload27ViaStack,code,0F,0xF18A,0x118A,0x01F18A,0x01F19A,last bank fixed at E000,45,"Stream 27 bytes from 0101..011B using PLA, restore SP; increment PPU by 32.",STATIC_REVIEWED,A16
+PpuTaskReturn,code,0F,0xF1B7,0x11B7,0x01F1B7,0x01F1C7,last bank fixed at E000,1,Shared RTS target; also fallthrough from A16.,STATIC_REVIEWED,A17
+UploadPalette32ViaStack,code,0F,0xF24B,0x124B,0x01F24B,0x01F25B,last bank fixed at E000,67,Read 0143..0162 through PLA; write 32 bytes to PPU; restore SP and service 06EE flag.,STATIC_REVIEWED,A18
+DisableRendering,code,0F,0xF4BA,0x14BA,0x01F4BA,0x01F4CA,last bank fixed at E000,16,Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.,STATIC_REVIEWED,A19
+FarCallViaA000,code,0F,0xF4CA,0x14CA,0x01F4CA,0x01F4DA,last bank fixed at E000,64,"Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.",STATIC_REVIEWED,A20
+FarCallIndirect,code,0F,0xF50A,0x150A,0x01F50A,0x01F51A,last bank fixed at E000,3,Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.,STATIC_REVIEWED,A21
+IrqEntry,code,0F,0xF7B1,0x17B1,0x01F7B1,0x01F7C1,last bank fixed at E000,17,"Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.",STATIC_REVIEWED,A22
+IrqSplitPpuAddress,code,0F,0xF7C2,0x17C2,0x01F7C2,0x01F7D2,last bank fixed at E000,65,Timed PPU address/scroll writes indexed by 67; choose terminal split at F0 sentinel; share IRQ return.,STATIC_REVIEWED,A23
+IrqSplitScroll,code,0F,0xF803,0x1803,0x01F803,0x01F813,last bank fixed at E000,49,Timed indexed scroll/control writes; select F83D on F0 sentinel.,STATIC_REVIEWED,A24
+IrqRestoreRegisters,code,0F,0xF834,0x1834,0x01F834,0x01F844,last bank fixed at E000,9,"Increment A6, restore Y/X/A from E4/E3/E2, RTI.",STATIC_REVIEWED,A25
+IrqSplitSwitchChr01,code,0F,0xF83D,0x183D,0x01F83D,0x01F84D,last bank fixed at E000,69,"Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.",STATIC_REVIEWED,A26
+InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
+ChrBankRegisters,ram,,0x0044,,,,internal RAM; state-specific role,6,MMC3 R0..R5 shadow values; each byte is a bank number,STATIC_REVIEWED_LOCAL_ROLE,A13
+PpuCtrlShadowBase,ram,,0x004A,,,,internal RAM; state-specific role,1,First PPUCTRL shadow; indexed usage has unresolved array bounds,STATIC_REVIEWED_LOCAL_ROLE,A12;A13;A16
+ScrollXShadowBase,ram,,0x0051,,,,internal RAM; state-specific role,1,First horizontal scroll shadow; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A23;A24
+ScrollYShadowBase,ram,,0x0058,,,,internal RAM; state-specific role,1,First vertical scroll shadow; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A23;A24
+PpuMaskShadowBase,ram,,0x005F,,,,internal RAM; state-specific role,1,First PPUMASK shadow; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A19
+SplitPpuMaskShadow,ram,,0x0066,,,,internal RAM; state-specific role,1,Mask used by terminal split handler,STATIC_REVIEWED_LOCAL_ROLE,A19;A26
+IrqSplitIndex,ram,,0x0067,,,,internal RAM; state-specific role,1,Index advanced by IRQ split handlers,STATIC_REVIEWED_LOCAL_ROLE,A13;A23;A24
+NmiSplitSelector,ram,,0x0068,,,,internal RAM; state-specific role,1,Selects NMI scroll/control indexing path,STATIC_REVIEWED_LOCAL_ROLE,A13
+SplitControlIndexBase,ram,,0x006A,,,,internal RAM; state-specific role,1,Index source; table extent unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A24
+IrqLatchBase,ram,,0x007F,,,,internal RAM; state-specific role,1,First IRQ count/latch byte; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A12;A13;A24
+NmiChrStartIndexShadow,ram,,0x0095,,,,internal RAM; state-specific role,1,Receives X before NMI CHR writes; broader role unresolved,STATIC_REVIEWED_LOCAL_ROLE,A12;A13
+NmiIrqSetupFlag,ram,,0x0096,,,,internal RAM; state-specific role,1,Controls NMI IRQ setup; tested values 0 and 1 only,STATIC_REVIEWED_LOCAL_ROLE,A13
+OamUsedSpriteIndex,ram,,0x0099,,,,internal RAM; state-specific role,1,Index used to hide remaining sprites; valid count below 64,STATIC_REVIEWED_LOCAL_ROLE,A07
+PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
+NmiPpuTaskCommand,ram,,0x00A0,,,,internal RAM; state-specific role,1,Command masked with 1E for pointer-table index; consumed by NMI,STATIC_REVIEWED_LOCAL_ROLE,A14
+MapperInterruptEpoch,ram,,0x00A6,,,,internal RAM; state-specific role,1,Incremented by NMI/IRQ; cleared and compared by mapper writer,STATIC_REVIEWED_LOCAL_ROLE,A08;A13;A25;A26
+IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
+IrqSavedA,ram,,0x00E2,,,,internal RAM; state-specific role,1,IRQ A save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
+IrqSavedX,ram,,0x00E3,,,,internal RAM; state-specific role,1,IRQ X save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
+IrqSavedY,ram,,0x00E4,,,,internal RAM; state-specific role,1,IRQ Y save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
+SharedDispatchPointer,ram,,0x00E5,,,,internal RAM; state-specific role,2,Shared little-endian PPU-task/IRQ target; lifetime-dependent meaning,STATIC_REVIEWED_LOCAL_ROLE,A13;A14;A22
+NmiSavedA,ram,,0x00E7,,,,internal RAM; state-specific role,1,NMI A save slot,STATIC_REVIEWED_LOCAL_ROLE,A13
+NmiSavedX,ram,,0x00E8,,,,internal RAM; state-specific role,1,NMI X save slot,STATIC_REVIEWED_LOCAL_ROLE,A13
+NmiSavedY,ram,,0x00E9,,,,internal RAM; state-specific role,1,NMI Y save slot,STATIC_REVIEWED_LOCAL_ROLE,A13
+ResetRetainedMarker,ram,,0x0100,,,,internal RAM; state-specific role,1,Value 68 suppresses retained default copy; not cleared by RESET,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
+PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
+PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
+TransferSavedStackPointer,ram,,0x0170,,,,internal RAM; state-specific role,1,Real SP saved during PPU stack-based transfers,STATIC_REVIEWED_LOCAL_ROLE,A16;A18
+OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
+ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
+FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
+FarCallTargetBankA000,ram,,0x04EC,,,,internal RAM; state-specific role,1,MMC3 R7 bank value for far call,STATIC_REVIEWED_LOCAL_ROLE,A20
+FarCallSavedBankA000,ram,,0x04ED,,,,internal RAM; state-specific role,1,Bank identity read from BFFF,STATIC_REVIEWED_LOCAL_ROLE,A20
+FarCallSavedBank8000,ram,,0x04EE,,,,internal RAM; state-specific role,1,Bank identity read from 9FFF,STATIC_REVIEWED_LOCAL_ROLE,A20
+PaletteUploadPostFlag,ram,,0x06EE,,,,internal RAM; state-specific role,1,"If initially nonzero, palette upload replaces with FF; wider meaning unresolved",STATIC_REVIEWED_LOCAL_ROLE,A18

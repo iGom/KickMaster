@@ -1,0 +1,60 @@
+Modules list:
+-------------
+main.o:
+    HEADER            Offs=000000  Size=000010  Align=00001  Fill=0000
+    PRG00             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG01             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG02             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG03             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG04             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG05             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG06             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG07             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG08             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG09             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0A             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0B             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0C             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0D             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0E             Offs=000000  Size=002000  Align=00001  Fill=0000
+    PRG0F             Offs=000000  Size=002000  Align=00001  Fill=0000
+    CHR               Offs=000000  Size=020000  Align=00001  Fill=0000
+
+
+Segment list:
+-------------
+Name                   Start     End    Size  Align
+----------------------------------------------------
+CHR                   000000  01FFFF  020000  00001
+HEADER                000000  00000F  000010  00001
+PRG00                 008000  009FFF  002000  00001
+PRG01                 008000  009FFF  002000  00001
+PRG02                 008000  009FFF  002000  00001
+PRG03                 008000  009FFF  002000  00001
+PRG04                 008000  009FFF  002000  00001
+PRG05                 008000  009FFF  002000  00001
+PRG06                 008000  009FFF  002000  00001
+PRG07                 008000  009FFF  002000  00001
+PRG08                 008000  009FFF  002000  00001
+PRG09                 008000  009FFF  002000  00001
+PRG0A                 008000  009FFF  002000  00001
+PRG0B                 008000  009FFF  002000  00001
+PRG0C                 008000  009FFF  002000  00001
+PRG0D                 008000  009FFF  002000  00001
+PRG0E                 00C000  00DFFF  002000  00001
+PRG0F                 00E000  00FFFF  002000  00001
+
+
+Exports list by name:
+---------------------
+
+
+
+Exports list by value:
+----------------------
+
+
+
+Imports list:
+-------------
+

@@ -1,0 +1,403 @@
+; PRG bank 0F; CPU base used here is $E000.
+; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
+.segment "PRG0F"
+.org $E000
+    .incbin "inputs/original.nes", $01E010, $1010 ; UNINTERPRETED preserved bytes
+
+; A12: Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
+ResetEntry:
+    SEI                      ; F010 
+    LDX #$00                 ; F011 
+    STX a:$e000              ; F013 Disable and acknowledge MMC3 IRQ.
+    CLD                      ; F016 
+    STX a:$8000              ; F017 Select R0, PRG mode 0, CHR inversion 0.
+    STX a:$a000              ; F01A MMC3 mirroring 0: CIRAM A10 / conventional vertical mirroring.
+    STX a:$2000              ; F01D 
+    STX a:$2001              ; F020 
+    DEX                      ; F023 
+    TXS                      ; F024 
+    LDX #$04                 ; F025 Wait for four observed vblank assertion/clear cycles.
+    BIT a:$2002              ; F027 
+    BPL $f027                ; F02A 
+    BIT a:$2002              ; F02C 
+    BMI $f02c                ; F02F 
+    DEX                      ; F031 
+    BNE $f027                ; F032 
+    LDX #$06                 ; F034 R6 <- 04; R7 <- 05; fixed banks 0E at C000, 0F at E000.
+    LDY #$04                 ; F036 
+    STX a:$8000              ; F038 
+    STY a:$8001              ; F03B 
+    INX                      ; F03E 
+    INY                      ; F03F 
+    STX a:$8000              ; F040 
+    STY a:$8001              ; F043 
+    LDX #$00                 ; F046 
+    STX a:$2005              ; F048 
+    STX a:$2005              ; F04B 
+    STX a:$e000              ; F04E 
+    STX a:$4010              ; F051 
+    STX a:$a000              ; F054 
+    INX                      ; F057 
+    LDA #$0f                 ; F058 
+    STA a:$4015              ; F05A 
+    LDA #$40                 ; F05D 
+    STA a:$4017              ; F05F 
+    STX a:$a001              ; F062 A001 receives 01, although the physical reference board has no PRG RAM.
+    LDA a:$2002              ; F065 
+    LDA #$10                 ; F068 
+    TAX                      ; F06A 
+    STA a:$2006              ; F06B 
+    STA a:$2006              ; F06E 
+    EOR #$10                 ; F071 
+    DEX                      ; F073 
+    BNE $f06b                ; F074 
+    LDA #$00                 ; F076 
+    TAX                      ; F078 
+    STA a:$0000,X            ; F079 Clear internal RAM except 0100 and 0300..0307. Indexed bases are intentionally unusual.
+    STA a:$0101,X            ; F07C 
+    STA a:$0200,X            ; F07F 
+    STA a:$0308,X            ; F082 
+    STA a:$0400,X            ; F085 
+    STA a:$0500,X            ; F088 
+    STA a:$0600,X            ; F08B 
+    STA a:$0700,X            ; F08E 
+    INX                      ; F091 
+    BNE $f079                ; F092 
+    JSR a:$d60c              ; F094 Retention/default processing is in fixed PRG0E.
+    LDA #$88                 ; F097 
+    STA $4a                  ; F099 
+    STA a:$2000              ; F09B 
+    LDA #$0e                 ; F09E 
+    STA $5f                  ; F0A0 
+    STA $95                  ; F0A2 
+    LDA #$0f                 ; F0A4 
+    LDY #$1f                 ; F0A6 
+    STA a:$0143,Y            ; F0A8 Initialize 32 palette-buffer bytes at 0143..0162.
+    DEY                      ; F0AB 
+    BPL $f0a8                ; F0AC 
+    LDY #$00                 ; F0AE 
+    JSR a:$f24b              ; F0B0 
+    CLI                      ; F0B3 
+    LDA #$f0                 ; F0B4 
+    STA $7f                  ; F0B6 
+    JMP a:$cf50              ; F0B8 
+
+; A13: Save A/X/Y, OAM DMA, PPU task, scrolling, optional IRQ setup, CHR writes, epoch increment and RTI.
+NmiEntry:
+    STA $e7                  ; F0BB NMI stores registers in RAM rather than pushing them.
+    STY $e9                  ; F0BD 
+    STX $e8                  ; F0BF 
+    LDA a:$2002              ; F0C1 
+    LDY #$00                 ; F0C4 
+    STY a:$2003              ; F0C6 
+    LDA #$02                 ; F0C9 
+    STA a:$4014              ; F0CB DMA source page 02 = RAM 0200..02FF.
+    JSR a:$f156              ; F0CE Y=0 is a precondition for clearing A0 in the dispatcher.
+    LDA $d9                  ; F0D1 
+    LSR A                    ; F0D3 
+    BCC $f0d9                ; F0D4 
+    JSR a:$f28e              ; F0D6 
+    LDY $68                  ; F0D9 
+    LDX $68                  ; F0DB 
+    BNE $f0e3                ; F0DD 
+    LDY #$00                 ; F0DF 
+    LDX $6a                  ; F0E1 
+    LDA $4a,X                ; F0E3 
+    STA a:$2000              ; F0E5 
+    STA a:$2000              ; F0E8 
+    LDA a:$005f,Y            ; F0EB 
+    STA a:$2001              ; F0EE 
+    LDA $51,X                ; F0F1 
+    STA a:$2005              ; F0F3 
+    LDA $58,X                ; F0F6 
+    STA a:$2005              ; F0F8 
+    LDX $96                  ; F0FB 
+    BEQ $f116                ; F0FD 
+    LDA $dc                  ; F0FF Restore IRQ dispatch pointer from DC/DD after the PPU task used E5/E6.
+    STA $e5                  ; F101 
+    LDA $dd                  ; F103 
+    STA $e6                  ; F105 
+    LDA a:$007f,Y            ; F107 
+    STA a:$c000              ; F10A 
+    STX $67                  ; F10D 
+    STX a:$c001              ; F10F 
+    DEX                      ; F112 
+    STX a:$e001              ; F113 
+    STX $95                  ; F116 For 96=0 or 1, X=0 here; this condition is documented, not assumed for arbitrary RAM.
+    LDA $44                  ; F118 
+    STX a:$8000              ; F11A Under the above condition, six writes select CHR R0..R5 using RAM 44..49.
+    STA a:$8001              ; F11D 
+    LDA $45                  ; F120 
+    INX                      ; F122 
+    STX a:$8000              ; F123 
+    STA a:$8001              ; F126 
+    LDA $46                  ; F129 
+    INX                      ; F12B 
+    STX a:$8000              ; F12C 
+    STA a:$8001              ; F12F 
+    LDA $47                  ; F132 
+    INX                      ; F134 
+    STX a:$8000              ; F135 
+    STA a:$8001              ; F138 
+    LDA $48                  ; F13B 
+    INX                      ; F13D 
+    STX a:$8000              ; F13E 
+    STA a:$8001              ; F141 
+    LDA $49                  ; F144 
+    INX                      ; F146 
+    STX a:$8000              ; F147 
+    STA a:$8001              ; F14A 
+    INC $a6                  ; F14D A6 tracks mapper-interrupt activity; it is not safely a pure frame counter.
+    LDY $e9                  ; F14F 
+    LDX $e8                  ; F151 
+    LDA $e7                  ; F153 
+    RTI                      ; F155 
+
+; A14: Clear A0 using Y; select one of sixteen little-endian pointers with old A0 & 1E.
+DispatchPpuTask:
+    LDA $a0                  ; F156 Index mask 1E selects 16 word entries; odd command bit ignored here.
+    STY $a0                  ; F158 
+    AND #$1e                 ; F15A 
+    TAX                      ; F15C 
+    LDA a:$f16a,X            ; F15D 
+    STA $e5                  ; F160 
+    LDA a:$f16b,X            ; F162 
+    STA $e6                  ; F165 
+    JMP ($00e5)              ; F167 Computed jump, not ordinary fallthrough into the pointer table.
+
+; A15: 16 little-endian pointers; indices are command&1E divided by 2.
+PpuTaskPointers:
+    .byte $B7,$F1,$8A,$F1,$EA,$F1,$B8,$F1,$0E,$F2,$B7,$F1,$B7,$F1,$4B,$F2
+    .byte $78,$F3,$65,$F3,$AA,$F3,$E0,$FB,$C8,$FA,$CD,$FC,$12,$FD,$71,$FD
+
+; A16: Stream 27 bytes from 0101..011B using PLA, restore SP; increment PPU by 32.
+PpuUpload27ViaStack:
+    LDA $4a                  ; F18A 
+    ORA #$8c                 ; F18C 
+    STA a:$2000              ; F18E 
+    LDA $9c                  ; F191 
+    STA a:$2006              ; F193 
+    LDA $9b                  ; F196 
+    STA a:$2006              ; F198 
+    TSX                      ; F19B 
+    STX a:$0170              ; F19C 
+    LDX #$00                 ; F19F Temporary stack pointer 00: PLA reads upward from 0101.
+    TXS                      ; F1A1 
+    LDX #$09                 ; F1A2 
+    PLA                      ; F1A4 
+    STA a:$2007              ; F1A5 
+    PLA                      ; F1A8 
+    STA a:$2007              ; F1A9 
+    PLA                      ; F1AC 
+    STA a:$2007              ; F1AD 
+    DEX                      ; F1B0 
+    BNE $f1a4                ; F1B1 
+    LDX a:$0170              ; F1B3 
+    TXS                      ; F1B6 
+
+; A17: Shared RTS target; also fallthrough from A16.
+PpuTaskReturn:
+    RTS                      ; F1B7 
+    .incbin "inputs/original.nes", $01F1C8, $0093 ; UNINTERPRETED preserved bytes
+
+; A18: Read 0143..0162 through PLA; write 32 bytes to PPU; restore SP and service 06EE flag.
+UploadPalette32ViaStack:
+    LDA #$3f                 ; F24B 
+    STA a:$2006              ; F24D 
+    STY a:$2006              ; F250 
+    TSX                      ; F253 
+    STX a:$0170              ; F254 
+    LDX #$42                 ; F257 Temporary SP=42 makes PLA read palette bytes starting at 0143.
+    TXS                      ; F259 
+    LDX #$08                 ; F25A 
+    PLA                      ; F25C 
+    STA a:$2007              ; F25D 
+    PLA                      ; F260 
+    STA a:$2007              ; F261 
+    PLA                      ; F264 
+    STA a:$2007              ; F265 
+    PLA                      ; F268 
+    STA a:$2007              ; F269 
+    DEX                      ; F26C 
+    BNE $f25c                ; F26D 
+    LDA #$3f                 ; F26F 
+    STA a:$2006              ; F271 
+    LDA #$00                 ; F274 
+    STA a:$2006              ; F276 
+    STA a:$2006              ; F279 
+    STA a:$2006              ; F27C 
+    LDX a:$0170              ; F27F Restore the real stack before RTS.
+    TXS                      ; F282 
+    LDX a:$06ee              ; F283 
+    BEQ $f28d                ; F286 
+    LDX #$ff                 ; F288 
+    STX a:$06ee              ; F28A 
+    RTS                      ; F28D 
+    .incbin "inputs/original.nes", $01F29E, $022C ; UNINTERPRETED preserved bytes
+
+; A19: Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.
+DisableRendering:
+    LDY #$00                 ; F4BA 
+    STY a:$2001              ; F4BC 
+    STY $5f                  ; F4BF 
+    STY $66                  ; F4C1 
+    LDA $4a                  ; F4C3 
+    AND #$fd                 ; F4C5 
+    STA $4a                  ; F4C7 
+    RTS                      ; F4C9 
+
+; A20: Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.
+FarCallViaA000:
+    PHP                      ; F4CA 
+    PHA                      ; F4CB 
+    TYA                      ; F4CC 
+    PHA                      ; F4CD 
+    TXA                      ; F4CE 
+    PHA                      ; F4CF 
+    LDA a:$9fff              ; F4D0 Read live bank identity from the final byte of the 8000 window.
+    STA a:$04ee              ; F4D3 
+    LDA a:$bfff              ; F4D6 Read live bank identity from the final byte of the A000 window.
+    STA a:$04ed              ; F4D9 
+    LDX #$07                 ; F4DC 
+    LDA a:$04ec              ; F4DE Target A000 bank is supplied through RAM 04EC.
+    JSR a:$d6c3              ; F4E1 
+    PLA                      ; F4E4 
+    TAX                      ; F4E5 
+    PLA                      ; F4E6 
+    TAY                      ; F4E7 
+    PLA                      ; F4E8 
+    PLP                      ; F4E9 
+    JSR a:$f50a              ; F4EA JSR into an indirect JMP allows the destination RTS to return here.
+    PHP                      ; F4ED Preserve callee output registers and flags while restoring mappings.
+    PHA                      ; F4EE 
+    TYA                      ; F4EF 
+    PHA                      ; F4F0 
+    TXA                      ; F4F1 
+    PHA                      ; F4F2 
+    LDX #$07                 ; F4F3 
+    LDA a:$04ed              ; F4F5 
+    JSR a:$d6c3              ; F4F8 
+    LDX #$06                 ; F4FB Restore both R7 and R6, even though entry changes only R7.
+    LDA a:$04ee              ; F4FD 
+    JSR a:$d6c3              ; F500 
+    PLA                      ; F503 
+    TAX                      ; F504 
+    PLA                      ; F505 
+    TAY                      ; F506 
+    PLA                      ; F507 
+    PLP                      ; F508 
+    RTS                      ; F509 
+
+; A21: Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
+FarCallIndirect:
+    JMP ($04ea)              ; F50A 
+    .incbin "inputs/original.nes", $01F51D, $02A4 ; UNINTERPRETED preserved bytes
+
+; A22: Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.
+IrqEntry:
+    STA $e2                  ; F7B1 
+    STX $e3                  ; F7B3 
+    STY $e4                  ; F7B5 
+    LDA #$00                 ; F7B7 
+    STA a:$e000              ; F7B9 
+    STA a:$e001              ; F7BC 
+    JMP ($00e5)              ; F7BF IRQ pointer is shared with temporary PPU dispatch pointer E5/E6.
+
+; A23: Timed PPU address/scroll writes indexed by 67; choose terminal split at F0 sentinel; share IRQ return.
+IrqSplitPpuAddress:
+    LDA a:$2002              ; F7C2 
+    LDX #$09                 ; F7C5 
+    DEX                      ; F7C7 
+    BNE $f7c7                ; F7C8 
+    LDY $67                  ; F7CA 
+    LDA a:$0080,Y            ; F7CC 
+    STA a:$c000              ; F7CF 
+    LDA a:$004b,Y            ; F7D2 
+    STA a:$2000              ; F7D5 
+    LDA a:$0701,Y            ; F7D8 
+    STA a:$2006              ; F7DB 
+    LDA a:$06fa,Y            ; F7DE 
+    STA a:$2006              ; F7E1 
+    LDA $51                  ; F7E4 
+    STA a:$2005              ; F7E6 
+    LDA a:$0059,Y            ; F7E9 
+    STA a:$2005              ; F7EC 
+    LDA a:$0081,Y            ; F7EF 
+    CMP #$f0                 ; F7F2 
+    BNE $f7fe                ; F7F4 
+    LDA #$3d                 ; F7F6 Switch to terminal split handler F83D when next count is F0.
+    STA $e5                  ; F7F8 
+    LDA #$f8                 ; F7FA 
+    STA $e6                  ; F7FC 
+    INC $67                  ; F7FE 
+    JMP a:$f834              ; F800 
+
+; A24: Timed indexed scroll/control writes; select F83D on F0 sentinel.
+IrqSplitScroll:
+    LDA a:$2002              ; F803 
+    LDX #$09                 ; F806 
+    DEX                      ; F808 
+    BNE $f808                ; F809 
+    LDY $67                  ; F80B 
+    LDA a:$007f,Y            ; F80D 
+    STA a:$c000              ; F810 
+    LDX a:$006a,Y            ; F813 
+    LDA $4a,X                ; F816 
+    ORA #$88                 ; F818 
+    STA a:$2000              ; F81A 
+    LDA $51,X                ; F81D 
+    STA a:$2005              ; F81F 
+    LDA $58                  ; F822 
+    STA a:$2005              ; F824 
+    LDA a:$0080,Y            ; F827 
+    CMP #$f0                 ; F82A 
+    BNE $f832                ; F82C 
+    LDA #$3d                 ; F82E Only low pointer byte changes; high byte F8 is a caller/state precondition.
+    STA $e5                  ; F830 
+    INC $67                  ; F832 
+
+; A25: Increment A6, restore Y/X/A from E4/E3/E2, RTI.
+IrqRestoreRegisters:
+    INC $a6                  ; F834 
+    LDY $e4                  ; F836 
+    LDX $e3                  ; F838 
+    LDA $e2                  ; F83A 
+    RTI                      ; F83C 
+
+; A26: Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.
+IrqSplitSwitchChr01:
+    LDA a:$2002              ; F83D 
+    LDX #$09                 ; F840 
+    DEX                      ; F842 
+    BNE $f842                ; F843 
+    LDA #$15                 ; F845 
+    STA a:$c000              ; F847 
+    LDA #$89                 ; F84A 
+    STA a:$2000              ; F84C 
+    LDA $66                  ; F84F 
+    STA a:$2001              ; F851 
+    LDA #$27                 ; F854 
+    STA a:$2006              ; F856 
+    LDA #$60                 ; F859 
+    STA a:$2006              ; F85B 
+    STX a:$2005              ; F85E 
+    STX a:$2005              ; F861 
+    STX a:$8000              ; F864 X=0 after delay loop; select CHR R0 and set it to 00.
+    STX a:$8001              ; F867 
+    INX                      ; F86A 
+    STX a:$03d8              ; F86B 
+    STX a:$8000              ; F86E 
+    INX                      ; F871 
+    STX a:$8001              ; F872 
+    LDA #$82                 ; F875 Only pointer low byte changes to 82; high F8 must already be set.
+    STA $e5                  ; F877 
+    INC $a6                  ; F879 
+    LDY $e4                  ; F87B 
+    LDX $e3                  ; F87D 
+    LDA $e2                  ; F87F 
+    RTI                      ; F881 
+    .incbin "inputs/original.nes", $01F892, $0778 ; UNINTERPRETED preserved bytes
+
+; A27: Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.
+InterruptVectors:
+    .byte $BB,$F0,$10,$F0,$B1,$F7

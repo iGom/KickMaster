@@ -1,0 +1,35 @@
+digraph ReviewedCalls {
+  rankdir=TB;
+  node [shape=box];
+  "ApuInitialize" -> "InitializeAudioIndicesA" [label="call"];
+  "ApuInitialize" -> "InitializeAudioIndicesB" [label="call"];
+  "Bank0CEntry0" -> "MapperWriteRetry" [label="call"];
+  "Bank0CEntry0" -> "Unresolved_8000" [label="jump"];
+  "Bank0CEntry3" -> "MapperWriteRetry" [label="call"];
+  "Bank0CEntry3" -> "Unresolved_8003" [label="jump"];
+  "Bank0CEntry6" -> "MapperWriteRetry" [label="call"];
+  "Bank0CEntry6" -> "Unresolved_8006" [label="jump"];
+  "DispatchPpuTask" -> "PpuTaskReturn" [label="table"];
+  "DispatchPpuTask" -> "PpuUpload27ViaStack" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F1B8" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F1EA" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F20E" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F365" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F378" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_F3AA" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_FAC8" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_FBE0" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_FCCD" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_FD12" [label="table"];
+  "DispatchPpuTask" -> "Unresolved_FD71" [label="table"];
+  "DispatchPpuTask" -> "UploadPalette32ViaStack" [label="table"];
+  "FarCallViaA000" -> "FarCallIndirect" [label="call"];
+  "FarCallViaA000" -> "MapperWriteRetry" [label="call"];
+  "IrqSplitPpuAddress" -> "IrqRestoreRegisters" [label="jump"];
+  "NmiEntry" -> "DispatchPpuTask" [label="call"];
+  "NmiEntry" -> "Unresolved_F28E" [label="call"];
+  "ResetEntry" -> "ResetRetentionCheck" [label="call"];
+  "ResetEntry" -> "Unresolved_CF50" [label="jump"];
+  "ResetEntry" -> "UploadPalette32ViaStack" [label="call"];
+  "ResetRetentionCheck" -> "Unresolved_D2F7" [label="call"];
+}

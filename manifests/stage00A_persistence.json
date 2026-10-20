@@ -1,0 +1,8 @@
+{
+  "checkpoint": "kickmaster-ntscu-checkpoint-stage00A.zip",
+  "library_file_id": "libfile_a4d0d65a40b08191a53925e0b1ae05f0",
+  "sha256": "88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf",
+  "upload": "succeeded",
+  "readback": "PASS",
+  "readback_manifest": "PASS"
+}

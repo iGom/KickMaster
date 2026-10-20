@@ -1,10 +1,16 @@
 # KickMaster NTSC-U: independent reverse engineering
 
 This project analyzes only the supplied ROM identified in `manifests/rom_identity.json`.
-The original ROM is not included in checkpoints. Keep the attached original and supply it again after a reset.
+The original ROM is not included in checkpoints. Its separate attachment identity is in RESUME.md;
+recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/STAGE00_BASELINE.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md`.
+
+Current snapshot: Stage 00 complete; Stage 00A reference baseline established (map images blocked);
+Stage 01A bounded architecture work complete. Comprehensive reverse engineering is **not** complete.
+24 reviewed code entries, 3 data regions, 35 RAM entries, 57 passing isolated CPU cases.
+The input-dependent ca65 scaffold matches every original byte; only 969 PRG bytes have reviewed local semantics.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),
@@ -19,9 +25,16 @@ Address intervals are half-open unless a table explicitly states inclusive limit
 ```sh
 python3 scripts/baseline.py "/path/to/KickMaster (USA)(1).nes"
 python3 -m unittest discover -s tests -v
+python3 scripts/cpu_experiments.py "/path/to/KickMaster (USA)(1).nes"
+python3 scripts/build.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/checkpoint.py --verify /path/to/checkpoint.zip
 ```
 
 The checkpoint excludes input ROMs, local rebuilds and previous checkpoint ZIPs. All included files are
 covered by `manifests/SHA256SUMS`, except that manifest itself (to avoid self-reference).
 Archive hashes and post-upload readback receipts live alongside the ZIP, not inside the file being hashed.
+
+Reuse saved CSV/JSON reports instead of rerunning completed analysis. `prepare_sources.py` intentionally
+regenerates the assembly scaffold; do not use it as a build command after edits.
+MLB syntax was checked against source, but actual MesenCE/Ghidra imports are untested.
+In banks.csv, `payload_offset` is relative to `type` (PRG or CHR), not the combined file.

@@ -1,0 +1,13 @@
+name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
+ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
+PpuTaskPointers,data,0F,0xF16A,0x116A,0x01F16A,0x01F17A,last bank fixed at E000,32,16 little-endian pointers; indices are command&1E divided by 2.,STATIC_REVIEWED,A15
+InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
+ChrBankRegisters,ram,,0x0044,,,,internal RAM; state-specific role,6,MMC3 R0..R5 shadow values; each byte is a bank number,STATIC_REVIEWED_LOCAL_ROLE,A13
+PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
+IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
+SharedDispatchPointer,ram,,0x00E5,,,,internal RAM; state-specific role,2,Shared little-endian PPU-task/IRQ target; lifetime-dependent meaning,STATIC_REVIEWED_LOCAL_ROLE,A13;A14;A22
+PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
+PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
+OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
+ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
+FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
