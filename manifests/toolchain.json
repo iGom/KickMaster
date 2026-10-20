@@ -1,0 +1,73 @@
+{
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.55-x86_64-with-glibc2.39",
+  "tools": {
+    "java": {
+      "path": "/usr/bin/java",
+      "status": "available",
+      "version_first_line": "openjdk version \"17.0.20\" 2026-07-21"
+    },
+    "node": {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/node/bin/node",
+      "status": "available",
+      "version_first_line": "v24.19.0"
+    },
+    "git": {
+      "path": "/usr/local/bin/git",
+      "status": "available",
+      "version_first_line": "git version 2.51.1"
+    },
+    "gcc": {
+      "path": "/usr/bin/gcc",
+      "status": "available",
+      "version_first_line": "gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0"
+    },
+    "pdftotext": {
+      "path": "/usr/bin/pdftotext",
+      "status": "available",
+      "version_first_line": "pdftotext version 24.02.0"
+    },
+    "pdftoppm": {
+      "path": "/opt/codex/runtimes/codex-primary-runtime/dependencies/bin/override/pdftoppm",
+      "status": "available",
+      "version_first_line": "pdftoppm version 26.05.0"
+    },
+    "tesseract": {
+      "path": "/usr/bin/tesseract",
+      "status": "available",
+      "version_first_line": "tesseract 5.3.4"
+    },
+    "ca65": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "ld65": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "da65": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "ghidra": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "analyzeHeadless": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "Mesen": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "mesen": {
+      "path": null,
+      "status": "not_on_PATH"
+    },
+    "fceux": {
+      "path": null,
+      "status": "not_on_PATH"
+    }
+  }
+}

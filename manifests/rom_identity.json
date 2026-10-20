@@ -1,0 +1,60 @@
+{
+  "original_filename": "KickMaster (USA)(1).nes",
+  "file": {
+    "size": 262160,
+    "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+    "sha1": "e329254370f4a66b110fee46988da585989a586e",
+    "crc32": "EABD6104"
+  },
+  "header": {
+    "format": "NES 2.0",
+    "header_hex": "4e 45 53 1a 08 10 40 08 00 00 00 00 00 00 00 01",
+    "mapper": 4,
+    "submapper": 0,
+    "console_type": 0,
+    "header_mirroring": "horizontal",
+    "mirroring_caveat": "MMC3 A000 controls actual nametable mirroring; the header bit is not a game-wide invariant.",
+    "battery": false,
+    "trainer_size": 0,
+    "prg_start": 16,
+    "prg_size": 131072,
+    "chr_start": 131088,
+    "chr_size": 131072,
+    "expected_size": 262160,
+    "trailing_size": 0,
+    "prg_ram": 0,
+    "prg_nvram": 0,
+    "chr_ram": 0,
+    "chr_nvram": 0,
+    "timing": 0,
+    "misc_rom_count": 0,
+    "default_expansion_device": 1
+  },
+  "prg": {
+    "size": 131072,
+    "sha256": "05707f9c2975e2b74a8d0d40ac530aa9f5548f2a7ed69b35eaa37b2ee90e4ce9",
+    "sha1": "49dd9c50aa7d087d515f045f5fc8f37f0522da3c",
+    "crc32": "D88D48D7"
+  },
+  "chr": {
+    "size": 131072,
+    "sha256": "d4a44489ee1df5915e46a5cbcf0aad331604d4b7f2f9e5ddefa2e2601ec3d40c",
+    "sha1": "32c7b25cf6395ddd2b33cf0fcf5b917bd2857cd7",
+    "crc32": "5B03178D"
+  },
+  "payload": {
+    "size": 262144,
+    "sha256": "23bf669afb3125d72f352848628e201607b4cece974cce86f2558a1812056ece",
+    "sha1": "6eafe44984fc52e27e55818534ecf84c8877c752",
+    "crc32": "5104833E"
+  },
+  "published_reference": {
+    "source": "https://nescartdb.com/profile/view/2564/kick-master",
+    "prg_crc32": "D88D48D7",
+    "chr_crc32": "5B03178D",
+    "payload_crc32": "5104833E"
+  },
+  "reference_crc32_match": true,
+  "original_rom_in_checkpoint": false,
+  "note": "CRC32 agreement supports dump identity; no independent published SHA-256 was supplied."
+}

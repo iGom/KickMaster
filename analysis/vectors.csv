@@ -1,0 +1,4 @@
+name,vector_bank,vector_cpu,vector_bank_offset,vector_prg_offset,vector_file_offset,target_bank,target_cpu,target_bank_offset,target_prg_offset,target_file_offset,mapping_condition
+NMI,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,0F,0xF0BB,0x10BB,0x01F0BB,0x01F0CB,last 8 KiB bank fixed at E000-FFFF under MMC3
+RESET,0F,0xFFFC,0x1FFC,0x01FFFC,0x02000C,0F,0xF010,0x1010,0x01F010,0x01F020,last 8 KiB bank fixed at E000-FFFF under MMC3
+IRQ_BRK,0F,0xFFFE,0x1FFE,0x01FFFE,0x02000E,0F,0xF7B1,0x17B1,0x01F7B1,0x01F7C1,last 8 KiB bank fixed at E000-FFFF under MMC3
