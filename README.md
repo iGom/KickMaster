@@ -5,14 +5,15 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/PLAYER_SCENE_FOUNDATIONS.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/PROGRESSION_PICKUPS_MAGIC.md`.
 
 Current snapshot: Stage 00 complete; Stage 00A reference baseline established (map images blocked);
-Stages 01A/01B architecture and 02A player/scene foundation complete as bounded milestones.
-Comprehensive reverse engineering is **not** complete. 101 reviewed code ranges, 45 data ranges, 80 RAM entries.
-Stage02A adds 18 CPU groups/10137 vectors; earlier 57 cases and 18 groups/2295 vectors remain preserved.
-The input-dependent ca65 scaffold matches every original byte; 6829 PRG bytes have reviewed local semantics.
-New tables cover 32 scene configurations, 192 bank-qualified pointers and 111 normal plus 5 alternate state pairs.
+Stages 01A/01B architecture, 02A player/scene foundation and 02B progression/pickups/healing complete as bounded milestones.
+Comprehensive reverse engineering is **not** complete. 134 reviewed code ranges, 54 data ranges, 101 RAM entries.
+Stage02B adds 16 CPU groups/52382 vectors with no callee stubs; prior 01A/01B/02A results remain preserved.
+The input-dependent ca65 scaffold matches every original byte; 8558 PRG bytes have reviewed local semantics.
+Tables cover 32 scene configurations, 192 scene pointers, 116 player-state pairs, eight progression levels,
+24 collectible pairs, 13 selected effects and six score thresholds. Unknown handlers remain explicitly unreviewed.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),
@@ -27,7 +28,7 @@ Address intervals are half-open unless a table explicitly states inclusive limit
 ```sh
 python3 scripts/baseline.py "/path/to/KickMaster (USA)(1).nes"
 python3 -m unittest discover -s tests -v
-python3 scripts/cpu_stage02a.py "/path/to/KickMaster (USA)(1).nes"
+python3 scripts/cpu_stage02b.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/build.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/checkpoint.py --verify /path/to/checkpoint.zip
 ```

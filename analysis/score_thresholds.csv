@@ -1,0 +1,7 @@
+index,RAM_030F_byte_offset,score_decimal,ROM_bytes_MSD_first,source_bank,source_cpu,source_bank_offset,source_prg_offset,source_file_offset,source_mapping_condition,caveat
+0,0,10000,20 21 20 20 20 20,0F,0xFDE8,0x1DE8,0x01FDE8,0x01FDF8,last bank fixed at E000,one threshold maximum per call
+1,6,50000,20 25 20 20 20 20,0F,0xFDEE,0x1DEE,0x01FDEE,0x01FDFE,last bank fixed at E000,one threshold maximum per call
+2,12,100000,21 20 20 20 20 20,0F,0xFDF4,0x1DF4,0x01FDF4,0x01FE04,last bank fixed at E000,one threshold maximum per call
+3,18,200000,22 20 20 20 20 20,0F,0xFDFA,0x1DFA,0x01FDFA,0x01FE0A,last bank fixed at E000,one threshold maximum per call
+4,24,500000,25 20 20 20 20 20,0F,0xFE00,0x1E00,0x01FE00,0x01FE10,last bank fixed at E000,one threshold maximum per call
+5,30,999999,29 29 29 29 29 29,0F,0xFE06,0x1E06,0x01FE06,0x01FE16,last bank fixed at E000,sentinel; exact comparison can advance beyond reviewed table; ordinary multiples10/100 reach saturation by early-return overflow

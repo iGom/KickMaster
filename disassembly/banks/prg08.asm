@@ -11,7 +11,355 @@ Bank08ServiceJumpTable:
     JMP a:$b04c              ; A009 
     JMP a:$a012              ; A00C 
     JMP a:$a960              ; A00F 
-    .incbin "inputs/original.nes", $010022, $0B04 ; UNINTERPRETED preserved bytes
+
+; D07: Skip when A1 bit40/80 set; otherwise A1 indexes six split pointers. Valid low selector0..5.
+DispatchCollisionWorkPhase:
+    BIT $a1                  ; A012 
+    BVS $a027                ; A014 
+    BMI $a027                ; A016 
+    LDY $a1                  ; A018 
+    LDA a:$a028,Y            ; A01A 
+    STA $22                  ; A01D 
+    LDA a:$a02e,Y            ; A01F 
+    STA $23                  ; A022 
+    JMP ($0022)              ; A024 
+    RTS                      ; A027 
+
+; D08: Six low bytes followed by six high bytes; index0 returns, index4 scans pickups directly.
+CollisionWorkPhaseTargets:
+    .byte $68,$3D,$34,$46,$4F,$55,$A6,$A0,$A0,$A0,$A0,$A0
+
+; D09: Phase-specific wrappers; preserve explicit unreviewed collision/attack callees.
+CollisionWorkPhaseEntries:
+    JSR a:$a05b              ; A034 
+    JSR a:$a2c3              ; A037 
+    JMP a:$a197              ; A03A 
+    JSR a:$a05b              ; A03D 
+    JSR a:$a075              ; A040 
+    JMP a:$a120              ; A043 
+    JSR a:$a05b              ; A046 
+    JSR a:$a305              ; A049 
+    JMP a:$a197              ; A04C 
+    JSR a:$a14f              ; A04F 
+    JMP a:$a1e8              ; A052 
+    JSR a:$a05b              ; A055 
+    JMP a:$a230              ; A058 
+
+; D10: 03D8/03D9 or D3&A0 may discard own return address and return caller-of-caller; one partial gate maps CHR R1=2.
+GateCollisionWorkAndUnwind:
+    LDA a:$03d8              ; A05B 
+    BEQ $a06c                ; A05E 
+    LDA a:$03d9              ; A060 
+    BNE $a072                ; A063 
+    LDX #$01                 ; A065 
+    LDA #$02                 ; A067 
+    JSR a:$c76a              ; A069 
+    LDA $d3                  ; A06C 
+    AND #$a0                 ; A06E 
+    BEQ $a074                ; A070 
+    PLA                      ; A072 PLA; PLA; RTS deliberately drops the immediate caller continuation.
+    PLA                      ; A073 
+    RTS                      ; A074 
+    .incbin "inputs/original.nes", $010085, $00DA ; UNINTERPRETED preserved bytes
+
+; D11: Scan indices04EF down to1; types40..6F, active flag, low-coordinate overlap and signed velocity gate precede effect dispatch.
+ScanPlayerCollectibles:
+    LDA a:$04ef              ; A14F 
+    STA $3c                  ; A152 
+    JSR a:$a05b              ; A154 
+    LDY $3c                  ; A157 
+    LDA a:$056b,Y            ; A159 
+    CMP #$70                 ; A15C 
+    BCS $a192                ; A15E 
+    CMP #$40                 ; A160 
+    BCC $a192                ; A162 
+    LDA a:$057f,Y            ; A164 
+    BPL $a192                ; A167 
+    LDA a:$04f3,Y            ; A169 
+    SEC                      ; A16C 
+    SBC #$06                 ; A16D 
+    STA $22                  ; A16F 
+    LDA #$0f                 ; A171 
+    STA $23                  ; A173 
+    LDA a:$051b,Y            ; A175 
+    CLC                      ; A178 
+    ADC #$04                 ; A179 
+    STA $24                  ; A17B 
+    LDA #$09                 ; A17D 
+    STA $25                  ; A17F 
+    JSR a:$a528              ; A181 
+    BCS $a192                ; A184 
+    LDA a:$0557,Y            ; A186 
+    BPL $a18f                ; A189 
+    CMP #$fb                 ; A18B 
+    BCC $a192                ; A18D 
+    JSR a:$a64d              ; A18F 
+    DEC $3c                  ; A192 
+    BNE $a154                ; A194 
+    RTS                      ; A196 
+    .incbin "inputs/original.nes", $0101A7, $0391 ; UNINTERPRETED preserved bytes
+
+; D12: Two wrapped low-byte inequalities; carry clear means overlap. Does not consult high coordinate bytes.
+TestPlayerPickupRectangle:
+    LDA $23                  ; A528 
+    CLC                      ; A52A 
+    ADC #$20                 ; A52B 
+    STA $3e                  ; A52D 
+    LDA $22                  ; A52F 
+    CLC                      ; A531 
+    ADC #$20                 ; A532 
+    SEC                      ; A534 
+    SBC $c9                  ; A535 
+    CMP $3e                  ; A537 
+    BCS $a54c                ; A539 
+    LDA $25                  ; A53B 
+    CLC                      ; A53D 
+    ADC #$11                 ; A53E 
+    STA $3e                  ; A540 
+    LDA $24                  ; A542 
+    CLC                      ; A544 
+    ADC #$08                 ; A545 
+    SEC                      ; A547 
+    SBC $cb                  ; A548 
+    CMP $3e                  ; A54A 
+    RTS                      ; A54C 
+    .incbin "inputs/original.nes", $01055D, $0100 ; UNINTERPRETED preserved bytes
+
+; D13: Require type40..6F, clear facing bit, use A629+evenType pointer then JMP(2C).
+DispatchCollectibleEffect:
+    LDA a:$056b,Y            ; A64D 
+    CMP #$70                 ; A650 
+    BCS $a668                ; A652 
+    CMP #$40                 ; A654 
+    BCC $a668                ; A656 
+    AND #$fe                 ; A658 
+    TAX                      ; A65A 
+    LDA a:$a629,X            ; A65B 
+    STA $2c                  ; A65E 
+    LDA a:$a62a,X            ; A660 
+    STA $2d                  ; A663 
+    JMP ($002c)              ; A665 
+    RTS                      ; A668 
+
+; D14: Twenty-four little-endian targets for paired types40/41..6E/6F; twelve entries point to unreviewed A7DB.
+CollectibleEffectPointers:
+    .byte $8A,$A7,$3D,$A7,$44,$A7,$AB,$A6,$B4,$A6,$BD,$A6,$A3,$A7,$B5,$A7
+    .byte $DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7
+    .byte $DB,$A7,$DB,$A7,$DB,$A7,$DB,$A7,$CB,$A7,$99,$A6,$CE,$A7,$CB,$A7
+
+; D15: Deactivate collectible; increment030E unless exactly0A; successful increment requests soundDC.
+CollectExtraAttempt:
+    JSR a:$a7af              ; A699 
+    LDA a:$030e              ; A69C 
+    CMP #$0a                 ; A69F Equality to0A blocks increment; not a greater-than-or-equal clamp.
+    BEQ $a6aa                ; A6A1 
+    LDA #$dc                 ; A6A3 
+    STA $01                  ; A6A5 
+    INC a:$030e              ; A6A7 
+    RTS                      ; A6AA 
+
+; D16: Deactivate collectible and add10,30 or50 decimal EXP through common digit accumulator.
+CollectExperienceEntries:
+    JSR a:$a7af              ; A6AB 
+    LDA #$01                 ; A6AE 
+    LDX #$01                 ; A6B0 
+    BNE $a6c4                ; A6B2 
+    JSR a:$a7af              ; A6B4 
+    LDA #$03                 ; A6B7 
+    LDX #$01                 ; A6B9 
+    BNE $a6c4                ; A6BB 
+    JSR a:$a7af              ; A6BD 
+    LDA #$05                 ; A6C0 
+    LDX #$01                 ; A6C2 
+
+; D17: Add base60 decimal digits; overflow saturates9999 and returns early. Otherwise compare next threshold and advance at most one level up to7, update maxima/threshold and spawn effect.
+AddExperienceAndCheckLevel:
+    CLC                      ; A6C4 
+    ADC $ed,X                ; A6C5 
+    CMP #$6a                 ; A6C7 
+    BCC $a6e4                ; A6C9 
+    INX                      ; A6CB 
+    CPX #$04                 ; A6CC 
+    BEQ $a6d9                ; A6CE 
+    SEC                      ; A6D0 
+    SBC #$0a                 ; A6D1 
+    STA $ec,X                ; A6D3 
+    LDA #$01                 ; A6D5 
+    BNE $a6c4                ; A6D7 
+    LDA #$69                 ; A6D9 Overflow clamps all EXP digits and returns before level or sound checks.
+    STA $ed                  ; A6DB 
+    STA $ee                  ; A6DD 
+    STA $ef                  ; A6DF 
+    STA $f0                  ; A6E1 
+    RTS                      ; A6E3 
+    STA $ed,X                ; A6E4 
+    LDX #$03                 ; A6E6 
+    LDA $f1,X                ; A6E8 
+    CMP $ed,X                ; A6EA 
+    BCC $a6f3                ; A6EC 
+    BNE $a738                ; A6EE 
+    DEX                      ; A6F0 
+    BPL $a6e8                ; A6F1 
+    LDA $d3                  ; A6F3 
+    AND #$07                 ; A6F5 
+    CMP #$07                 ; A6F7 
+    BEQ $a738                ; A6F9 
+    INC $d3                  ; A6FB 
+    LDY $d3                  ; A6FD Unmasked D3 used as HP table index after INC. Valid level-only D3 is0..7; high flags require caller invariants.
+    LDA a:$fde0,Y            ; A6FF 
+    STA a:$06bb              ; A702 
+    LDA $d3                  ; A705 
+    AND #$07                 ; A707 
+    STA $43                  ; A709 
+    ASL A                    ; A70B 
+    ASL A                    ; A70C 
+    TAY                      ; A70D 
+    LDX #$03                 ; A70E 
+    LDA a:$fda8,Y            ; A710 
+    STA $f1,X                ; A713 
+    INY                      ; A715 
+    DEX                      ; A716 
+    BPL $a710                ; A717 
+    LDA $43                  ; A719 
+    ASL A                    ; A71B 
+    CLC                      ; A71C 
+    ADC $43                  ; A71D 
+    TAY                      ; A71F 
+    LDX #$02                 ; A720 
+    LDA a:$fdc8,Y            ; A722 
+    STA $f5,X                ; A725 
+    INY                      ; A727 
+    DEX                      ; A728 
+    BPL $a722                ; A729 
+    JSR a:$a878              ; A72B 
+    LDA #$b4                 ; A72E 
+    STA a:$03d5              ; A730 
+    LDA #$e4                 ; A733 
+    STA $01                  ; A735 
+    RTS                      ; A737 
+    LDA #$2b                 ; A738 
+    STA $01                  ; A73A 
+    RTS                      ; A73C 
+
+; D18: Add5 or10 decimal MP; carry between base60 digits, saturate999 then clamp to F5..F7 maximum; deactivate collectible and request sound2B.
+CollectMagicPoints:
+    LDA #$05                 ; A73D 
+    LDX #$00                 ; A73F 
+    JMP a:$a747              ; A741 
+    LDA #$01                 ; A744 
+    TAX                      ; A746 
+    PHA                      ; A747 
+    JSR a:$a7af              ; A748 
+    LDA #$2b                 ; A74B 
+    STA $01                  ; A74D 
+    PLA                      ; A74F 
+    CLC                      ; A750 
+    ADC $ea,X                ; A751 
+    CMP #$6a                 ; A753 
+    BCC $a76d                ; A755 
+    INX                      ; A757 
+    CPX #$03                 ; A758 
+    BEQ $a765                ; A75A 
+    SEC                      ; A75C 
+    SBC #$0a                 ; A75D 
+    STA $e9,X                ; A75F 
+    LDA #$01                 ; A761 
+    BNE $a750                ; A763 
+    LDA #$69                 ; A765 
+    STA $ea                  ; A767 
+    STA $eb                  ; A769 
+    LDX #$02                 ; A76B 
+    STA $ea,X                ; A76D 
+    LDX #$02                 ; A76F 
+    LDA $f5,X                ; A771 
+    CMP $ea,X                ; A773 
+    BCC $a77d                ; A775 
+    BNE $a77c                ; A777 
+    DEX                      ; A779 
+    BPL $a771                ; A77A 
+    RTS                      ; A77C 
+    LDA $f5                  ; A77D 
+    STA $ea                  ; A77F 
+    LDA $f6                  ; A781 
+    STA $eb                  ; A783 
+    LDA $f7                  ; A785 
+    STA $ec                  ; A787 
+    RTS                      ; A789 
+
+; D19: Add10 hex raw HP and cap at06BB in valid HP domain; deactivate collectible, request soundA1.
+CollectHealingHeart:
+    LDA #$10                 ; A78A 
+    CLC                      ; A78C 
+    ADC a:$06b9              ; A78D 
+    CMP a:$06bb              ; A790 
+    BCC $a798                ; A793 
+    LDA a:$06bb              ; A795 
+    STA a:$06b9              ; A798 
+    JSR a:$a7af              ; A79B 
+    LDA #$a1                 ; A79E 
+    STA $01                  ; A7A0 
+    RTS                      ; A7A2 
+
+; D20: Deactivate collectible; request sound2B; A=12 tails to C746/D8B5 for100 decimal score.
+CollectScoreHundred:
+    JSR a:$a7af              ; A7A3 
+    LDA #$2b                 ; A7A6 
+    STA $01                  ; A7A8 
+    LDA #$12                 ; A7AA 
+    JMP a:$c746              ; A7AC 
+
+; D21: Set057F,Y to zero; preserve X/Y.
+DeactivateCollectible:
+    LDA #$00                 ; A7AF 
+    STA a:$057f,Y            ; A7B1 
+    RTS                      ; A7B4 
+
+; D22: Clear audio commands, deactivate, copy0593,Y to scene9A then call fade C788 and tail C77F; downstream transition outside this range.
+CollectSceneTransition:
+    LDA #$c0                 ; A7B5 
+    STA $01                  ; A7B7 
+    LDA #$00                 ; A7B9 
+    STA $00                  ; A7BB 
+    JSR a:$a7af              ; A7BD 
+    LDA a:$0593,Y            ; A7C0 
+    STA $9a                  ; A7C3 
+    JSR a:$c788              ; A7C5 
+    JMP a:$c77f              ; A7C8 
+
+; D23: A7CB deactivates first; A7CE entry does not. If D3 nonnegative, tail to damage4 with carry from player facing bit.
+CollectDamageHazard:
+    JSR a:$a7af              ; A7CB 
+    LDA $d3                  ; A7CE 
+    BMI $a7da                ; A7D0 
+    LDA $cd                  ; A7D2 
+    LSR A                    ; A7D4 
+    LDA #$04                 ; A7D5 
+    JMP a:$c76d              ; A7D7 
+    RTS                      ; A7DA 
+    .incbin "inputs/original.nes", $0107EB, $009D ; UNINTERPRETED preserved bytes
+
+; D24: Allocate collectible-relative slot; if available, type96 active80 at player position with velocityY=FD and velocityX=0.
+SpawnLevelUpObject:
+    JSR a:$c79a              ; A878 
+    BMI $a8a5                ; A87B 
+    LDA #$80                 ; A87D 
+    STA a:$057f,Y            ; A87F 
+    LDA $cb                  ; A882 
+    STA a:$051b,Y            ; A884 
+    LDA $cc                  ; A887 
+    STA a:$052f,Y            ; A889 
+    LDA $c9                  ; A88C 
+    STA a:$04f3,Y            ; A88E 
+    LDA $ca                  ; A891 
+    STA a:$0507,Y            ; A893 
+    LDA #$00                 ; A896 
+    STA a:$0543,Y            ; A898 
+    LDA #$fd                 ; A89B 
+    STA a:$0557,Y            ; A89D 
+    LDA #$96                 ; A8A0 
+    STA a:$056b,Y            ; A8A2 
+    RTS                      ; A8A5 
+    .incbin "inputs/original.nes", $0108B6, $0270 ; UNINTERPRETED preserved bytes
 
 ; C33: Tail through C79D to scene advance D1AA when F8 bit20 is set.
 PlayerStageAdvanceTail:

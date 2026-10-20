@@ -1,0 +1,6 @@
+name,RAM_address,digits,digit_bias,RAM_order,numeric_domain,cap_or_values
+CurrentMP,0x00EA,3,0x60,least significant first,unpacked decimal digit0..9 plus bias; not binary and not packed BCD,level-dependent100..999
+CurrentEXP,0x00ED,4,0x60,least significant first,unpacked decimal digit0..9 plus bias; not binary and not packed BCD,9999
+NextEXPThreshold,0x00F1,4,0x60,least significant first,unpacked decimal digit0..9 plus bias; not binary and not packed BCD,1000..7000 or9999
+MaximumMP,0x00F5,3,0x60,least significant first,unpacked decimal digit0..9 plus bias; not binary and not packed BCD,100..700 or999
+Score,0x0306,6,0x20,least significant first,unpacked decimal digit0..9 plus bias; not binary and not packed BCD,999999

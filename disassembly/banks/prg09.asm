@@ -264,4 +264,245 @@ DrawFrontEndCursor:
 ; B52: Two cursor X bytes 38/88 for selections 00/01.
 FrontEndCursorXPair:
     .byte $38,$88
-    .incbin "inputs/original.nes", $0126A7, $1969 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $0126A7, $047E ; UNINTERPRETED preserved bytes
+
+; D25: Twelve sprite pointers from generic object table, corresponding to even object types70..86.
+SelectedSpellSpritePointers:
+    .byte $71,$AC,$71,$AC,$71,$AC,$71,$AC,$71,$AC,$5B,$AE,$5B,$AE,$71,$AC
+    .byte $71,$AC,$71,$AC,$71,$AC,$71,$AC
+    .incbin "inputs/original.nes", $012B3D, $00CA ; UNINTERPRETED preserved bytes
+
+; D26: Twelve handler pointers; types70/72 target B6BA/B6CD. Remaining target behavior not inferred.
+SelectedSpellHandlerPointers:
+    .byte $BA,$B6,$CD,$B6,$3B,$BA,$69,$B8,$75,$BA,$DF,$B6,$D4,$B7,$8E,$B8
+    .byte $B7,$B8,$30,$B8,$F0,$B8,$0C,$B9
+    .incbin "inputs/original.nes", $012C1F, $0AAB ; UNINTERPRETED preserved bytes
+
+; D27: New Select bit20 triggers cost60 decimal MP; on success add20 hex raw HP through BD98.
+HealSpellTwoCells:
+    LDA $1f                  ; B6BA 
+    AND #$20                 ; B6BC 
+    BEQ $b6cc                ; B6BE 
+    LDA #$60                 ; B6C0 
+    JSR a:$bd46              ; B6C2 
+    BCS $b6cc                ; B6C5 
+    LDA #$20                 ; B6C7 
+    JMP a:$bd98              ; B6C9 
+    RTS                      ; B6CC 
+
+; D28: New Select bit20 triggers cost90 decimal MP; on success add40 hex raw HP through BD98.
+HealSpellFourCells:
+    LDA $1f                  ; B6CD 
+    AND #$20                 ; B6CF 
+    BEQ $b6cc                ; B6D1 
+    LDA #$90                 ; B6D3 
+    JSR a:$bd46              ; B6D5 
+    BCS $b6cc                ; B6D8 
+    LDA #$40                 ; B6DA 
+    JMP a:$bd98              ; B6DC 
+    .incbin "inputs/original.nes", $0136EF, $0667 ; UNINTERPRETED preserved bytes
+
+; D29: A packed decimal cost;01A5 nonzero bypasses cost before D3 bit80 gate. Subtract base60 digits with borrow; insufficient MP rolls back all three digits and returns carry set.
+SpendMagicPoints:
+    LDX a:$01a5              ; BD46 Cost-bypass flag is checked before the D3 negative-state guard; its activation path is not established.
+    BNE $bd88                ; BD49 
+    STA $34                  ; BD4B 
+    LSR A                    ; BD4D 
+    LSR A                    ; BD4E 
+    LSR A                    ; BD4F 
+    LSR A                    ; BD50 
+    STA $35                  ; BD51 
+    LDA $34                  ; BD53 
+    AND #$0f                 ; BD55 
+    STA $34                  ; BD57 
+    LDA #$00                 ; BD59 
+    STA $36                  ; BD5B 
+    LDA $d3                  ; BD5D 
+    BMI $bd96                ; BD5F 
+    LDA $ea                  ; BD61 
+    STA $38                  ; BD63 
+    LDA $eb                  ; BD65 
+    STA $39                  ; BD67 
+    LDA $ec                  ; BD69 
+    STA $3a                  ; BD6B 
+    LDX #$00                 ; BD6D 
+    LDA $ea,X                ; BD6F 
+    SEC                      ; BD71 
+    SBC $34,X                ; BD72 
+    CMP #$60                 ; BD74 
+    BCS $bd81                ; BD76 
+    CPX #$02                 ; BD78 
+    BEQ $bd8a                ; BD7A 
+    INC $35,X                ; BD7C 
+    CLC                      ; BD7E 
+    ADC #$0a                 ; BD7F 
+    STA $ea,X                ; BD81 
+    INX                      ; BD83 
+    CPX #$03                 ; BD84 
+    BNE $bd6f                ; BD86 
+    CLC                      ; BD88 
+    RTS                      ; BD89 
+    LDA $38                  ; BD8A Rollback preserves current MP on insufficient funds, but scratch bytes can change.
+    STA $ea                  ; BD8C 
+    LDA $39                  ; BD8E 
+    STA $eb                  ; BD90 
+    LDA $3a                  ; BD92 
+    STA $ec                  ; BD94 
+    SEC                      ; BD96 
+    RTS                      ; BD97 
+
+; D30: Add raw A to06B9 and cap to06BB; valid normal HP plus supported heal does not overflow the eight-bit ADC.
+AddHpClamped:
+    CLC                      ; BD98 No carry-overflow handling; assertions about min(HP+heal,max) require valid HP/cost domain.
+    ADC a:$06b9              ; BD99 
+    CMP a:$06bb              ; BD9C 
+    BCC $bda4                ; BD9F 
+    LDA a:$06bb              ; BDA1 
+    STA a:$06b9              ; BDA4 
+    RTS                      ; BDA7 
+    .incbin "inputs/original.nes", $013DB8, $00E8 ; UNINTERPRETED preserved bytes
+
+; D31: Increment object clocks, scan04EF+4 global slots, apply flags/parity gates, dispatch handlers, integrate/cull, preserve reserved slot3 offscreen, draw visible sprites.
+UpdateAndDrawObjects:
+    INC $d8                  ; BE90 
+    INC $d9                  ; BE92 
+    BNE $be98                ; BE94 
+    INC $da                  ; BE96 
+    LDA $d9                  ; BE98 
+    AND #$01                 ; BE9A 
+    CLC                      ; BE9C 
+    ADC #$04                 ; BE9D 
+    STA $47                  ; BE9F 
+    LDA $99                  ; BEA1 
+    ASL A                    ; BEA3 
+    ASL A                    ; BEA4 
+    STA $b0                  ; BEA5 
+    LDX #$02                 ; BEA7 
+    STX $b1                  ; BEA9 
+    LDA a:$04ef              ; BEAB 
+    SEC                      ; BEAE 
+    ADC #$03                 ; BEAF 
+    STA $2e                  ; BEB1 
+    LDX #$00                 ; BEB3 
+    LDA a:$057c,X            ; BEB5 
+    BPL $befa                ; BEB8 
+    AND #$08                 ; BEBA 
+    BNE $beca                ; BEBC 
+    LDA a:$057c,X            ; BEBE 
+    LSR A                    ; BEC1 
+    LSR A                    ; BEC2 
+    BCS $beca                ; BEC3 
+    EOR $d9                  ; BEC5 
+    LSR A                    ; BEC7 
+    BCS $befa                ; BEC8 
+    STX $2f                  ; BECA 
+    JSR a:$bf3e              ; BECC 
+    LDX $2f                  ; BECF 
+    JSR a:$bf68              ; BED1 
+    BNE $bf00                ; BED4 
+    LDA a:$057c,X            ; BED6 
+    LSR A                    ; BED9 
+    LSR A                    ; BEDA 
+    BCS $bee2                ; BEDB 
+    EOR $d9                  ; BEDD 
+    LSR A                    ; BEDF 
+    BCS $befa                ; BEE0 
+    LDA a:$057c,X            ; BEE2 
+    AND #$20                 ; BEE5 
+    AND $b8                  ; BEE7 
+    STA $2c                  ; BEE9 
+    LDA a:$0568,X            ; BEEB 
+    LSR A                    ; BEEE 
+    BCS $bef7                ; BEEF 
+    JSR a:$f6ed              ; BEF1 
+    JMP a:$befa              ; BEF4 
+    JSR a:$f737              ; BEF7 
+    INX                      ; BEFA 
+    CPX $2e                  ; BEFB 
+    BNE $beb5                ; BEFD 
+    RTS                      ; BEFF 
+    CPX #$03                 ; BF00 
+    BEQ $befa                ; BF02 
+    LDA #$00                 ; BF04 
+    STA a:$057c,X            ; BF06 
+    BEQ $befa                ; BF09 
+    .incbin "inputs/original.nes", $013F1B, $0033 ; UNINTERPRETED preserved bytes
+
+; D32: Even0568,X indexes sprite tableAAA5 and handler tableAB87; load B6/B7 and tail JMP(2C).
+DispatchObjectHandler:
+    LDA #$a5                 ; BF3E 
+    STA $c7                  ; BF40 
+    LDA #$aa                 ; BF42 
+    STA $c8                  ; BF44 
+    LDA #$87                 ; BF46 
+    STA $c5                  ; BF48 
+    LDA #$ab                 ; BF4A 
+    STA $c6                  ; BF4C 
+    LDA a:$0568,X            ; BF4E 
+    AND #$fe                 ; BF51 
+    TAY                      ; BF53 
+    LDA ($c7),Y              ; BF54 
+    STA $b6                  ; BF56 
+    LDA ($c5),Y              ; BF58 
+    STA $2c                  ; BF5A 
+    INY                      ; BF5C 
+    LDA ($c7),Y              ; BF5D 
+    STA $b7                  ; BF5F 
+    LDA ($c5),Y              ; BF61 
+    STA $2d                  ; BF63 
+    JMP ($002c)              ; BF65 
+
+; D33: Flag40 skips velocity integration; signed X/Y velocities update coordinates. Low Y>=D8 or nonzero relative X high culls. Y high scratch subtract uses carry from CMP D8.
+MoveAndCullObject:
+    LDA a:$057c,X            ; BF68 
+    ASL A                    ; BF6B 
+    PHP                      ; BF6C 
+    BMI $bf8b                ; BF6D 
+    LDA #$00                 ; BF6F 
+    STA $2d                  ; BF71 
+    LDA a:$0554,X            ; BF73 
+    BEQ $bf8b                ; BF76 
+    BPL $bf7c                ; BF78 
+    DEC $2d                  ; BF7A 
+    CLC                      ; BF7C 
+    ADC a:$04f0,X            ; BF7D 
+    STA a:$04f0,X            ; BF80 
+    LDA a:$0504,X            ; BF83 
+    ADC $2d                  ; BF86 
+    STA a:$0504,X            ; BF88 
+    LDA a:$04f0,X            ; BF8B 
+    SEC                      ; BF8E 
+    SBC $a9                  ; BF8F 
+    CMP #$d8                 ; BF91 
+    BCS $bfcf                ; BF93 
+    STA $22                  ; BF95 
+    LDA a:$0504,X            ; BF97 
+    SBC $aa                  ; BF9A 
+    STA $23                  ; BF9C 
+    PLP                      ; BF9E 
+    BMI $bfbd                ; BF9F 
+    LDA #$00                 ; BFA1 
+    STA $2d                  ; BFA3 
+    LDA a:$0540,X            ; BFA5 
+    BEQ $bfbd                ; BFA8 
+    BPL $bfae                ; BFAA 
+    DEC $2d                  ; BFAC 
+    CLC                      ; BFAE 
+    ADC a:$0518,X            ; BFAF 
+    STA a:$0518,X            ; BFB2 
+    LDA a:$052c,X            ; BFB5 
+    ADC $2d                  ; BFB8 
+    STA a:$052c,X            ; BFBA 
+    LDA a:$0518,X            ; BFBD 
+    SEC                      ; BFC0 
+    SBC $a7                  ; BFC1 
+    STA $24                  ; BFC3 
+    LDA a:$052c,X            ; BFC5 
+    SBC $a8                  ; BFC8 
+    BNE $bfd0                ; BFCA 
+    STA $25                  ; BFCC 
+    RTS                      ; BFCE 
+    PLP                      ; BFCF 
+    LDA #$01                 ; BFD0 
+    RTS                      ; BFD2 
+    .incbin "inputs/original.nes", $013FE3, $002D ; UNINTERPRETED preserved bytes

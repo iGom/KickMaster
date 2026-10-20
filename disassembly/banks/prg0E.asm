@@ -2,7 +2,11 @@
 ; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
 .segment "PRG0E"
 .org $C000
-    .incbin "inputs/original.nes", $01C010, $0749 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01C010, $0746 ; UNINTERPRETED preserved bytes
+
+; D34: Tail JMP D8B5 in fixed bank0E.
+AddScoreService:
+    JMP a:$d8b5              ; C746 
 
 ; B01: 42 absolute JMP service entries; this identifies destinations, not all destination semantics.
 FixedServiceJumpTable:
@@ -878,7 +882,56 @@ Bank0CEntry6:
     LDA #$0c                 ; D6E8 
     JSR a:$d6c3              ; D6EA 
     JMP a:$8006              ; D6ED 
-    .incbin "inputs/original.nes", $01D700, $021C ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01D700, $01C5 ; UNINTERPRETED preserved bytes
+
+; D35: A high nibble increment, low3 digit position; six base20 decimal digits. Overflow clamps999999 and skips awards; otherwise at most one threshold award, advancing threshold by6 even at attempts cap0A.
+AddScoreAndCheckAttemptAward:
+    PHA                      ; D8B5 
+    AND #$07                 ; D8B6 
+    TAX                      ; D8B8 
+    PLA                      ; D8B9 
+    LSR A                    ; D8BA 
+    LSR A                    ; D8BB 
+    LSR A                    ; D8BC 
+    LSR A                    ; D8BD 
+    CLC                      ; D8BE 
+    ADC a:$0306,X            ; D8BF 
+    CMP #$2a                 ; D8C2 
+    BCC $d8de                ; D8C4 
+    INX                      ; D8C6 
+    CPX #$06                 ; D8C7 
+    BEQ $d8d5                ; D8C9 
+    SEC                      ; D8CB 
+    SBC #$0a                 ; D8CC 
+    STA a:$0305,X            ; D8CE 
+    LDA #$01                 ; D8D1 
+    BNE $d8be                ; D8D3 
+    LDA #$29                 ; D8D5 
+    STA a:$0305,X            ; D8D7 
+    DEX                      ; D8DA 
+    BNE $d8d7                ; D8DB 
+    RTS                      ; D8DD 
+    STA a:$0306,X            ; D8DE 
+    LDY a:$030f              ; D8E1 
+    LDX #$05                 ; D8E4 
+    LDA a:$fde8,Y            ; D8E6 
+    CMP a:$0306,X            ; D8E9 
+    BCC $d8f4                ; D8EC 
+    BNE $d90b                ; D8EE 
+    INY                      ; D8F0 
+    DEX                      ; D8F1 
+    BPL $d8e6                ; D8F2 
+    LDA a:$030f              ; D8F4 Threshold advancement and attempt cap require separate interpretation; see bounded report.
+    CLC                      ; D8F7 
+    ADC #$06                 ; D8F8 
+    STA a:$030f              ; D8FA 
+    LDA a:$030e              ; D8FD 
+    CMP #$0a                 ; D900 
+    BEQ $d90b                ; D902 
+    LDA #$dc                 ; D904 
+    STA $01                  ; D906 
+    INC a:$030e              ; D908 
+    RTS                      ; D90B 
 
 ; B33: Save X/Y, evolve 97 while 95 is nonzero, set 95=1; temporarily map 00/01 for C7C7 then restore bank tags.
 WaitNmiAndServiceAudio:

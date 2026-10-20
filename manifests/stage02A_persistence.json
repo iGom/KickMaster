@@ -1,0 +1,31 @@
+{
+  "stage": "02A",
+  "saved_and_read_back": "PASS",
+  "byte_equal_to_local_archive": true,
+  "checked_at_utc": "2026-10-20T06:08:14.693678+00:00",
+  "library_file_id": "libfile_1fb1ef5971b4819186b37e5bcc003b93",
+  "file_id": "file_00000000389881f5bea7998f0860e4db",
+  "current_version_number": 0,
+  "archive_local_path": "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/checkpoints/kickmaster-ntscu-checkpoint-stage02A.zip",
+  "readback_local_path": "/workspace/scratch/073d0612ec00/readback-stage02A/kickmaster-ntscu-checkpoint-stage02A.zip",
+  "verification": {
+    "archive": "kickmaster-ntscu-checkpoint-stage02A.zip",
+    "sha256": "1dfbc341acfa500072f21a1533ba6108088976ea03b1dbbcb3cceb141c2ee4e4",
+    "size_bytes": 1033598,
+    "zip_crc_test": "PASS",
+    "manifest_verification": "PASS",
+    "manifest_file_count": 159,
+    "sample_extraction": "PASS",
+    "sample_paths": [
+      "README.md",
+      "RESUME.md",
+      "manifests/rom_identity.json",
+      "scripts/baseline.py"
+    ],
+    "latest_resume_present": true
+  },
+  "resume_library_file_id": "libfile_15c58ba4a308819190753ac649fb6273",
+  "verification_library_file_id": "libfile_e9c95140e0b8819197f80b14c7c02e5c",
+  "reproducibility_library_file_id": "libfile_e7777efe15f881919db48f30a9250d31",
+  "reproducibility": "PASS; clean extraction built without source regeneration; exact original ROM required"
+}

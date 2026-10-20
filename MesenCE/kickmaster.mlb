@@ -12,6 +12,10 @@ NesPrgRom:E5AB:InitializeSpecialLayout:C10; 04E2 indexes 17-entry layout arrays;
 NesPrgRom:E916:InitializeSevenScrollShadows:C11; Populate seven PPUCTRL/X/Y shadow entries from camera coordinates, preserving input X.
 NesPrgRom:E935:LoadScenePaletteProfile:C12; Read 27-byte pointed profile into palette staging, eight bytes at 017D, 06B8 and CHR 44/45; install fixed sprite colors.
 NesPrgRom:EAB6:MultiplyScreenCountBy240:C13; Produce 16-bit 22/23 = input * F0 for input 00..80; 81..FF yield zero due to signed DEX gate; preserve X.
+NesPrgRom:EE3A:InitializeSelectedSpellObject:D01; Clear three reserved active flags; 06BD selects encoded type; initialize global slot3, flags88/8C, player position and zero velocities; refresh HUD icon.
+NesPrgRom:EE93:SelectedSpellObjectTypes:D02; Thirteen bytes for selector00..0C; 00/01 map70/72 healing handlers,0C disables slot3. Full spell identities unresolved.
+NesPrgRom:EEC6:SnapshotPlayerProgression:D03; Save level, current HP, MP, EXP and two flag bytes in eleven-byte block06C2..06CC.
+NesPrgRom:EEF7:RestorePlayerProgression:D04; Restore snapshot fields then tail to B7F4, which overwrites restored current HP with full table capacity; does not write06BB.
 NesPrgRom:F022:DispatchHudMaintenance:C14; Negative A1 returns; otherwise increment, wrap exact 06 to 01, then dispatch six-entry table; not a general out-of-range clamp.
 NesPrgRom:F03F:HudMaintenanceTargets:C15; Six split low/high pointers; valid normal rotation is indexes 01..05, index00 is RTS.
 NesPrgRom:F04B:BuildPlayerHpBar:C16; 06BA decreases immediately to 06B9 or rises by one; encode full/partial/empty cells using capacity 06BB>>4 into eleven bytes at 0163.
@@ -31,7 +35,27 @@ NesPrgRom:F402:SceneHorizontalBoundPages:C30; 32 bytes loaded into AF; downstrea
 NesPrgRom:F422:SceneVerticalBoundScreens:C31; 32 screen counts multiplied by F0 into AD/AE.
 NesPrgRom:F442:ScenePaletteProfilePointers:C32; 32 pointers to 27-byte palette/CHR profiles; some targets reside in R7 bank07, others in R6-selected bank.
 NesPrgRom:F482:SpecialLayoutArrays:C17; 17-entry CHR0, CHR1 and bank/page arrays followed by four arrays of 17 little-endian pointers.
+NesPrgRom:F7F4:RefreshProgressionDerivedValues:D05; D3&0F indexes tables; for valid0..7 set current/display HP to full capacity, copy maxMP and nextEXP; leave06BB unchanged.
+NesPrgRom:F829:CompareCurrentMpToMaximum:D06; Compare three base60 decimal digits most significant first; return carry set iff currentMP exceeds maxMP.
 NesPrgRom:10000:Bank08ServiceJumpTable:B44; Six absolute JMP entry points in R7 bank 08.
+NesPrgRom:10012:DispatchCollisionWorkPhase:D07; Skip when A1 bit40/80 set; otherwise A1 indexes six split pointers. Valid low selector0..5.
+NesPrgRom:10028:CollisionWorkPhaseTargets:D08; Six low bytes followed by six high bytes; index0 returns, index4 scans pickups directly.
+NesPrgRom:10034:CollisionWorkPhaseEntries:D09; Phase-specific wrappers; preserve explicit unreviewed collision/attack callees.
+NesPrgRom:1005B:GateCollisionWorkAndUnwind:D10; 03D8/03D9 or D3&A0 may discard own return address and return caller-of-caller; one partial gate maps CHR R1=2.
+NesPrgRom:1014F:ScanPlayerCollectibles:D11; Scan indices04EF down to1; types40..6F, active flag, low-coordinate overlap and signed velocity gate precede effect dispatch.
+NesPrgRom:10528:TestPlayerPickupRectangle:D12; Two wrapped low-byte inequalities; carry clear means overlap. Does not consult high coordinate bytes.
+NesPrgRom:1064D:DispatchCollectibleEffect:D13; Require type40..6F, clear facing bit, use A629+evenType pointer then JMP(2C).
+NesPrgRom:10669:CollectibleEffectPointers:D14; Twenty-four little-endian targets for paired types40/41..6E/6F; twelve entries point to unreviewed A7DB.
+NesPrgRom:10699:CollectExtraAttempt:D15; Deactivate collectible; increment030E unless exactly0A; successful increment requests soundDC.
+NesPrgRom:106AB:CollectExperienceEntries:D16; Deactivate collectible and add10,30 or50 decimal EXP through common digit accumulator.
+NesPrgRom:106C4:AddExperienceAndCheckLevel:D17; Add base60 decimal digits; overflow saturates9999 and returns early. Otherwise compare next threshold and advance at most one level up to7, update maxima/threshold and spawn effect.
+NesPrgRom:1073D:CollectMagicPoints:D18; Add5 or10 decimal MP; carry between base60 digits, saturate999 then clamp to F5..F7 maximum; deactivate collectible and request sound2B.
+NesPrgRom:1078A:CollectHealingHeart:D19; Add10 hex raw HP and cap at06BB in valid HP domain; deactivate collectible, request soundA1.
+NesPrgRom:107A3:CollectScoreHundred:D20; Deactivate collectible; request sound2B; A=12 tails to C746/D8B5 for100 decimal score.
+NesPrgRom:107AF:DeactivateCollectible:D21; Set057F,Y to zero; preserve X/Y.
+NesPrgRom:107B5:CollectSceneTransition:D22; Clear audio commands, deactivate, copy0593,Y to scene9A then call fade C788 and tail C77F; downstream transition outside this range.
+NesPrgRom:107CB:CollectDamageHazard:D23; A7CB deactivates first; A7CE entry does not. If D3 nonnegative, tail to damage4 with carry from player facing bit.
+NesPrgRom:10878:SpawnLevelUpObject:D24; Allocate collectible-relative slot; if available, type96 active80 at player position with velocityY=FD and velocityX=0.
 NesPrgRom:10B16:PlayerStageAdvanceTail:C33; Tail through C79D to scene advance D1AA when F8 bit20 is set.
 NesPrgRom:10B19:UpdateAndDrawPlayer:C34; Clear transient D3 bit7, honor advance flag, retain only CE bit0, dispatch player state, compute camera-relative coordinates, service hurt display and draw metasprite.
 NesPrgRom:10CF7:DispatchPlayerState:C35; A selects normal/alternate table family; CD>>1 selects CHR and CD&FE selects metasprite pointer plus handler; tail JMP through 2C/2D.
@@ -63,6 +87,16 @@ NesPrgRom:1262E:FrontEndTilePair:B49; Two bytes 21/00 used as a PPU transfer sou
 NesPrgRom:12630:PollFrontEndChoice:B50; A/Start return carry set; otherwise Select/Left/Right toggle 2C, draw cursor and return carry clear.
 NesPrgRom:12672:DrawFrontEndCursor:B51; Write one four-byte OAM sprite at index 99; choose X through 2C; increment 99.
 NesPrgRom:12695:FrontEndCursorXPair:B52; Two cursor X bytes 38/88 for selections 00/01.
+NesPrgRom:12B15:SelectedSpellSpritePointers:D25; Twelve sprite pointers from generic object table, corresponding to even object types70..86.
+NesPrgRom:12BF7:SelectedSpellHandlerPointers:D26; Twelve handler pointers; types70/72 target B6BA/B6CD. Remaining target behavior not inferred.
+NesPrgRom:136BA:HealSpellTwoCells:D27; New Select bit20 triggers cost60 decimal MP; on success add20 hex raw HP through BD98.
+NesPrgRom:136CD:HealSpellFourCells:D28; New Select bit20 triggers cost90 decimal MP; on success add40 hex raw HP through BD98.
+NesPrgRom:13D46:SpendMagicPoints:D29; A packed decimal cost;01A5 nonzero bypasses cost before D3 bit80 gate. Subtract base60 digits with borrow; insufficient MP rolls back all three digits and returns carry set.
+NesPrgRom:13D98:AddHpClamped:D30; Add raw A to06B9 and cap to06BB; valid normal HP plus supported heal does not overflow the eight-bit ADC.
+NesPrgRom:13E90:UpdateAndDrawObjects:D31; Increment object clocks, scan04EF+4 global slots, apply flags/parity gates, dispatch handlers, integrate/cull, preserve reserved slot3 offscreen, draw visible sprites.
+NesPrgRom:13F3E:DispatchObjectHandler:D32; Even0568,X indexes sprite tableAAA5 and handler tableAB87; load B6/B7 and tail JMP(2C).
+NesPrgRom:13F68:MoveAndCullObject:D33; Flag40 skips velocity integration; signed X/Y velocities update coordinates. Low Y>=D8 or nonzero relative X high culls. Y high scratch subtract uses carry from CMP D8.
+NesPrgRom:1C746:AddScoreService:D34; Tail JMP D8B5 in fixed bank0E.
 NesPrgRom:1C749:FixedServiceJumpTable:B01; 42 absolute JMP service entries; this identifies destinations, not all destination semantics.
 NesPrgRom:1CC84:ApuInitialize:A01; Initialize APU registers and call two five-entry index initializers.
 NesPrgRom:1CCAB:InitializeAudioIndicesA:A02; Fill 0015..0019 with 05,0B,11,17,1D; audio role from A01 caller.
@@ -107,12 +141,14 @@ NesPrgRom:1D6C3:MapperWriteRetry:A08; Write X to 8000 and A to 8001; retry if in
 NesPrgRom:1D6D2:Bank0CEntry0:A09; Map PRG0C at 8000, then tail-jump to 8000.
 NesPrgRom:1D6DC:Bank0CEntry3:A10; Map PRG0C at 8000, then tail-jump to 8003.
 NesPrgRom:1D6E6:Bank0CEntry6:A11; Map PRG0C at 8000, then tail-jump to 8006.
+NesPrgRom:1D8B5:AddScoreAndCheckAttemptAward:D35; A high nibble increment, low3 digit position; six base20 decimal digits. Overflow clamps999999 and skips awards; otherwise at most one threshold award, advancing threshold by6 even at attempts cap0A.
 NesPrgRom:1D90C:WaitNmiAndServiceAudio:B33; Save X/Y, evolve 97 while 95 is nonzero, set 95=1; temporarily map 00/01 for C7C7 then restore bank tags.
 NesPrgRom:1D949:UpdateControllerState:B34; Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.
 NesPrgRom:1D977:ReadControllerSerial:B35; Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.
 NesPrgRom:1D9CB:MixTimingStateWithX:B36; 97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.
 NesPrgRom:1DB02:ClassifyPlayerTerrainSample:C57; Choose sample helper with DB bit04; priority bits40/80 return solid/empty; bit10 may invoke damage (9A+04) except active effect08; accumulate terrain bits0C into CE.
 NesPrgRom:1DDD9:ApplyPlayerDamage:C58; Ignore while D2 or01A4 nonzero; subtract raw A from06B9. Borrow starts BA/BB death animation; equality zero takes hurt path. Preserve input carry as reaction direction.
+NesPrgRom:1E0ED:FindFreeCollectibleSlot:D36; Scan04EF-1 down to1 for nonnegative057F,Y, return A=0; full pool A=FF. Tested valid slot counts>=2.
 NesPrgRom:1E2A3:ServicePaletteEffect:B37; Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.
 NesPrgRom:1E2E2:AdjustScrollOnOddEffect:B38; If 03D6 is odd add 04 to 58; add 10 again when the wrapped first sum is at least F0.
 NesPrgRom:1F010:ResetEntry:A12; Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
@@ -125,6 +161,8 @@ NesPrgRom:1F24B:UploadPalette32ViaStack:A18; Read 0143..0162 through PLA; write 
 NesPrgRom:1F4BA:DisableRendering:A19; Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.
 NesPrgRom:1F4CA:FarCallViaA000:A20; Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.
 NesPrgRom:1F50A:FarCallIndirect:A21; Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
+NesPrgRom:1F65F:RefreshSelectedSpellIcon:D37; Copy four tile IDs indexed06BD*4 fromFF2A to0185..0188; A0=16, fall through HUD staging.
+NesPrgRom:1F681:BuildLevelAndAttemptsHud:D38; Stage icon and fixed tiles; level digit=(D3&7)+60, attempts digit=030E+5F, displaying internal attempts minus1.
 NesPrgRom:1F6CC:WaitCountedUpdates:B39; Call D90C and decrement X until zero; initial X=00 means 256 updates.
 NesPrgRom:1F6D3:WaitCountedOrAStart:B40; Counted wait with early exit on newly pressed A or Start; returns masked input in A.
 NesPrgRom:1F6E0:WaitForAStart:B41; Repeat D90C until newly pressed A or Start.
@@ -139,10 +177,14 @@ NesPrgRom:1F803:IrqSplitScroll:A24; Timed indexed scroll/control writes; select 
 NesPrgRom:1F834:IrqRestoreRegisters:A25; Increment A6, restore Y/X/A from E4/E3/E2, RTI.
 NesPrgRom:1F83D:IrqSplitSwitchChr01:A26; Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.
 NesPrgRom:1FAD3:LoadSceneIrqProfile:C63; Select profile with FE6C[9A], copy latch/index pairs until F0, then NMI selector and IRQ source chosen by selector and pair count.
+NesPrgRom:1FDA8:NextExperienceThresholds:D39; Eight four-byte MSD-first base60 decimal thresholds1000..7000,9999 indexed by current level.
+NesPrgRom:1FDC8:MaximumMpByLevel:D40; Eight three-byte MSD-first base60 decimal maxima100,200,300,400,500,600,700,999.
 NesPrgRom:1FDE0:PlayerHpCapacityByIndex:C64; Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.
+NesPrgRom:1FDE8:ExtraAttemptScoreThresholds:D41; Six six-byte MSD-first base20 thresholds10000,50000,100000,200000,500000,999999. Last sentinel is not followed by another reviewed threshold.
 NesPrgRom:1FE6C:SceneIrqProfileIndex:C65; 32 selectors for six IRQ profiles.
 NesPrgRom:1FE8C:SceneIrqProfilePointers:C66; Six little-endian pointers to F0-terminated latch/index streams.
 NesPrgRom:1FE98:SceneIrqProfiles:C67; Six streams; final F0 byte is a terminal latch followed by NMI selector, not an ordinary latch/index pair.
+NesPrgRom:1FF2A:SelectedSpellIconTiles:D42; Thirteen four-tile glyph groups for06BD0..0C; visual identity not independently rendered.
 NesPrgRom:1FFFA:InterruptVectors:A27; Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.
 NesInternalRam:1F:ButtonsPressed:B34;B35; Newly pressed A/B/Select/Start/Up/Down/Left/Right bits; scratch during serial poll.
 NesInternalRam:20:ButtonsHeld:B34; Held input after AND of two polls; temporarily stores first sample.
@@ -186,8 +228,9 @@ NesInternalRam:CD:PlayerStateAndFacing:C35;C36;C38; Even part selects one of111 
 NesInternalRam:CE:PlayerMotionFlags:C34;C50;C52;C57; AB19 retains only bit01 at update entry, selecting alternate table family. Bit80 signals terminal exit; other flags include terrain0C and motion40. Not a single state ID.
 NesInternalRam:CF:PlayerStateTimer:C36;C49;C52; Per-state counter; death states advance on exact0F and reset, final death delay sets CE80 on exact0F.
 NesInternalRam:D2:PlayerDamageCooldown:C58;C34;C51; Nonzero blocks DDD9 damage; successful nonfatal subtraction sets3C; player update decrements nonzero value and changes sprite attributes.
-NesInternalRam:D3:PlayerCapacityIndexAndStatus:C58;C34;B18; Low3 bits index capacity restore table; bit20 selects hurt state, bit10 reaction direction, bit80 transiently blocks Start and is reasserted by hurt/death handlers. Level-up producer not yet traced.
+NesInternalRam:D3:PlayerLevelAndStatus:08:A6C4;08:AB19;0E:DDD9; Low3 bits are level0..7; EXP comparison can increment once. Bit20 hurt,10 reaction direction,80 transient state gate. Level-up HP lookup uses unmasked D3 and requires caller invariants.
 NesInternalRam:D4:PreviousPlayerPositionSnapshot:C34; Copy of C9..CC after player update unless06BD=0B and0593 nonzero.
+NesInternalRam:D8:ObjectFrameCounters:09:BE90; BE90 increments D8 independently and little-endian D9/DA; D9 parity gates object work/drawing and CHR47.
 NesInternalRam:DB:SceneDirectionAndScrollFlags:C09;C01;C42; Loaded from scene table; bits2..1 select down/up/right/left, bit0 enables scroll dispatch, bit08 automatic step, bit80 runtime scroll work gate.
 NesInternalRam:DC:IrqHandlerSource:A13; Little-endian source copied to E5/E6 during NMI IRQ setup
 NesInternalRam:E2:IrqSavedA:A22;A25; IRQ A save slot
@@ -197,29 +240,49 @@ NesInternalRam:E5:SharedDispatchPointer:A13;A14;A22; Shared little-endian PPU-ta
 NesInternalRam:E7:NmiSavedA:A13; NMI A save slot
 NesInternalRam:E8:NmiSavedX:A13; NMI X save slot
 NesInternalRam:E9:NmiSavedY:A13; NMI Y save slot
+NesInternalRam:EA:PlayerCurrentMpDigits:08:A73D;09:BD46;07:AEC6; Current MP; additions clamp to F5..F7, spending rolls back on insufficient funds.
+NesInternalRam:ED:PlayerExperienceDigits:08:A6C4;07:AEC6; Current experience, cap9999; overflow skips level test and sound request.
+NesInternalRam:F1:PlayerNextExperienceThreshold:08:A710;07:B7F4; Next threshold from0F:FDA8, values1000..7000 then9999.
+NesInternalRam:F5:PlayerMaximumMpDigits:08:A722;07:B7F4;08:A76F; Level-dependent MP capacity100..700 then999.
 NesInternalRam:100:ResetRetainedMarker:A04;A12; Value 68 suppresses retained default copy; not cleared by RESET
 NesInternalRam:101:PpuUpload27Buffer:A16; 27 bytes streamed using temporary SP=00; page is also CPU stack
 NesInternalRam:143:PaletteUploadBuffer:A12;A18; 32 bytes streamed using temporary SP=42; page is also CPU stack
-NesInternalRam:163:HpBarTileBuffer:C16; B04B emits up to11 tiles:4F full,48..4E partial,47 empty,3F outside capacity; overlaps page01 stack region.
+NesInternalRam:163:HudTileStagingBuffer:07:B04B;0F:F681; Shared HUD staging: HP-bar phase fills up to11 tiles; level/attempt phase writes icon and numeric glyphs to same buffer.
 NesInternalRam:16F:RunEntryStackPointer:B04;B05; Saved before run setup and restored at CFE8 to abandon intermediate call frames.
 NesInternalRam:170:TransferSavedStackPointer:A16;A18; Real SP saved during PPU stack-based transfers
 NesInternalRam:1A4:PlayerDamageSuppression:C58; Nonzero suppresses DDD9 damage alongside D2. Producer and gameplay effect identity unresolved.
+NesInternalRam:1A5:MagicCostBypassFlag:09:BD46; Nonzero makes BD46 succeed without cost before D3 negative-state guard. Activation path and full meaning unresolved.
 NesInternalRam:200:OamDmaBuffer:A06;A07;A13; CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4
 NesInternalRam:300:ResetRetainedBlock:A04;A12; Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved
+NesInternalRam:306:PlayerScoreDigits:0E:D8B5; Six score digits capped999999; overflow returns before extra-attempt award checks. Overlaps end of reset-retained0300 block.
 NesInternalRam:30C:ProgressionCycleIndex:B04;B16; Initialized from 2D&03; incremented on FF route unless already 03; semantic difficulty effects unresolved.
-NesInternalRam:30E:RemainingAttemptsCandidate:B22;B26;C52; Set03 at new run; decremented after verified player death/fall terminal flag; zero enters continue/reset menu. Exact HUD/life terminology still awaits rendering check.
+NesInternalRam:30E:PlayerAttemptsRemaining:0E:D39F;08:A699;0E:D8B5;0F:F681; Set03 initially, decremented after terminal player exit; HUD shows value minus1. Pickups/score prevent increment only when exactly0A.
+NesInternalRam:30F:NextScoreAwardTableOffset:0E:D8B5; Byte offset into six-byte threshold rows at0F:FDE8. Advances by6 on comparison success even when attempts already0A.
 NesInternalRam:3B9:SceneDataBank8000:C09;C10;B08; Normal scene bank from07:B262[9A], special layout bank from07:B4A4[04E2]&7F; mapped through R6 by frame wrappers.
 NesInternalRam:3D5:PaletteEffectCountdown:B37; Nonzero value is decremented in E2A3 and may select color 30 with D9 bit 10.
 NesInternalRam:3D6:ScrollEffectPhase:B38;B05;B27; Odd values trigger four-pixel scroll adjustment; cleared on loop setup and overlay return.
+NesInternalRam:3D8:CollisionGateFirstFlag:08:A05B; If nonzero,03D9 chooses early unwind or CHR R1=2 before D3 gate. Producer unresolved.
+NesInternalRam:3D9:CollisionGateSecondFlag:08:A05B; When03D8 also nonzero, discard caller return word and return caller-of-caller. Producer unresolved.
 NesInternalRam:4E2:SpecialLayoutIndex:C10;C56; Indexes17-entry special-layout setup tables; scene entry later writesFF. Full state contract unresolved.
 NesInternalRam:4EA:FarCallTarget:A21; Little-endian target CPU address
 NesInternalRam:4EC:FarCallTargetBankA000:A20; MMC3 R7 bank value for far call
 NesInternalRam:4ED:FarCallSavedBankA000:A20; Bank identity read from BFFF
 NesInternalRam:4EE:FarCallSavedBank8000:A20; Bank identity read from 9FFF
+NesInternalRam:4EF:ObjectPoolCountParameter:08:A14F;0F:E0ED;09:BE90; Pickup scan indicesN..1; allocatorN-1..1; global object frame scansN+4 entries. Producer and full permitted range unresolved; tests useN16 except bounded single-pickup probes.
+NesInternalRam:4F0:ObjectWorldYLow:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Low byte of object Y. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:504:ObjectWorldYHigh:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; High byte of object Y. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:518:ObjectWorldXLow:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Low byte of object X. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:52C:ObjectWorldXHigh:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; High byte of object X. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:540:ObjectVelocityX:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Signed horizontal velocity; flag40 skips integration. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:554:ObjectVelocityY:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Signed vertical velocity; flag40 skips integration. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:568:ObjectTypeAndFacing:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Even type indexes sprite/handler pointer tables; bit0 chooses horizontal flip. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
+NesInternalRam:57C:ObjectActiveFlags:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; Bit80 active;08 always invokes handler;04 bypasses parity gates;40 skips velocity;20 contributes sprite attribute. Global slot3 is selected effect. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.
 NesInternalRam:6B9:PlayerHpRaw:C58;C16;B18; Current raw HP consumed by DDD9. Damage greater than HP selects death; exact equality produces zero and hurt reaction.
 NesInternalRam:6BA:PlayerHpDisplayedRaw:C16;B18; Displayed HP copy: immediately follows decreases, increments by one per HP-bar maintenance invocation on increases.
-NesInternalRam:6BB:PlayerHpBarCapacity:C16;C64;B18; Capacity of bar in raw units; upper nibble gives cells. Restored table40..B0 corresponds4..11 cells; all healing clamps not yet reviewed.
-NesInternalRam:6C2:LiveSavedBlock:B23;B24; Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.
+NesInternalRam:6BB:PlayerMaximumHpRaw:08:A6FF;08:A78A;09:BD98;07:B04B; Healing clamp and bar capacity; level-up writes table40..B0. B7F4 derived-value restore changes06B9/06BA but leaves this byte unchanged.
+NesInternalRam:6BD:SelectedSpellIndex:07:AE3A;0F:F65F;0E:DB02; Selector0..0C;00/01 map healing effects with60/90 MP costs,0C disables reserved global slot3. Full remaining spell identities unresolved.
+NesInternalRam:6BE:PlayerProgressionFlagBytes:07:AEC6;07:AEF7; Copied into snapshot06CB/06CC and restored. Full bit assignment and pickup unlock path remain unreviewed.
+NesInternalRam:6C2:LiveProgressionSnapshot:07:AEC6;07:AEF7;0E:D37F; Level1, HP1, MP3, EXP4, flags2; copied to06CD..06D7 at run checkpoint. Restored saved HP is then overwritten by full level capacity.
 NesInternalRam:6CD:SavedRunBlock:B23;B24; Saved copy of 06C2..06CC; restored during restart/continue.
 NesInternalRam:6EE:PaletteUploadPostFlag:A18; If initially nonzero, palette upload replaces with FF; wider meaning unresolved
 NesInternalRam:713:PreviousButtonsHeld:B34;B02; Previous completed input state; seeded FF on boot front-end entry.

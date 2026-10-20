@@ -1,0 +1,12 @@
+{
+  "new_ranges": 42,
+  "new_code_ranges": 33,
+  "new_data_ranges": 9,
+  "new_instructions": 700,
+  "new_bytes": 1729,
+  "levels": 8,
+  "pickup_type_pairs": 24,
+  "selected_spell_entries": 13,
+  "new_indirect_edges": 42,
+  "unresolved_targets_from_new_code": []
+}

@@ -71,12 +71,47 @@ def main():
     assert current['vectors']==sum(g['vector_count'] for g in current['results'])
     assert len(rows('analysis/cpu_stage02A_vectors.csv'))==current['vectors']
     assert len(rows('analysis/cpu_stage02A_trace.csv'))==current['trace_rows']
-    checks+=['preserved stage01A/01B and new stage02A CPU results pass; complete rebuilt image matches']
+    checks+=['preserved stage01A/01B/02A CPU results pass; complete rebuilt image matches']
+    current=json.loads((ROOT/'analysis/cpu_stage02B.json').read_text())
+    assert current['groups']==current['passed_groups']==16 and current['vectors']==52382
+    assert current['rom_sha256']==hashlib.sha256(rom).hexdigest()
+    assert current['vectors']==sum(g['vector_count'] for g in current['results'])
+    assert all(g['status']=='PASS' and not g['boundary_stubs'] for g in current['results'])
+    assert len(rows('analysis/cpu_stage02B_vectors.csv'))==current['vectors']
+    assert len(rows('analysis/cpu_stage02B_trace.csv'))==current['trace_rows']
+    levels=rows('analysis/progression_levels.csv');pickups=rows('analysis/pickup_effects.csv');spells=rows('analysis/selected_spell_dispatch.csv')
+    assert len(levels)==8 and len(pickups)==24 and len(spells)==13
+    def raw(bank,cpu,n):return rom[16+bank*8192+(cpu&8191):16+bank*8192+(cpu&8191)+n]
+    def number(bs,bias):
+        ds=[b-bias for b in bs];assert all(0<=d<=9 for d in ds)
+        return int(''.join(map(str,ds)))
+    for r in levels:
+        i=int(r['level']);assert number(raw(15,0xFDA8+4*i,4),0x60)==int(r['next_EXP_decimal'])
+        assert number(raw(15,0xFDC8+3*i,3),0x60)==int(r['maximum_MP_decimal'])
+        assert raw(15,0xFDE0+i,1)[0]==int(r['maximum_HP_raw'],16)
+    for r in pickups:
+        source=int(r['source_file_offset'],16);target=int(r['target_cpu'],16)
+        assert int.from_bytes(rom[source:source+2],'little')==target
+        assert int(r['target_file_offset'],16)==16+8*8192+(target&8191)
+    for r in spells:
+        encoded=int(r['encoded_type'],16);assert rom[int(r['source_file_offset'],16)]==encoded
+        if encoded:
+            assert int.from_bytes(raw(9,0xAB87+(encoded&0xFE),2),'little')==int(r['handler_cpu'],16)
+            assert int.from_bytes(raw(9,0xAAA5+(encoded&0xFE),2),'little')==int(r['sprite_pointer_cpu'],16)
+    thresholds=rows('analysis/score_thresholds.csv');assert len(thresholds)==6
+    for r in thresholds:assert number(raw(15,0xFDE8+6*int(r['index']),6),0x20)==int(r['score_decimal'])
+    indirect=rows('analysis/indirect_dispatch_tables.csv')
+    assert len(indirect)==180 and sum(r['group'].startswith('D_') for r in indirect)==42
+    assert all((r['dispatch_bank'],r['dispatch_cpu']) in keys for r in indirect)
+    assert len(rows('analysis/numeric_formats.csv'))==5 and len(rows('analysis/progression_snapshot_layout.csv'))==5
+    checks+=['stage02B: 16 groups/52382 CPU vectors pass with no callee stubs; bounded dispatch stops explicitly recorded',
+             '8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and180 indirect edges match original ROM domains']
     prior={
       '00':'6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f',
       '00A':'88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf',
       '01A':'d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a',
-      '01B':'a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d'}
+      '01B':'a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d',
+      '02A':'1dfbc341acfa500072f21a1533ba6108088976ea03b1dbbcb3cceb141c2ee4e4'}
     preserved=[]
     for stage,h in prior.items():
         p=ROOT/f'checkpoints/kickmaster-ntscu-checkpoint-stage{stage}.zip'

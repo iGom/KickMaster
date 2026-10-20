@@ -1,0 +1,13 @@
+{
+  "source_stage": "02A",
+  "materialized_library_file_id": "libfile_66e039ad85b08191b3f07f153c6f0afa",
+  "materialized_file_id": "file_0000000081fc81f5b0a9ef7fe4e4c448",
+  "version": 0,
+  "sha256": "1dfbc341acfa500072f21a1533ba6108088976ea03b1dbbcb3cceb141c2ee4e4",
+  "size": 1033598,
+  "manifest_files_verified": 159,
+  "workspace_files_compared": 159,
+  "workspace_hash_mismatches": [],
+  "result": "PASS",
+  "notes": "Materialized and verified before stage02B edits; reused matching workspace. Original stage02A save identity retained separately in stage02A_persistence.json."
+}

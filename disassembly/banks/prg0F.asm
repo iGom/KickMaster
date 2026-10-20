@@ -2,7 +2,21 @@
 ; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
 .segment "PRG0F"
 .org $E000
-    .incbin "inputs/original.nes", $01E010, $02A3 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01E010, $00ED ; UNINTERPRETED preserved bytes
+
+; D36: Scan04EF-1 down to1 for nonnegative057F,Y, return A=0; full pool A=FF. Tested valid slot counts>=2.
+FindFreeCollectibleSlot:
+    LDY a:$04ef              ; E0ED 
+    DEY                      ; E0F0 
+    LDA a:$057f,Y            ; E0F1 
+    BPL $e0fc                ; E0F4 
+    DEY                      ; E0F6 
+    BNE $e0f1                ; E0F7 
+    LDA #$ff                 ; E0F9 
+    RTS                      ; E0FB 
+    LDA #$00                 ; E0FC 
+    RTS                      ; E0FE 
+    .incbin "inputs/original.nes", $01E10F, $01A4 ; UNINTERPRETED preserved bytes
 
 ; B37: Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.
 ServicePaletteEffect:
@@ -338,7 +352,54 @@ FarCallViaA000:
 ; A21: Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
 FarCallIndirect:
     JMP ($04ea)              ; F50A 
-    .incbin "inputs/original.nes", $01F51D, $01BF ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01F51D, $0152 ; UNINTERPRETED preserved bytes
+
+; D37: Copy four tile IDs indexed06BD*4 fromFF2A to0185..0188; A0=16, fall through HUD staging.
+RefreshSelectedSpellIcon:
+    LDA a:$06bd              ; F65F 
+    ASL A                    ; F662 
+    ASL A                    ; F663 
+    TAY                      ; F664 
+    LDA a:$ff2a,Y            ; F665 
+    STA a:$0185              ; F668 
+    LDA a:$ff2b,Y            ; F66B 
+    STA a:$0186              ; F66E 
+    LDA a:$ff2c,Y            ; F671 
+    STA a:$0187              ; F674 
+    LDA a:$ff2d,Y            ; F677 
+    STA a:$0188              ; F67A 
+    LDA #$16                 ; F67D 
+    STA $a0                  ; F67F 
+
+; D38: Stage icon and fixed tiles; level digit=(D3&7)+60, attempts digit=030E+5F, displaying internal attempts minus1.
+BuildLevelAndAttemptsHud:
+    LDA a:$0185              ; F681 
+    STA a:$0163              ; F684 
+    LDA a:$0186              ; F687 
+    STA a:$0164              ; F68A 
+    LDA #$40                 ; F68D 
+    STA a:$0165              ; F68F 
+    LDA #$7a                 ; F692 
+    STA a:$0166              ; F694 
+    LDA $d3                  ; F697 
+    AND #$07                 ; F699 
+    CLC                      ; F69B 
+    ADC #$60                 ; F69C 
+    STA a:$0167              ; F69E 
+    LDA a:$0187              ; F6A1 
+    STA a:$0168              ; F6A4 
+    LDA a:$0188              ; F6A7 
+    STA a:$0169              ; F6AA 
+    LDA #$51                 ; F6AD 
+    STA a:$016a              ; F6AF 
+    LDA #$7b                 ; F6B2 
+    STA a:$016b              ; F6B4 
+    LDA a:$030e              ; F6B7 
+    CLC                      ; F6BA 
+    ADC #$5f                 ; F6BB 
+    STA a:$016c              ; F6BD 
+    RTS                      ; F6C0 
+    .incbin "inputs/original.nes", $01F6D1, $000B ; UNINTERPRETED preserved bytes
 
 ; B39: Call D90C and decrement X until zero; initial X=00 means 256 updates.
 WaitCountedUpdates:
@@ -636,12 +697,28 @@ LoadSceneIrqProfile:
     LDA #$f7                 ; FB19 
     STA $dd                  ; FB1B 
     RTS                      ; FB1D 
-    .incbin "inputs/original.nes", $01FB2E, $02C2 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01FB2E, $028A ; UNINTERPRETED preserved bytes
+
+; D39: Eight four-byte MSD-first base60 decimal thresholds1000..7000,9999 indexed by current level.
+NextExperienceThresholds:
+    .byte $61,$60,$60,$60,$62,$60,$60,$60,$63,$60,$60,$60,$64,$60,$60,$60
+    .byte $65,$60,$60,$60,$66,$60,$60,$60,$67,$60,$60,$60,$69,$69,$69,$69
+
+; D40: Eight three-byte MSD-first base60 decimal maxima100,200,300,400,500,600,700,999.
+MaximumMpByLevel:
+    .byte $61,$60,$60,$62,$60,$60,$63,$60,$60,$64,$60,$60,$65,$60,$60,$66
+    .byte $60,$60,$67,$60,$60,$69,$69,$69
 
 ; C64: Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.
 PlayerHpCapacityByIndex:
     .byte $40,$50,$60,$70,$80,$90,$A0,$B0
-    .incbin "inputs/original.nes", $01FDF8, $0084 ; UNINTERPRETED preserved bytes
+
+; D41: Six six-byte MSD-first base20 thresholds10000,50000,100000,200000,500000,999999. Last sentinel is not followed by another reviewed threshold.
+ExtraAttemptScoreThresholds:
+    .byte $20,$21,$20,$20,$20,$20,$20,$25,$20,$20,$20,$20,$21,$20,$20,$20
+    .byte $20,$20,$22,$20,$20,$20,$20,$20,$25,$20,$20,$20,$20,$20,$29,$29
+    .byte $29,$29,$29,$29
+    .incbin "inputs/original.nes", $01FE1C, $0060 ; UNINTERPRETED preserved bytes
 
 ; C65: 32 selectors for six IRQ profiles.
 SceneIrqProfileIndex:
@@ -659,7 +736,15 @@ SceneIrqProfiles:
     .byte $71,$00,$F0,$00,$00,$00,$83,$00,$0D,$00,$3B,$00,$F0,$01,$AF,$01
     .byte $1E,$00,$F0,$00,$3D,$02,$50,$01,$3E,$00,$F0,$00,$00,$00,$61,$00
     .byte $3F,$00,$2C,$00,$F0,$01
-    .incbin "inputs/original.nes", $01FEEE, $011C ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01FEEE, $004C ; UNINTERPRETED preserved bytes
+
+; D42: Thirteen four-tile glyph groups for06BD0..0C; visual identity not independently rendered.
+SelectedSpellIconTiles:
+    .byte $80,$90,$81,$91,$82,$92,$83,$93,$8A,$9A,$8B,$9B,$A2,$B2,$A3,$B3
+    .byte $A4,$B4,$A5,$B5,$A0,$B0,$A1,$B1,$8E,$9E,$8F,$9F,$A6,$B6,$A7,$B7
+    .byte $84,$94,$85,$95,$8C,$9C,$8D,$9D,$86,$96,$87,$97,$88,$98,$89,$99
+    .byte $A8,$B8,$A9,$B9
+    .incbin "inputs/original.nes", $01FF6E, $009C ; UNINTERPRETED preserved bytes
 
 ; A27: Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.
 InterruptVectors:

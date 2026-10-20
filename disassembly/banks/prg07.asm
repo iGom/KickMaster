@@ -356,7 +356,96 @@ MultiplyScreenCountBy240:
     PLA                      ; AAD5 
     TAX                      ; AAD6 
     RTS                      ; AAD7 
-    .incbin "inputs/original.nes", $00EAE8, $054A ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $00EAE8, $0362 ; UNINTERPRETED preserved bytes
+
+; D01: Clear three reserved active flags; 06BD selects encoded type; initialize global slot3, flags88/8C, player position and zero velocities; refresh HUD icon.
+InitializeSelectedSpellObject:
+    LDA #$00                 ; AE3A 
+    STA a:$057c              ; AE3C 
+    STA a:$057d              ; AE3F 
+    STA a:$057e              ; AE42 
+    LDA #$ff                 ; AE45 
+    STA a:$00b8              ; AE47 
+    LDA a:$00ce              ; AE4A 
+    AND #$fe                 ; AE4D 
+    STA a:$00ce              ; AE4F 
+    LDY a:$06bd              ; AE52 
+    LDA a:$ae93,Y            ; AE55 
+    BEQ $ae8c                ; AE58 
+    TAY                      ; AE5A 
+    AND #$fe                 ; AE5B 
+    STA a:$056b              ; AE5D 
+    LDA $cb                  ; AE60 
+    STA a:$051b              ; AE62 
+    LDA $cc                  ; AE65 
+    STA a:$052f              ; AE67 
+    LDA $c9                  ; AE6A 
+    STA a:$04f3              ; AE6C 
+    LDA $ca                  ; AE6F 
+    STA a:$0507              ; AE71 
+    LDA #$00                 ; AE74 
+    STA a:$0543              ; AE76 
+    STA a:$0557              ; AE79 
+    STA a:$0593              ; AE7C 
+    STA a:$05a7              ; AE7F 
+    TYA                      ; AE82 
+    LSR A                    ; AE83 
+    BCS $ae8a                ; AE84 
+    LDA #$88                 ; AE86 
+    BNE $ae8c                ; AE88 
+    LDA #$8c                 ; AE8A 
+    STA a:$057f              ; AE8C 
+    JSR a:$f65f              ; AE8F 
+    RTS                      ; AE92 
+
+; D02: Thirteen bytes for selector00..0C; 00/01 map70/72 healing handlers,0C disables slot3. Full spell identities unresolved.
+SelectedSpellObjectTypes:
+    .byte $70,$72,$74,$77,$78,$7A,$7C,$7E,$80,$82,$84,$86,$00
+    .incbin "inputs/original.nes", $00EEB0, $0026 ; UNINTERPRETED preserved bytes
+
+; D03: Save level, current HP, MP, EXP and two flag bytes in eleven-byte block06C2..06CC.
+SnapshotPlayerProgression:
+    LDA $d3                  ; AEC6 
+    AND #$07                 ; AEC8 
+    STA a:$06c2              ; AECA 
+    LDA a:$06b9              ; AECD 
+    STA a:$06c3              ; AED0 
+    LDA a:$06be              ; AED3 
+    STA a:$06cb              ; AED6 
+    LDA a:$06bf              ; AED9 
+    STA a:$06cc              ; AEDC 
+    LDX #$02                 ; AEDF 
+    LDA a:$00ed,X            ; AEE1 
+    STA a:$06c7,X            ; AEE4 
+    LDA a:$00ea,X            ; AEE7 
+    STA a:$06c4,X            ; AEEA 
+    DEX                      ; AEED 
+    BPL $aee1                ; AEEE 
+    LDA a:$00f0              ; AEF0 
+    STA a:$06ca              ; AEF3 
+    RTS                      ; AEF6 
+
+; D04: Restore snapshot fields then tail to B7F4, which overwrites restored current HP with full table capacity; does not write06BB.
+RestorePlayerProgression:
+    LDA a:$06c2              ; AEF7 
+    STA $d3                  ; AEFA 
+    LDA a:$06c3              ; AEFC 
+    STA a:$06b9              ; AEFF 
+    LDA a:$06cb              ; AF02 
+    STA a:$06be              ; AF05 
+    LDA a:$06cc              ; AF08 
+    STA a:$06bf              ; AF0B 
+    LDX #$02                 ; AF0E 
+    LDA a:$06c7,X            ; AF10 
+    STA a:$00ed,X            ; AF13 
+    LDA a:$06c4,X            ; AF16 
+    STA a:$00ea,X            ; AF19 
+    DEX                      ; AF1C 
+    BPL $af10                ; AF1D 
+    LDA a:$06ca              ; AF1F 
+    STA a:$00f0              ; AF22 
+    JMP a:$b7f4              ; AF25 
+    .incbin "inputs/original.nes", $00EF38, $00FA ; UNINTERPRETED preserved bytes
 
 ; C14: Negative A1 returns; otherwise increment, wrap exact 06 to 01, then dispatch six-entry table; not a general out-of-range clamp.
 DispatchHudMaintenance:
@@ -535,4 +624,50 @@ SpecialLayoutArrays:
     .byte $98,$C4,$98,$C4,$98,$C4,$98,$7D,$9F,$46,$9A,$15,$9D,$1A,$9D,$EB
     .byte $88,$F3,$9A,$EB,$88,$ED,$99,$CE,$9D,$0D,$99,$0D,$99,$0D,$99,$0D
     .byte $99,$0D,$99,$0D,$99,$0D,$99,$0D,$99,$7D,$9F
-    .incbin "inputs/original.nes", $00F54D, $0AC3 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $00F54D, $02B7 ; UNINTERPRETED preserved bytes
+
+; D05: D3&0F indexes tables; for valid0..7 set current/display HP to full capacity, copy maxMP and nextEXP; leave06BB unchanged.
+RefreshProgressionDerivedValues:
+    LDA a:$00d3              ; B7F4 Only low4 are masked: table domain established here is0..7, not all nibble values.
+    AND #$0f                 ; B7F7 
+    STA $3c                  ; B7F9 
+    TAY                      ; B7FB 
+    LDA a:$fde0,Y            ; B7FC 
+    STA a:$06b9              ; B7FF 
+    STA a:$06ba              ; B802 
+    LDA $3c                  ; B805 
+    ASL A                    ; B807 
+    ADC $3c                  ; B808 
+    TAY                      ; B80A 
+    LDX #$02                 ; B80B 
+    LDA a:$fdc8,Y            ; B80D 
+    STA a:$00f5,X            ; B810 
+    INY                      ; B813 
+    DEX                      ; B814 
+    BPL $b80d                ; B815 
+    LDA $3c                  ; B817 
+    ASL A                    ; B819 
+    ASL A                    ; B81A 
+    TAY                      ; B81B 
+    LDX #$03                 ; B81C 
+    LDA a:$fda8,Y            ; B81E 
+    STA a:$00f1,X            ; B821 
+    INY                      ; B824 
+    DEX                      ; B825 
+    BPL $b81e                ; B826 
+    RTS                      ; B828 
+
+; D06: Compare three base60 decimal digits most significant first; return carry set iff currentMP exceeds maxMP.
+CompareCurrentMpToMaximum:
+    LDX #$02                 ; B829 
+    LDA a:$00f5,X            ; B82B 
+    CMP a:$00ea,X            ; B82E 
+    BCC $b83a                ; B831 
+    BNE $b838                ; B833 
+    DEX                      ; B835 
+    BPL $b82b                ; B836 
+    CLC                      ; B838 
+    RTS                      ; B839 
+    SEC                      ; B83A 
+    RTS                      ; B83B 
+    .incbin "inputs/original.nes", $00F84C, $07C4 ; UNINTERPRETED preserved bytes

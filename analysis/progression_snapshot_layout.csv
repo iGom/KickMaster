@@ -1,0 +1,6 @@
+snapshot_RAM,size,live_RAM,meaning,save_source,restore_source,second_snapshot_copy_RAM
+0x06C2,1,0x00D3,level low3,07:AEC6,07:AEF7 + B7F4,0x06CD
+0x06C3,1,0x06B9,HP; overwritten full by derived-value restore,07:AEC6,07:AEF7 + B7F4,0x06CE
+0x06C4,3,0x00EA,current MP,07:AEC6,07:AEF7 + B7F4,0x06CF
+0x06C7,4,0x00ED,current EXP,07:AEC6,07:AEF7 + B7F4,0x06D2
+0x06CB,2,0x06BE,two progression flag bytes; full bit meaning unresolved,07:AEC6,07:AEF7 + B7F4,0x06D6

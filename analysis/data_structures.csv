@@ -2,6 +2,7 @@ name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,des
 SceneEvenTargets,data,07,0xA0F2,0x00F2,0x00E0F2,0x00E102,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes; down/up/right/left order follows DB direction selector.,STATIC_REVIEWED,C02
 SceneOddTargets,data,07,0xA111,0x0111,0x00E111,0x00E121,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for odd phase.,STATIC_REVIEWED,C04
 SceneExtraTargets,data,07,0xA130,0x0130,0x00E130,0x00E140,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for extra even-phase work.,STATIC_REVIEWED,C06
+SelectedSpellObjectTypes,data,07,0xAE93,0x0E93,0x00EE93,0x00EEA3,MMC3 PRG mode 0; R7=07 at A000,13,"Thirteen bytes for selector00..0C; 00/01 map70/72 healing handlers,0C disables slot3. Full spell identities unresolved.",STATIC_REVIEWED,D02
 HudMaintenanceTargets,data,07,0xB03F,0x103F,0x00F03F,0x00F04F,MMC3 PRG mode 0; R7=07 at A000,12,"Six split low/high pointers; valid normal rotation is indexes 01..05, index00 is RTS.",STATIC_REVIEWED,C15
 SceneInitialCameraXPages,data,07,0xB1E2,0x11E2,0x00F1E2,0x00F1F2,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera X high bytes; low byte is zero.,STATIC_REVIEWED,C18
 SceneInitialCameraYScreens,data,07,0xB202,0x1202,0x00F202,0x00F212,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera Y screen counts multiplied by F0.,STATIC_REVIEWED,C19
@@ -19,6 +20,8 @@ SceneHorizontalBoundPages,data,07,0xB402,0x1402,0x00F402,0x00F412,MMC3 PRG mode 
 SceneVerticalBoundScreens,data,07,0xB422,0x1422,0x00F422,0x00F432,MMC3 PRG mode 0; R7=07 at A000,32,32 screen counts multiplied by F0 into AD/AE.,STATIC_REVIEWED,C31
 ScenePaletteProfilePointers,data,07,0xB442,0x1442,0x00F442,0x00F452,MMC3 PRG mode 0; R7=07 at A000,64,"32 pointers to 27-byte palette/CHR profiles; some targets reside in R7 bank07, others in R6-selected bank.",STATIC_REVIEWED,C32
 SpecialLayoutArrays,data,07,0xB482,0x1482,0x00F482,0x00F492,MMC3 PRG mode 0; R7=07 at A000,187,"17-entry CHR0, CHR1 and bank/page arrays followed by four arrays of 17 little-endian pointers.",STATIC_REVIEWED,C17
+CollisionWorkPhaseTargets,data,08,0xA028,0x0028,0x010028,0x010038,MMC3 PRG mode 0; R7=08 at A000,12,"Six low bytes followed by six high bytes; index0 returns, index4 scans pickups directly.",STATIC_REVIEWED,D08
+CollectibleEffectPointers,data,08,0xA669,0x0669,0x010669,0x010679,MMC3 PRG mode 0; R7=08 at A000,48,Twenty-four little-endian targets for paired types40/41..6E/6F; twelve entries point to unreviewed A7DB.,STATIC_REVIEWED,D14
 InitialPlayerStateBytes,data,08,0xB042,0x1042,0x011042,0x011052,MMC3 PRG mode 0; R7=08 at A000,10,C9..D2 initial bytes 80 00 80 00 00 00 00 00 00 00.,STATIC_REVIEWED,C41
 AutomaticCameraStepTargets,data,08,0xB06B,0x106B,0x01106B,0x01107B,MMC3 PRG mode 0; R7=08 at A000,8,"Four split low/high pointers: B073,B07A,B086,B08D.",STATIC_REVIEWED,C43
 PlayerTableFamilyPointers,data,08,0xB099,0x1099,0x011099,0x0110A9,MMC3 PRG mode 0; R7=08 at A000,12,"Three two-entry pointer arrays for CHR, metasprites and state handlers; ACF7 input A=0/1 selects family.",STATIC_REVIEWED,C45
@@ -31,6 +34,8 @@ PlayerAlternateHandlerPointers,data,08,0xBE02,0x1E02,0x011E02,0x011E12,MMC3 PRG 
 FrontEndObjectXPair,data,09,0xA555,0x0555,0x012555,0x012565,MMC3 PRG mode 0; R7=09 at A000,2,Two X bytes 1C/E4 copied to 051B/051C by A4B9.,STATIC_REVIEWED,B47
 FrontEndTilePair,data,09,0xA62E,0x062E,0x01262E,0x01263E,MMC3 PRG mode 0; R7=09 at A000,2,Two bytes 21/00 used as a PPU transfer source at A585..A599.,STATIC_REVIEWED,B49
 FrontEndCursorXPair,data,09,0xA695,0x0695,0x012695,0x0126A5,MMC3 PRG mode 0; R7=09 at A000,2,Two cursor X bytes 38/88 for selections 00/01.,STATIC_REVIEWED,B52
+SelectedSpellSpritePointers,data,09,0xAB15,0x0B15,0x012B15,0x012B25,MMC3 PRG mode 0; R7=09 at A000,24,"Twelve sprite pointers from generic object table, corresponding to even object types70..86.",STATIC_REVIEWED,D25
+SelectedSpellHandlerPointers,data,09,0xABF7,0x0BF7,0x012BF7,0x012C07,MMC3 PRG mode 0; R7=09 at A000,24,Twelve handler pointers; types70/72 target B6BA/B6CD. Remaining target behavior not inferred.,STATIC_REVIEWED,D26
 NextSceneIndexTable,data,0E,0xD23F,0x123F,0x01D23F,0x01D24F,MMC3 PRG mode 0,32,32-byte successor table; index 1B contains FF end-of-cycle marker.,STATIC_REVIEWED,B19
 RestartSceneIndexTable,data,0E,0xD25F,0x125F,0x01D25F,0x01D26F,MMC3 PRG mode 0,32,32-byte table used by D178 and D363; physical-stage correspondence unresolved.,STATIC_REVIEWED,B20
 ContinueSceneIndexTable,data,0E,0xD27F,0x127F,0x01D27F,0x01D28F,MMC3 PRG mode 0,32,32-byte table used by D19A; physical-stage correspondence unresolved.,STATIC_REVIEWED,B21
@@ -39,10 +44,14 @@ CounterZeroCursorPointers,data,0E,0xD5AE,0x15AE,0x01D5AE,0x01D5BE,MMC3 PRG mode 
 ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
 PpuTaskPointers,data,0F,0xF16A,0x116A,0x01F16A,0x01F17A,last bank fixed at E000,32,16 little-endian pointers; indices are command&1E divided by 2.,STATIC_REVIEWED,A15
 YPageCorrectionTable,data,0F,0xF7A1,0x17A1,0x01F7A1,0x01F7B1,last bank fixed at E000,16,"16 bytes 00,10,...F0 used by Y-coordinate normalization.",STATIC_REVIEWED,C62
+NextExperienceThresholds,data,0F,0xFDA8,0x1DA8,0x01FDA8,0x01FDB8,last bank fixed at E000,32,"Eight four-byte MSD-first base60 decimal thresholds1000..7000,9999 indexed by current level.",STATIC_REVIEWED,D39
+MaximumMpByLevel,data,0F,0xFDC8,0x1DC8,0x01FDC8,0x01FDD8,last bank fixed at E000,24,"Eight three-byte MSD-first base60 decimal maxima100,200,300,400,500,600,700,999.",STATIC_REVIEWED,D40
 PlayerHpCapacityByIndex,data,0F,0xFDE0,0x1DE0,0x01FDE0,0x01FDF0,last bank fixed at E000,8,"Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.",STATIC_REVIEWED,C64
+ExtraAttemptScoreThresholds,data,0F,0xFDE8,0x1DE8,0x01FDE8,0x01FDF8,last bank fixed at E000,36,"Six six-byte MSD-first base20 thresholds10000,50000,100000,200000,500000,999999. Last sentinel is not followed by another reviewed threshold.",STATIC_REVIEWED,D41
 SceneIrqProfileIndex,data,0F,0xFE6C,0x1E6C,0x01FE6C,0x01FE7C,last bank fixed at E000,32,32 selectors for six IRQ profiles.,STATIC_REVIEWED,C65
 SceneIrqProfilePointers,data,0F,0xFE8C,0x1E8C,0x01FE8C,0x01FE9C,last bank fixed at E000,12,Six little-endian pointers to F0-terminated latch/index streams.,STATIC_REVIEWED,C66
 SceneIrqProfiles,data,0F,0xFE98,0x1E98,0x01FE98,0x01FEA8,last bank fixed at E000,70,"Six streams; final F0 byte is a terminal latch followed by NMI selector, not an ordinary latch/index pair.",STATIC_REVIEWED,C67
+SelectedSpellIconTiles,data,0F,0xFF2A,0x1F2A,0x01FF2A,0x01FF3A,last bank fixed at E000,52,Thirteen four-tile glyph groups for06BD0..0C; visual identity not independently rendered.,STATIC_REVIEWED,D42
 InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
 ChrBankRegisters,ram,,0x0044,,,,internal RAM; state-specific role,6,MMC3 R0..R5 shadow values; each byte is a bank number,STATIC_REVIEWED_LOCAL_ROLE,A13
 PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
@@ -59,13 +68,28 @@ PlayerDispatchTablePointers,ram,,0x00C3,,,,internal RAM; state-specific role,6,C
 PlayerWorldY,ram,,0x00C9,,,,internal RAM; state-specific role,2,"Player vertical position, initial offset from camera Y. C9 low-byte relative difference drives fall thresholds.",STATIC_REVIEWED_LOCAL_ROLE,C08;C34;C50
 PlayerWorldX,ram,,0x00CB,,,,internal RAM; state-specific role,2,Player horizontal position; CB/CC minus camera X becomes sprite horizontal origin 24/25.,STATIC_REVIEWED_LOCAL_ROLE,C08;C34
 PreviousPlayerPositionSnapshot,ram,,0x00D4,,,,internal RAM; state-specific role,4,Copy of C9..CC after player update unless06BD=0B and0593 nonzero.,STATIC_REVIEWED_LOCAL_ROLE,C34
+ObjectFrameCounters,ram,,0x00D8,,,,internal RAM; state-specific role,3,BE90 increments D8 independently and little-endian D9/DA; D9 parity gates object work/drawing and CHR47.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90
 IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
 SharedDispatchPointer,ram,,0x00E5,,,,internal RAM; state-specific role,2,Shared little-endian PPU-task/IRQ target; lifetime-dependent meaning,STATIC_REVIEWED_LOCAL_ROLE,A13;A14;A22
+PlayerCurrentMpDigits,ram,,0x00EA,,,,internal RAM; state-specific role,3,"Current MP; additions clamp to F5..F7, spending rolls back on insufficient funds.",STATIC_REVIEWED_LOCAL_ROLE,08:A73D;09:BD46;07:AEC6
+PlayerExperienceDigits,ram,,0x00ED,,,,internal RAM; state-specific role,4,"Current experience, cap9999; overflow skips level test and sound request.",STATIC_REVIEWED_LOCAL_ROLE,08:A6C4;07:AEC6
+PlayerNextExperienceThreshold,ram,,0x00F1,,,,internal RAM; state-specific role,4,"Next threshold from0F:FDA8, values1000..7000 then9999.",STATIC_REVIEWED_LOCAL_ROLE,08:A710;07:B7F4
+PlayerMaximumMpDigits,ram,,0x00F5,,,,internal RAM; state-specific role,3,Level-dependent MP capacity100..700 then999.,STATIC_REVIEWED_LOCAL_ROLE,08:A722;07:B7F4;08:A76F
 PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
 PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
-HpBarTileBuffer,ram,,0x0163,,,,internal RAM; state-specific role,11,"B04B emits up to11 tiles:4F full,48..4E partial,47 empty,3F outside capacity; overlaps page01 stack region.",STATIC_REVIEWED_LOCAL_ROLE,C16
+HudTileStagingBuffer,ram,,0x0163,,,,internal RAM; state-specific role,11,Shared HUD staging: HP-bar phase fills up to11 tiles; level/attempt phase writes icon and numeric glyphs to same buffer.,STATIC_REVIEWED_LOCAL_ROLE,07:B04B;0F:F681
 OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
 ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
+PlayerScoreDigits,ram,,0x0306,,,,internal RAM; state-specific role,6,Six score digits capped999999; overflow returns before extra-attempt award checks. Overlaps end of reset-retained0300 block.,STATIC_REVIEWED_LOCAL_ROLE,0E:D8B5
 FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
-LiveSavedBlock,ram,,0x06C2,,,,internal RAM; state-specific role,11,Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
+ObjectWorldYLow,ram,,0x04F0,,,,internal RAM; state-specific role,20,Low byte of object Y. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectWorldYHigh,ram,,0x0504,,,,internal RAM; state-specific role,20,High byte of object Y. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectWorldXLow,ram,,0x0518,,,,internal RAM; state-specific role,20,Low byte of object X. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectWorldXHigh,ram,,0x052C,,,,internal RAM; state-specific role,20,High byte of object X. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectVelocityX,ram,,0x0540,,,,internal RAM; state-specific role,20,Signed horizontal velocity; flag40 skips integration. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectVelocityY,ram,,0x0554,,,,internal RAM; state-specific role,20,Signed vertical velocity; flag40 skips integration. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectTypeAndFacing,ram,,0x0568,,,,internal RAM; state-specific role,20,Even type indexes sprite/handler pointer tables; bit0 chooses horizontal flip. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+ObjectActiveFlags,ram,,0x057C,,,,internal RAM; state-specific role,20,Bit80 active;08 always invokes handler;04 bypasses parity gates;40 skips velocity;20 contributes sprite attribute. Global slot3 is selected effect. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent.,STATIC_REVIEWED_LOCAL_ROLE,09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F
+PlayerProgressionFlagBytes,ram,,0x06BE,,,,internal RAM; state-specific role,2,Copied into snapshot06CB/06CC and restored. Full bit assignment and pickup unlock path remain unreviewed.,STATIC_REVIEWED_LOCAL_ROLE,07:AEC6;07:AEF7
+LiveProgressionSnapshot,ram,,0x06C2,,,,internal RAM; state-specific role,11,"Level1, HP1, MP3, EXP4, flags2; copied to06CD..06D7 at run checkpoint. Restored saved HP is then overwritten by full level capacity.",STATIC_REVIEWED_LOCAL_ROLE,07:AEC6;07:AEF7;0E:D37F
 SavedRunBlock,ram,,0x06CD,,,,internal RAM; state-specific role,11,Saved copy of 06C2..06CC; restored during restart/continue.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
