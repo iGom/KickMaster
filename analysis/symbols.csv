@@ -1,6 +1,61 @@
 name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
 Bank07ServiceJumpTable,code,07,0xA078,0x0078,0x00E078,0x00E088,MMC3 PRG mode 0; R7=07 at A000,99,33 absolute JMP entry points in R7 bank 07; callee gameplay semantics mostly unresolved.,STATIC_REVIEWED,B43
+DispatchSceneEven,code,07,0xA0DB,0x00DB,0x00E0DB,0x00E0EB,MMC3 PRG mode 0; R7=07 at A000,23,Require DB bits 7 and 0; select one of four targets with (DB>>1)&3.,STATIC_REVIEWED,C01
+SceneEvenTargets,data,07,0xA0F2,0x00F2,0x00E0F2,0x00E102,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes; down/up/right/left order follows DB direction selector.,STATIC_REVIEWED,C02
+DispatchSceneOdd,code,07,0xA0FA,0x00FA,0x00E0FA,0x00E10A,MMC3 PRG mode 0; R7=07 at A000,23,"Same DB gate and selector as even phase, different four-target table.",STATIC_REVIEWED,C03
+SceneOddTargets,data,07,0xA111,0x0111,0x00E111,0x00E121,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for odd phase.,STATIC_REVIEWED,C04
+DispatchSceneExtra,code,07,0xA119,0x0119,0x00E119,0x00E129,MMC3 PRG mode 0; R7=07 at A000,23,Third DB-gated four-target dispatch used in even phases.,STATIC_REVIEWED,C05
+SceneExtraTargets,data,07,0xA130,0x0130,0x00E130,0x00E140,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for extra even-phase work.,STATIC_REVIEWED,C06
+SceneDispatchReturn,code,07,0xA138,0x0138,0x00E138,0x00E148,MMC3 PRG mode 0; R7=07 at A000,1,Shared RTS when DB gate is closed.,STATIC_REVIEWED,C07
+InitializeSceneCoordinates,code,07,0xA4E9,0x04E9,0x00E4E9,0x00E4F9,MMC3 PRG mode 0; R7=07 at A000,78,"Mask scene index to 7 bits; initialize camera and player coordinates, scroll shadows and IRQ profile; fall through configuration loader.",STATIC_REVIEWED,C08
+LoadSceneConfiguration,code,07,0xA537,0x0537,0x00E537,0x00E547,MMC3 PRG mode 0; R7=07 at A000,116,"Read 32-entry parallel arrays; set 03B9 and map R6, five pointers, DB flags, extents, palette selector and palette profile.",STATIC_REVIEWED,C09
+InitializeSpecialLayout,code,07,0xA5AB,0x05AB,0x00E5AB,0x00E5BB,MMC3 PRG mode 0; R7=07 at A000,147,04E2 indexes 17-entry layout arrays; bank byte bit7 initializes camera X page then is cleared for R6; downstream A990/A6FE unreviewed.,STATIC_REVIEWED,C10
+InitializeSevenScrollShadows,code,07,0xA916,0x0916,0x00E916,0x00E926,MMC3 PRG mode 0; R7=07 at A000,31,"Populate seven PPUCTRL/X/Y shadow entries from camera coordinates, preserving input X.",STATIC_REVIEWED,C11
+LoadScenePaletteProfile,code,07,0xA935,0x0935,0x00E935,0x00E945,MMC3 PRG mode 0; R7=07 at A000,91,"Read 27-byte pointed profile into palette staging, eight bytes at 017D, 06B8 and CHR 44/45; install fixed sprite colors.",STATIC_REVIEWED,C12
+MultiplyScreenCountBy240,code,07,0xAAB6,0x0AB6,0x00EAB6,0x00EAC6,MMC3 PRG mode 0; R7=07 at A000,34,Produce 16-bit 22/23 = input * F0 for input 00..80; 81..FF yield zero due to signed DEX gate; preserve X.,STATIC_REVIEWED,C13
+DispatchHudMaintenance,code,07,0xB022,0x1022,0x00F022,0x00F032,MMC3 PRG mode 0; R7=07 at A000,29,"Negative A1 returns; otherwise increment, wrap exact 06 to 01, then dispatch six-entry table; not a general out-of-range clamp.",STATIC_REVIEWED,C14
+HudMaintenanceTargets,data,07,0xB03F,0x103F,0x00F03F,0x00F04F,MMC3 PRG mode 0; R7=07 at A000,12,"Six split low/high pointers; valid normal rotation is indexes 01..05, index00 is RTS.",STATIC_REVIEWED,C15
+BuildPlayerHpBar,code,07,0xB04B,0x104B,0x00F04B,0x00F05B,MMC3 PRG mode 0; R7=07 at A000,101,06BA decreases immediately to 06B9 or rises by one; encode full/partial/empty cells using capacity 06BB>>4 into eleven bytes at 0163.,STATIC_REVIEWED,C16
+SceneInitialCameraXPages,data,07,0xB1E2,0x11E2,0x00F1E2,0x00F1F2,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera X high bytes; low byte is zero.,STATIC_REVIEWED,C18
+SceneInitialCameraYScreens,data,07,0xB202,0x1202,0x00F202,0x00F212,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera Y screen counts multiplied by F0.,STATIC_REVIEWED,C19
+ScenePlayerXOffsets,data,07,0xB222,0x1222,0x00F222,0x00F232,MMC3 PRG mode 0; R7=07 at A000,32,32 player X offsets added to initial camera X.,STATIC_REVIEWED,C20
+ScenePlayerYOffsets,data,07,0xB242,0x1242,0x00F242,0x00F252,MMC3 PRG mode 0; R7=07 at A000,32,32 player Y offsets added to initial camera Y; low result decremented once.,STATIC_REVIEWED,C21
+SceneBank8000Table,data,07,0xB262,0x1262,0x00F262,0x00F272,MMC3 PRG mode 0; R7=07 at A000,32,32 PRG bank bytes for 03B9 and MMC3 R6.,STATIC_REVIEWED,C22
+ScenePointerB9Table,data,07,0xB282,0x1282,0x00F282,0x00F292,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into B9/BA; target meaning not inferred from address alone.,STATIC_REVIEWED,C23
+ScenePointerBBTable,data,07,0xB2C2,0x12C2,0x00F2C2,0x00F2D2,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BB/BC.,STATIC_REVIEWED,C24
+ScenePointerBFTable,data,07,0xB302,0x1302,0x00F302,0x00F312,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BF/C0.,STATIC_REVIEWED,C25
+ScenePointerBDTable,data,07,0xB342,0x1342,0x00F342,0x00F352,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BD/BE.,STATIC_REVIEWED,C26
+ScenePointerC1Table,data,07,0xB382,0x1382,0x00F382,0x00F392,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into C1/C2; used by collision path DA3D.,STATIC_REVIEWED,C27
+ScenePaletteCycleTable,data,07,0xB3C2,0x13C2,0x00F3C2,0x00F3D2,MMC3 PRG mode 0; R7=07 at A000,32,32 bytes loaded into 03BA; downstream palette-cycle encoding not fully reviewed.,STATIC_REVIEWED,C28
+SceneDirectionFlagsTable,data,07,0xB3E2,0x13E2,0x00F3E2,0x00F3F2,MMC3 PRG mode 0; R7=07 at A000,32,"32 DB flag bytes; low direction codes 01 down,03 up,05 right,07 left; bit7 is runtime scroll activity.",STATIC_REVIEWED,C29
+SceneHorizontalBoundPages,data,07,0xB402,0x1402,0x00F402,0x00F412,MMC3 PRG mode 0; R7=07 at A000,32,32 bytes loaded into AF; downstream movement compares camera X page.,STATIC_REVIEWED,C30
+SceneVerticalBoundScreens,data,07,0xB422,0x1422,0x00F422,0x00F432,MMC3 PRG mode 0; R7=07 at A000,32,32 screen counts multiplied by F0 into AD/AE.,STATIC_REVIEWED,C31
+ScenePaletteProfilePointers,data,07,0xB442,0x1442,0x00F442,0x00F452,MMC3 PRG mode 0; R7=07 at A000,64,"32 pointers to 27-byte palette/CHR profiles; some targets reside in R7 bank07, others in R6-selected bank.",STATIC_REVIEWED,C32
+SpecialLayoutArrays,data,07,0xB482,0x1482,0x00F482,0x00F492,MMC3 PRG mode 0; R7=07 at A000,187,"17-entry CHR0, CHR1 and bank/page arrays followed by four arrays of 17 little-endian pointers.",STATIC_REVIEWED,C17
 Bank08ServiceJumpTable,code,08,0xA000,0x0000,0x010000,0x010010,MMC3 PRG mode 0; R7=08 at A000,18,Six absolute JMP entry points in R7 bank 08.,STATIC_REVIEWED,B44
+PlayerStageAdvanceTail,code,08,0xAB16,0x0B16,0x010B16,0x010B26,MMC3 PRG mode 0; R7=08 at A000,3,Tail through C79D to scene advance D1AA when F8 bit20 is set.,STATIC_REVIEWED,C33
+UpdateAndDrawPlayer,code,08,0xAB19,0x0B19,0x010B19,0x010B29,MMC3 PRG mode 0; R7=08 at A000,172,"Clear transient D3 bit7, honor advance flag, retain only CE bit0, dispatch player state, compute camera-relative coordinates, service hurt display and draw metasprite.",STATIC_REVIEWED,C34
+DispatchPlayerState,code,08,0xACF7,0x0CF7,0x010CF7,0x010D07,MMC3 PRG mode 0; R7=08 at A000,66,A selects normal/alternate table family; CD>>1 selects CHR and CD&FE selects metasprite pointer plus handler; tail JMP through 2C/2D.,STATIC_REVIEWED,C35
+SetPlayerStateKeepFacing,code,08,0xAD39,0x0D39,0x010D39,0x010D49,MMC3 PRG mode 0; R7=08 at A000,11,"Replace CD bits7..1 with A bits7..1, preserve old CD bit0 and clear CF.",STATIC_REVIEWED,C36
+SetPlayerMotionAndScrollFlags,code,08,0xADCF,0x0DCF,0x010DCF,0x010DDF,MMC3 PRG mode 0; R7=08 at A000,19,ADCF sets CE bit40; ADD6 sets DB bit80; ADDC clears DB bit80.,STATIC_REVIEWED,C37
+UpdateFacingFromInputHistory,code,08,0xADE2,0x0DE2,0x010DE2,0x010DF2,MMC3 PRG mode 0; R7=08 at A000,27,"OR current and two previous held inputs; Right takes precedence and clears CD bit0, otherwise Left sets it.",STATIC_REVIEWED,C38
+EnterPlayerFallState,code,08,0xB007,0x1007,0x011007,0x011017,MMC3 PRG mode 0; R7=08 at A000,15,"Set D3 bit80, CD=C4/C5 preserving facing, CF=0 and CE=0.",STATIC_REVIEWED,C39
+InitializePlayerStateBlock,code,08,0xB02A,0x102A,0x01102A,0x01103A,MMC3 PRG mode 0; R7=08 at A000,24,"Copy ten bytes to C9..D2, then clear active flags 057C..057C+0013 inclusive under valid small slot-count precondition.",STATIC_REVIEWED,C40
+InitialPlayerStateBytes,data,08,0xB042,0x1042,0x011042,0x011052,MMC3 PRG mode 0; R7=08 at A000,10,C9..D2 initial bytes 80 00 80 00 00 00 00 00 00 00.,STATIC_REVIEWED,C41
+DispatchAutomaticCameraStep,code,08,0xB04C,0x104C,0x01104C,0x01105C,MMC3 PRG mode 0; R7=08 at A000,31,Require DB bits08 and01; set DB bit80 and dispatch direction (DB>>1)&3.,STATIC_REVIEWED,C42
+AutomaticCameraStepTargets,data,08,0xB06B,0x106B,0x01106B,0x01107B,MMC3 PRG mode 0; R7=08 at A000,8,"Four split low/high pointers: B073,B07A,B086,B08D.",STATIC_REVIEWED,C43
+StepCameraOnePixel,code,08,0xB073,0x1073,0x011073,0x011083,MMC3 PRG mode 0; R7=08 at A000,38,"Four entries add/subtract one to 16-bit camera Y or X, wrapping naturally.",STATIC_REVIEWED,C44
+PlayerTableFamilyPointers,data,08,0xB099,0x1099,0x011099,0x0110A9,MMC3 PRG mode 0; R7=08 at A000,12,"Three two-entry pointer arrays for CHR, metasprites and state handlers; ACF7 input A=0/1 selects family.",STATIC_REVIEWED,C45
+PlayerNormalChrTable,data,08,0xB0A5,0x10A5,0x0110A5,0x0110B5,MMC3 PRG mode 0; R7=08 at A000,111,"111 CHR bank bytes indexed by CD>>1; table contents identified, not every corresponding state behavior.",STATIC_REVIEWED,C46
+PlayerNormalSpritePointers,data,08,0xB114,0x1114,0x011114,0x011124,MMC3 PRG mode 0; R7=08 at A000,222,111 little-endian metasprite pointers indexed by even CD.,STATIC_REVIEWED,C47
+PlayerNormalHandlerPointers,data,08,0xB1F2,0x11F2,0x0111F2,0x011202,MMC3 PRG mode 0; R7=08 at A000,222,111 little-endian handler pointers covering CD pairs 00/01 through DC/DD; many handlers remain unreviewed.,STATIC_REVIEWED,C48
+AdvancePlayerDeathAnimation,code,08,0xBB2B,0x1B2B,0x011B2B,0x011B3B,MMC3 PRG mode 0; R7=08 at A000,36,Set D3 bit80; every exact 0F CF updates advance CD by2; after C2/C3 select CA/CB and reset CF.,STATIC_REVIEWED,C49
+UpdatePlayerFallExit,code,08,0xBB4F,0x1B4F,0x011B4F,0x011B5F,MMC3 PRG mode 0; R7=08 at A000,31,Set D3 bit80; add4 to player Y; set CE bit80 if low-byte camera-relative Y >=F0.,STATIC_REVIEWED,C50
+UpdatePlayerHurtReaction,code,08,0xBB6E,0x1B6E,0x011B6E,0x011B7E,MMC3 PRG mode 0; R7=08 at A000,43,"Set D3 bit80; call unreviewed BCEF; while D2>=30 request horizontal movement by2 using CD bit08, otherwise clear D3 bits30 and reset CD to facing.",STATIC_REVIEWED,C51
+FinishPlayerDeathDelay,code,08,0xBB99,0x1B99,0x011B99,0x011BA9,MMC3 PRG mode 0; R7=08 at A000,20,Set D3 bit80; increment CF; exact CF=0F sets CE bit80 without resetting CF.,STATIC_REVIEWED,C52
+PlayerAlternateChrTable,data,08,0xBDF3,0x1DF3,0x011DF3,0x011E03,MMC3 PRG mode 0; R7=08 at A000,5,Five CHR bytes for alternate family; precise gameplay activation not assigned.,STATIC_REVIEWED,C53
+PlayerAlternateSpritePointers,data,08,0xBDF8,0x1DF8,0x011DF8,0x011E08,MMC3 PRG mode 0; R7=08 at A000,10,Five little-endian metasprite pointers for alternate family.,STATIC_REVIEWED,C54
+PlayerAlternateHandlerPointers,data,08,0xBE02,0x1E02,0x011E02,0x011E12,MMC3 PRG mode 0; R7=08 at A000,10,Five little-endian handler pointers for alternate family.,STATIC_REVIEWED,C55
 Bank09ServiceJumpTable,code,09,0xA000,0x0000,0x012000,0x012010,MMC3 PRG mode 0; R7=09 at A000,21,Seven absolute JMP entry points in R7 bank 09; A009 reaches front-end sequence A499.,STATIC_REVIEWED,B45
 FrontEndSequence,code,09,0xA499,0x0499,0x012499,0x0124A9,MMC3 PRG mode 0; R7=09 at A000,188,"Initialize display and animation, wait on split index 67, then poll two-choice input; preserve outcome carry across cleanup.",STATIC_REVIEWED,B46
 FrontEndObjectXPair,data,09,0xA555,0x0555,0x012555,0x012565,MMC3 PRG mode 0; R7=09 at A000,2,Two X bytes 1C/E4 copied to 051B/051C by A4B9.,STATIC_REVIEWED,B47
@@ -33,6 +88,7 @@ RestoreTripletAndReenter,code,0E,0xD225,0x1225,0x01D225,0x01D235,MMC3 PRG mode 0
 NextSceneIndexTable,data,0E,0xD23F,0x123F,0x01D23F,0x01D24F,MMC3 PRG mode 0,32,32-byte successor table; index 1B contains FF end-of-cycle marker.,STATIC_REVIEWED,B19
 RestartSceneIndexTable,data,0E,0xD25F,0x125F,0x01D25F,0x01D26F,MMC3 PRG mode 0,32,32-byte table used by D178 and D363; physical-stage correspondence unresolved.,STATIC_REVIEWED,B20
 ContinueSceneIndexTable,data,0E,0xD27F,0x127F,0x01D27F,0x01D28F,MMC3 PRG mode 0,32,32-byte table used by D19A; physical-stage correspondence unresolved.,STATIC_REVIEWED,B21
+InitializeSceneBankedServices,code,0E,0xD29F,0x129F,0x01D29F,0x01D2AF,MMC3 PRG mode 0,88,"Map scene bank and R7=08 for player initialization, then R7=07 for scene setup; preserve unresolved callee boundaries.",STATIC_REVIEWED,C56
 ResetRunFields,code,0E,0xD2F7,0x12F7,0x01D2F7,0x01D307,MMC3 PRG mode 0,108,Reset selected fields; if 030E is zero set it to 03 and initialize 0306..030B; set digit-like buffers and call F65F.,STATIC_REVIEWED,B22
 SaveElevenByteBlock,code,0E,0xD37F,0x137F,0x01D37F,0x01D38F,MMC3 PRG mode 0,12,"Copy 06C2..06CC to 06CD..06D7, high index first.",STATIC_REVIEWED,B23
 RestoreElevenByteBlock,code,0E,0xD38B,0x138B,0x01D38B,0x01D39B,MMC3 PRG mode 0,11,"Copy 06CD..06D7 to 06C2..06CC, high index first; fall through D396.",STATIC_REVIEWED,B24
@@ -56,6 +112,8 @@ WaitNmiAndServiceAudio,code,0E,0xD90C,0x190C,0x01D90C,0x01D91C,MMC3 PRG mode 0,6
 UpdateControllerState,code,0E,0xD949,0x1949,0x01D949,0x01D959,MMC3 PRG mode 0,46,"Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.",STATIC_REVIEWED,B34
 ReadControllerSerial,code,0E,0xD977,0x1977,0x01D977,0x01D987,MMC3 PRG mode 0,84,"Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.",STATIC_REVIEWED,B35
 MixTimingStateWithX,code,0E,0xD9CB,0x19CB,0x01D9CB,0x01D9DB,MMC3 PRG mode 0,12,97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.,STATIC_REVIEWED,B36
+ClassifyPlayerTerrainSample,code,0E,0xDB02,0x1B02,0x01DB02,0x01DB12,MMC3 PRG mode 0,72,Choose sample helper with DB bit04; priority bits40/80 return solid/empty; bit10 may invoke damage (9A+04) except active effect08; accumulate terrain bits0C into CE.,STATIC_REVIEWED,C57
+ApplyPlayerDamage,code,0E,0xDDD9,0x1DD9,0x01DDD9,0x01DDE9,MMC3 PRG mode 0,94,Ignore while D2 or01A4 nonzero; subtract raw A from06B9. Borrow starts BA/BB death animation; equality zero takes hurt path. Preserve input carry as reaction direction.,STATIC_REVIEWED,C58
 ServicePaletteEffect,code,0F,0xE2A3,0x02A3,0x01E2A3,0x01E2B3,last bank fixed at E000,63,Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.,STATIC_REVIEWED,B37
 AdjustScrollOnOddEffect,code,0F,0xE2E2,0x02E2,0x01E2E2,0x01E2F2,last bank fixed at E000,23,If 03D6 is odd add 04 to 58; add 10 again when the wrapped first sum is at least F0.,STATIC_REVIEWED,B38
 ResetEntry,code,0F,0xF010,0x1010,0x01F010,0x01F020,last bank fixed at E000,171,"Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.",STATIC_REVIEWED,A12
@@ -72,11 +130,20 @@ WaitCountedUpdates,code,0F,0xF6CC,0x16CC,0x01F6CC,0x01F6DC,last bank fixed at E0
 WaitCountedOrAStart,code,0F,0xF6D3,0x16D3,0x01F6D3,0x01F6E3,last bank fixed at E000,13,Counted wait with early exit on newly pressed A or Start; returns masked input in A.,STATIC_REVIEWED,B40
 WaitForAStart,code,0F,0xF6E0,0x16E0,0x01F6E0,0x01F6F0,last bank fixed at E000,10,Repeat D90C until newly pressed A or Start.,STATIC_REVIEWED,B41
 EnterInitialRunContext,code,0F,0xF6EA,0x16EA,0x01F6EA,0x01F6FA,last bank fixed at E000,3,Tail jump to fixed CFA2.,STATIC_REVIEWED,B42
+DrawMetaspriteNormal,code,0F,0xF6ED,0x16ED,0x01F6ED,0x01F6FD,last bank fixed at E000,74,"Draw FF-terminated four-byte sprite records from B6/B7; relative Y from22, X from24/25, attribute OR2C; hide horizontally offscreen sprites and cap valid OAM count64.",STATIC_REVIEWED,C59
+DrawMetaspriteFlipped,code,0F,0xF737,0x1737,0x01F737,0x01F747,last bank fixed at E000,84,"As normal renderer, XOR attribute40 and mirror signed X offset using -(offset+8).",STATIC_REVIEWED,C60
+NormalizeYTo240LinePages,code,0F,0xF78B,0x178B,0x01F78B,0x01F79B,last bank fixed at E000,22,"For input A high 00..0F and Y low, return A=remainder and Y=quotient of the 16-bit position divided by F0.",STATIC_REVIEWED,C61
+YPageCorrectionTable,data,0F,0xF7A1,0x17A1,0x01F7A1,0x01F7B1,last bank fixed at E000,16,"16 bytes 00,10,...F0 used by Y-coordinate normalization.",STATIC_REVIEWED,C62
 IrqEntry,code,0F,0xF7B1,0x17B1,0x01F7B1,0x01F7C1,last bank fixed at E000,17,"Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.",STATIC_REVIEWED,A22
 IrqSplitPpuAddress,code,0F,0xF7C2,0x17C2,0x01F7C2,0x01F7D2,last bank fixed at E000,65,Timed PPU address/scroll writes indexed by 67; choose terminal split at F0 sentinel; share IRQ return.,STATIC_REVIEWED,A23
 IrqSplitScroll,code,0F,0xF803,0x1803,0x01F803,0x01F813,last bank fixed at E000,49,Timed indexed scroll/control writes; select F83D on F0 sentinel.,STATIC_REVIEWED,A24
 IrqRestoreRegisters,code,0F,0xF834,0x1834,0x01F834,0x01F844,last bank fixed at E000,9,"Increment A6, restore Y/X/A from E4/E3/E2, RTI.",STATIC_REVIEWED,A25
 IrqSplitSwitchChr01,code,0F,0xF83D,0x183D,0x01F83D,0x01F84D,last bank fixed at E000,69,"Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.",STATIC_REVIEWED,A26
+LoadSceneIrqProfile,code,0F,0xFAD3,0x1AD3,0x01FAD3,0x01FAE3,last bank fixed at E000,75,"Select profile with FE6C[9A], copy latch/index pairs until F0, then NMI selector and IRQ source chosen by selector and pair count.",STATIC_REVIEWED,C63
+PlayerHpCapacityByIndex,data,0F,0xFDE0,0x1DE0,0x01FDE0,0x01FDF0,last bank fixed at E000,8,"Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.",STATIC_REVIEWED,C64
+SceneIrqProfileIndex,data,0F,0xFE6C,0x1E6C,0x01FE6C,0x01FE7C,last bank fixed at E000,32,32 selectors for six IRQ profiles.,STATIC_REVIEWED,C65
+SceneIrqProfilePointers,data,0F,0xFE8C,0x1E8C,0x01FE8C,0x01FE9C,last bank fixed at E000,12,Six little-endian pointers to F0-terminated latch/index streams.,STATIC_REVIEWED,C66
+SceneIrqProfiles,data,0F,0xFE98,0x1E98,0x01FE98,0x01FEA8,last bank fixed at E000,70,"Six streams; final F0 byte is a terminal latch followed by NMI selector, not an ordinary latch/index pair.",STATIC_REVIEWED,C67
 InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
 ButtonsPressed,ram,,0x001F,,,,internal RAM; state-specific role,1,Newly pressed A/B/Select/Start/Up/Down/Left/Right bits; scratch during serial poll.,STATIC_REVIEWED_LOCAL_ROLE,B34;B35
 ButtonsHeld,ram,,0x0020,,,,internal RAM; state-specific role,1,Held input after AND of two polls; temporarily stores first sample.,STATIC_REVIEWED_LOCAL_ROLE,B34
@@ -101,10 +168,28 @@ OamUsedSpriteIndex,ram,,0x0099,,,,internal RAM; state-specific role,1,Index used
 SceneIndex,ram,,0x009A,,,,internal RAM; state-specific role,1,Indexes 32-entry next/restart/continue and other setup tables; stage-name mapping unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B04;B16;B14;B15
 PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
 NmiPpuTaskCommand,ram,,0x00A0,,,,internal RAM; state-specific role,1,Command masked with 1E for pointer-table index; consumed by NMI,STATIC_REVIEWED_LOCAL_ROLE,A14
-RunUpdateFlags,ram,,0x00A1,,,,internal RAM; state-specific role,1,"Written 41 during setup, 00 during overlay and 01 on return; full bit semantics unresolved.",STATIC_REVIEWED_LOCAL_ROLE,B05;B27
+HudMaintenanceAndTransferState,ram,,0x00A1,,,,internal RAM; state-specific role,1,B022 skips negative values; valid low phase increments and exact06 wraps to01. Bits40/80 also participate in transfer setup; full global contract unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C14;C09;B05
 MapperInterruptEpoch,ram,,0x00A6,,,,internal RAM; state-specific role,1,Incremented by NMI/IRQ; cleared and compared by mapper writer,STATIC_REVIEWED_LOCAL_ROLE,A08;A13;A25;A26
-RunTerminalStatus,ram,,0x00CE,,,,internal RAM; state-specific role,1,Bit 7 selects counter-decrement/restart path in control gate; producer not traced.,STATIC_REVIEWED_LOCAL_ROLE,B26
-RunControlAndTripletIndex,ram,,0x00D3,,,,internal RAM; state-specific role,1,Bit 7 blocks Start overlay; low three bits index FDE0 on restore; progression meaning not assigned here.,STATIC_REVIEWED_LOCAL_ROLE,B26;B18;B22
+CameraWorldX,ram,,0x00A7,,,,internal RAM; state-specific role,2,Little-endian camera horizontal position; low byte copied into horizontal scroll shadows.,STATIC_REVIEWED_LOCAL_ROLE,C08;C11;C44
+CameraWorldY,ram,,0x00A9,,,,internal RAM; state-specific role,2,Little-endian camera vertical position in linear pixels; normalized to 240-line pages for PPU shadows.,STATIC_REVIEWED_LOCAL_ROLE,C08;C61;C44
+CameraVerticalBound,ram,,0x00AD,,,,internal RAM; state-specific role,2,Scene count at B422 multiplied by F0; compared in the downstream vertical movement path.,STATIC_REVIEWED_LOCAL_ROLE,C09
+CameraHorizontalBoundPage,ram,,0x00AF,,,,internal RAM; state-specific role,1,Scene byte from B402; compared with camera X high byte by downstream movement code.,STATIC_REVIEWED_LOCAL_ROLE,C09
+MetaspritePointer,ram,,0x00B6,,,,internal RAM; state-specific role,2,Pointer chosen by state table and consumed by both normal and flipped sprite renderers.,STATIC_REVIEWED_LOCAL_ROLE,C35;C59;C60
+ScenePointerB9,ram,,0x00B9,,,,internal RAM; state-specific role,2,Scene pointer from B282; target can reside in R6 data bank or resident R7 bank07. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBB,ram,,0x00BB,,,,internal RAM; state-specific role,2,Scene pointer from B2C2. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBD,ram,,0x00BD,,,,internal RAM; state-specific role,2,Scene pointer from B342. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBF,ram,,0x00BF,,,,internal RAM; state-specific role,2,Scene pointer from B302. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerC1,ram,,0x00C1,,,,internal RAM; state-specific role,2,Scene pointer from B382; downstream terrain query uses it. Full structure not yet reconstructed.,STATIC_REVIEWED_LOCAL_ROLE,C09
+PlayerDispatchTablePointers,ram,,0x00C3,,,,internal RAM; state-specific role,6,C3/C4 CHR table; C5/C6 handler table; C7/C8 metasprite table. ACF7 chooses one of two families.,STATIC_REVIEWED_LOCAL_ROLE,C35
+PlayerWorldY,ram,,0x00C9,,,,internal RAM; state-specific role,2,"Player vertical position, initial offset from camera Y. C9 low-byte relative difference drives fall thresholds.",STATIC_REVIEWED_LOCAL_ROLE,C08;C34;C50
+PlayerWorldX,ram,,0x00CB,,,,internal RAM; state-specific role,2,Player horizontal position; CB/CC minus camera X becomes sprite horizontal origin 24/25.,STATIC_REVIEWED_LOCAL_ROLE,C08;C34
+PlayerStateAndFacing,ram,,0x00CD,,,,internal RAM; state-specific role,1,Even part selects one of111 normal state pairs; bit0 selects flipped sprite rendering. Alternate family has5 pairs.,STATIC_REVIEWED_LOCAL_ROLE,C35;C36;C38
+PlayerMotionFlags,ram,,0x00CE,,,,internal RAM; state-specific role,1,"AB19 retains only bit01 at update entry, selecting alternate table family. Bit80 signals terminal exit; other flags include terrain0C and motion40. Not a single state ID.",STATIC_REVIEWED_LOCAL_ROLE,C34;C50;C52;C57
+PlayerStateTimer,ram,,0x00CF,,,,internal RAM; state-specific role,1,"Per-state counter; death states advance on exact0F and reset, final death delay sets CE80 on exact0F.",STATIC_REVIEWED_LOCAL_ROLE,C36;C49;C52
+PlayerDamageCooldown,ram,,0x00D2,,,,internal RAM; state-specific role,1,Nonzero blocks DDD9 damage; successful nonfatal subtraction sets3C; player update decrements nonzero value and changes sprite attributes.,STATIC_REVIEWED_LOCAL_ROLE,C58;C34;C51
+PlayerCapacityIndexAndStatus,ram,,0x00D3,,,,internal RAM; state-specific role,1,"Low3 bits index capacity restore table; bit20 selects hurt state, bit10 reaction direction, bit80 transiently blocks Start and is reasserted by hurt/death handlers. Level-up producer not yet traced.",STATIC_REVIEWED_LOCAL_ROLE,C58;C34;B18
+PreviousPlayerPositionSnapshot,ram,,0x00D4,,,,internal RAM; state-specific role,4,Copy of C9..CC after player update unless06BD=0B and0593 nonzero.,STATIC_REVIEWED_LOCAL_ROLE,C34
+SceneDirectionAndScrollFlags,ram,,0x00DB,,,,internal RAM; state-specific role,1,"Loaded from scene table; bits2..1 select down/up/right/left, bit0 enables scroll dispatch, bit08 automatic step, bit80 runtime scroll work gate.",STATIC_REVIEWED_LOCAL_ROLE,C09;C01;C42
 IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
 IrqSavedA,ram,,0x00E2,,,,internal RAM; state-specific role,1,IRQ A save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
 IrqSavedX,ram,,0x00E3,,,,internal RAM; state-specific role,1,IRQ X save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
@@ -116,19 +201,25 @@ NmiSavedY,ram,,0x00E9,,,,internal RAM; state-specific role,1,NMI Y save slot,STA
 ResetRetainedMarker,ram,,0x0100,,,,internal RAM; state-specific role,1,Value 68 suppresses retained default copy; not cleared by RESET,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
 PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
 PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
+HpBarTileBuffer,ram,,0x0163,,,,internal RAM; state-specific role,11,"B04B emits up to11 tiles:4F full,48..4E partial,47 empty,3F outside capacity; overlaps page01 stack region.",STATIC_REVIEWED_LOCAL_ROLE,C16
 RunEntryStackPointer,ram,,0x016F,,,,internal RAM; state-specific role,1,Saved before run setup and restored at CFE8 to abandon intermediate call frames.,STATIC_REVIEWED_LOCAL_ROLE,B04;B05
 TransferSavedStackPointer,ram,,0x0170,,,,internal RAM; state-specific role,1,Real SP saved during PPU stack-based transfers,STATIC_REVIEWED_LOCAL_ROLE,A16;A18
+PlayerDamageSuppression,ram,,0x01A4,,,,internal RAM; state-specific role,1,Nonzero suppresses DDD9 damage alongside D2. Producer and gameplay effect identity unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C58
 OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
 ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
 ProgressionCycleIndex,ram,,0x030C,,,,internal RAM; state-specific role,1,Initialized from 2D&03; incremented on FF route unless already 03; semantic difficulty effects unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B04;B16
-RemainingAttemptsCandidate,ram,,0x030E,,,,internal RAM; state-specific role,1,Set to 03 if zero during reset; decremented on negative CE; zero selects two-choice menu. Lives interpretation awaits producer/gameplay validation.,STATIC_REVIEWED_LOCAL_ROLE,B22;B26
-FrameBank8000,ram,,0x03B9,,,,internal RAM; state-specific role,1,Bank number mapped through R6 by frame wrappers; producer not yet traced.,STATIC_REVIEWED_LOCAL_ROLE,B08;B10;B11
+RemainingAttemptsCandidate,ram,,0x030E,,,,internal RAM; state-specific role,1,Set03 at new run; decremented after verified player death/fall terminal flag; zero enters continue/reset menu. Exact HUD/life terminology still awaits rendering check.,STATIC_REVIEWED_LOCAL_ROLE,B22;B26;C52
+SceneDataBank8000,ram,,0x03B9,,,,internal RAM; state-specific role,1,"Normal scene bank from07:B262[9A], special layout bank from07:B4A4[04E2]&7F; mapped through R6 by frame wrappers.",STATIC_REVIEWED_LOCAL_ROLE,C09;C10;B08
 PaletteEffectCountdown,ram,,0x03D5,,,,internal RAM; state-specific role,1,Nonzero value is decremented in E2A3 and may select color 30 with D9 bit 10.,STATIC_REVIEWED_LOCAL_ROLE,B37
 ScrollEffectPhase,ram,,0x03D6,,,,internal RAM; state-specific role,1,Odd values trigger four-pixel scroll adjustment; cleared on loop setup and overlay return.,STATIC_REVIEWED_LOCAL_ROLE,B38;B05;B27
+SpecialLayoutIndex,ram,,0x04E2,,,,internal RAM; state-specific role,1,Indexes17-entry special-layout setup tables; scene entry later writesFF. Full state contract unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C10;C56
 FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
 FarCallTargetBankA000,ram,,0x04EC,,,,internal RAM; state-specific role,1,MMC3 R7 bank value for far call,STATIC_REVIEWED_LOCAL_ROLE,A20
 FarCallSavedBankA000,ram,,0x04ED,,,,internal RAM; state-specific role,1,Bank identity read from BFFF,STATIC_REVIEWED_LOCAL_ROLE,A20
 FarCallSavedBank8000,ram,,0x04EE,,,,internal RAM; state-specific role,1,Bank identity read from 9FFF,STATIC_REVIEWED_LOCAL_ROLE,A20
+PlayerHpRaw,ram,,0x06B9,,,,internal RAM; state-specific role,1,Current raw HP consumed by DDD9. Damage greater than HP selects death; exact equality produces zero and hurt reaction.,STATIC_REVIEWED_LOCAL_ROLE,C58;C16;B18
+PlayerHpDisplayedRaw,ram,,0x06BA,,,,internal RAM; state-specific role,1,"Displayed HP copy: immediately follows decreases, increments by one per HP-bar maintenance invocation on increases.",STATIC_REVIEWED_LOCAL_ROLE,C16;B18
+PlayerHpBarCapacity,ram,,0x06BB,,,,internal RAM; state-specific role,1,Capacity of bar in raw units; upper nibble gives cells. Restored table40..B0 corresponds4..11 cells; all healing clamps not yet reviewed.,STATIC_REVIEWED_LOCAL_ROLE,C16;C64;B18
 LiveSavedBlock,ram,,0x06C2,,,,internal RAM; state-specific role,11,Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
 SavedRunBlock,ram,,0x06CD,,,,internal RAM; state-specific role,11,Saved copy of 06C2..06CC; restored during restart/continue.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
 PaletteUploadPostFlag,ram,,0x06EE,,,,internal RAM; state-specific role,1,"If initially nonzero, palette upload replaces with FF; wider meaning unresolved",STATIC_REVIEWED_LOCAL_ROLE,A18

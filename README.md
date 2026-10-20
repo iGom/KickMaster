@@ -5,12 +5,14 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/MAIN_LOOP_INPUT_STATE.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/PLAYER_SCENE_FOUNDATIONS.md`.
 
 Current snapshot: Stage 00 complete; Stage 00A reference baseline established (map images blocked);
-Stages 01A/01B bounded architecture work complete. Comprehensive reverse engineering is **not** complete.
-68 reviewed code ranges, 11 data regions, 56 RAM entries; 57 earlier CPU cases plus 18 new groups / 2295 vectors.
-The input-dependent ca65 scaffold matches every original byte; 3444 PRG bytes have reviewed local semantics.
+Stages 01A/01B architecture and 02A player/scene foundation complete as bounded milestones.
+Comprehensive reverse engineering is **not** complete. 101 reviewed code ranges, 45 data ranges, 80 RAM entries.
+Stage02A adds 18 CPU groups/10137 vectors; earlier 57 cases and 18 groups/2295 vectors remain preserved.
+The input-dependent ca65 scaffold matches every original byte; 6829 PRG bytes have reviewed local semantics.
+New tables cover 32 scene configurations, 192 bank-qualified pointers and 111 normal plus 5 alternate state pairs.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),
@@ -25,7 +27,7 @@ Address intervals are half-open unless a table explicitly states inclusive limit
 ```sh
 python3 scripts/baseline.py "/path/to/KickMaster (USA)(1).nes"
 python3 -m unittest discover -s tests -v
-python3 scripts/cpu_stage01b.py "/path/to/KickMaster (USA)(1).nes"
+python3 scripts/cpu_stage02a.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/build.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/checkpoint.py --verify /path/to/checkpoint.zip
 ```

@@ -368,7 +368,126 @@ WaitForAStart:
 ; B42: Tail jump to fixed CFA2.
 EnterInitialRunContext:
     JMP a:$cfa2              ; F6EA 
-    .incbin "inputs/original.nes", $01F6FD, $00C4 ; UNINTERPRETED preserved bytes
+
+; C59: Draw FF-terminated four-byte sprite records from B6/B7; relative Y from22, X from24/25, attribute OR2C; hide horizontally offscreen sprites and cap valid OAM count64.
+DrawMetaspriteNormal:
+    LDA $99                  ; F6ED 
+    ASL A                    ; F6EF 
+    ASL A                    ; F6F0 
+    BCS $f736                ; F6F1 
+    STA $b0                  ; F6F3 
+    LDY #$00                 ; F6F5 
+    LDA #$00                 ; F6F7 
+    STA $3c                  ; F6F9 
+    LDA ($b6),Y              ; F6FB 
+    CMP #$ff                 ; F6FD 
+    BEQ $f736                ; F6FF 
+    ADC $22                  ; F701 CMP #FF cleared carry for each non-terminator record, supplying the implicit clear for ADC.
+    STA ($b0),Y              ; F703 
+    INY                      ; F705 
+    LDA ($b6),Y              ; F706 
+    STA ($b0),Y              ; F708 
+    INY                      ; F70A 
+    LDA ($b6),Y              ; F70B 
+    ORA $2c                  ; F70D 
+    STA ($b0),Y              ; F70F 
+    INY                      ; F711 
+    LDA ($b6),Y              ; F712 
+    BPL $f718                ; F714 
+    DEC $3c                  ; F716 
+    CLC                      ; F718 
+    ADC $24                  ; F719 
+    STA ($b0),Y              ; F71B 
+    LDA $25                  ; F71D 
+    ADC $3c                  ; F71F 
+    BEQ $f72f                ; F721 
+    TYA                      ; F723 
+    PHA                      ; F724 
+    TYA                      ; F725 
+    AND #$fc                 ; F726 
+    TAY                      ; F728 
+    LDA #$f1                 ; F729 
+    STA ($b0),Y              ; F72B 
+    PLA                      ; F72D 
+    TAY                      ; F72E 
+    INY                      ; F72F 
+    INC $99                  ; F730 
+    BIT $99                  ; F732 
+    BVC $f6f7                ; F734 
+    RTS                      ; F736 
+
+; C60: As normal renderer, XOR attribute40 and mirror signed X offset using -(offset+8).
+DrawMetaspriteFlipped:
+    LDA $99                  ; F737 
+    ASL A                    ; F739 
+    ASL A                    ; F73A 
+    BCS $f78a                ; F73B 
+    STA $b0                  ; F73D 
+    LDY #$00                 ; F73F 
+    LDA #$00                 ; F741 
+    STA $3c                  ; F743 
+    LDA ($b6),Y              ; F745 
+    CMP #$ff                 ; F747 
+    BEQ $f78a                ; F749 
+    ADC $22                  ; F74B 
+    STA ($b0),Y              ; F74D 
+    INY                      ; F74F 
+    LDA ($b6),Y              ; F750 
+    STA ($b0),Y              ; F752 
+    INY                      ; F754 
+    LDA ($b6),Y              ; F755 
+    EOR #$40                 ; F757 
+    ORA $2c                  ; F759 
+    STA ($b0),Y              ; F75B 
+    INY                      ; F75D 
+    LDA ($b6),Y              ; F75E 
+    CLC                      ; F760 
+    ADC #$08                 ; F761 Eight-pixel sprite width is part of horizontal mirroring.
+    EOR #$ff                 ; F763 
+    CLC                      ; F765 
+    ADC #$01                 ; F766 
+    BPL $f76c                ; F768 
+    DEC $3c                  ; F76A 
+    CLC                      ; F76C 
+    ADC $24                  ; F76D 
+    STA ($b0),Y              ; F76F 
+    LDA $25                  ; F771 
+    ADC $3c                  ; F773 
+    BEQ $f783                ; F775 
+    TYA                      ; F777 
+    PHA                      ; F778 
+    TYA                      ; F779 
+    AND #$fc                 ; F77A 
+    TAY                      ; F77C 
+    LDA #$f1                 ; F77D 
+    STA ($b0),Y              ; F77F 
+    PLA                      ; F781 
+    TAY                      ; F782 
+    INY                      ; F783 
+    INC $99                  ; F784 
+    BIT $99                  ; F786 
+    BVC $f741                ; F788 
+    RTS                      ; F78A 
+
+; C61: For input A high 00..0F and Y low, return A=remainder and Y=quotient of the 16-bit position divided by F0.
+NormalizeYTo240LinePages:
+    STY $3c                  ; F78B 
+    TAY                      ; F78D 
+    LDA a:$f7a1,Y            ; F78E 
+    CLC                      ; F791 
+    ADC $3c                  ; F792 
+    BCC $f799                ; F794 
+    INY                      ; F796 
+    ADC #$0f                 ; F797 
+    CMP #$f0                 ; F799 
+    BCC $f7a0                ; F79B 
+    SBC #$f0                 ; F79D 
+    INY                      ; F79F 
+    RTS                      ; F7A0 
+
+; C62: 16 bytes 00,10,...F0 used by Y-coordinate normalization.
+YPageCorrectionTable:
+    .byte $00,$10,$20,$30,$40,$50,$60,$70,$80,$90,$A0,$B0,$C0,$D0,$E0,$F0
 
 ; A22: Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.
 IrqEntry:
@@ -473,7 +592,74 @@ IrqSplitSwitchChr01:
     LDX $e3                  ; F87D 
     LDA $e2                  ; F87F 
     RTI                      ; F881 
-    .incbin "inputs/original.nes", $01F892, $0778 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01F892, $0251 ; UNINTERPRETED preserved bytes
+
+; C63: Select profile with FE6C[9A], copy latch/index pairs until F0, then NMI selector and IRQ source chosen by selector and pair count.
+LoadSceneIrqProfile:
+    LDX $9a                  ; FAD3 
+    LDA a:$fe6c,X            ; FAD5 
+    ASL A                    ; FAD8 
+    TAY                      ; FAD9 
+    LDA a:$fe8c,Y            ; FADA 
+    STA $e5                  ; FADD 
+    LDA a:$fe8d,Y            ; FADF 
+    STA $e6                  ; FAE2 
+    LDY #$00                 ; FAE4 
+    LDX #$00                 ; FAE6 
+    LDA ($e5),Y              ; FAE8 
+    STA $7f,X                ; FAEA 
+    INY                      ; FAEC 
+    CMP #$f0                 ; FAED 
+    BEQ $faf9                ; FAEF 
+    LDA ($e5),Y              ; FAF1 
+    STA $6a,X                ; FAF3 
+    INY                      ; FAF5 
+    INX                      ; FAF6 
+    BNE $fae8                ; FAF7 
+    LDA ($e5),Y              ; FAF9 
+    STA $68                  ; FAFB 
+    BNE $fb15                ; FAFD 
+    CPX #$01                 ; FAFF 
+    BNE $fb0c                ; FB01 
+    LDA #$3d                 ; FB03 
+    STA $dc                  ; FB05 
+    LDA #$f8                 ; FB07 
+    STA $dd                  ; FB09 
+    RTS                      ; FB0B 
+    LDA #$03                 ; FB0C 
+    STA $dc                  ; FB0E 
+    LDA #$f8                 ; FB10 
+    STA $dd                  ; FB12 
+    RTS                      ; FB14 
+    LDA #$c2                 ; FB15 
+    STA $dc                  ; FB17 
+    LDA #$f7                 ; FB19 
+    STA $dd                  ; FB1B 
+    RTS                      ; FB1D 
+    .incbin "inputs/original.nes", $01FB2E, $02C2 ; UNINTERPRETED preserved bytes
+
+; C64: Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.
+PlayerHpCapacityByIndex:
+    .byte $40,$50,$60,$70,$80,$90,$A0,$B0
+    .incbin "inputs/original.nes", $01FDF8, $0084 ; UNINTERPRETED preserved bytes
+
+; C65: 32 selectors for six IRQ profiles.
+SceneIrqProfileIndex:
+    .byte $00,$00,$00,$00,$00,$00,$00,$05,$00,$00,$00,$00,$04,$04,$04,$00
+    .byte $00,$00,$00,$02,$01,$01,$01,$00,$03,$03,$00,$00,$00,$00,$00,$00
+
+; C66: Six little-endian pointers to F0-terminated latch/index streams.
+SceneIrqProfilePointers:
+    .byte $98,$FE,$9C,$FE,$BC,$FE,$C6,$FE,$CC,$FE,$D4,$FE
+
+; C67: Six streams; final F0 byte is a terminal latch followed by NMI selector, not an ordinary latch/index pair.
+SceneIrqProfiles:
+    .byte $CE,$00,$F0,$00,$41,$02,$01,$05,$01,$04,$01,$03,$01,$06,$01,$05
+    .byte $01,$04,$01,$03,$01,$06,$01,$05,$01,$04,$01,$03,$01,$06,$01,$05
+    .byte $71,$00,$F0,$00,$00,$00,$83,$00,$0D,$00,$3B,$00,$F0,$01,$AF,$01
+    .byte $1E,$00,$F0,$00,$3D,$02,$50,$01,$3E,$00,$F0,$00,$00,$00,$61,$00
+    .byte $3F,$00,$2C,$00,$F0,$01
+    .incbin "inputs/original.nes", $01FEEE, $011C ; UNINTERPRETED preserved bytes
 
 ; A27: Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.
 InterruptVectors:

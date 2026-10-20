@@ -1,0 +1,32 @@
+{
+  "new_ranges": 67,
+  "new_code_ranges": 33,
+  "new_data_ranges": 34,
+  "new_instructions": 892,
+  "new_bytes": 3385,
+  "scene_configurations": 32,
+  "scene_pointers": 192,
+  "player_state_pairs": 116,
+  "unresolved_targets_from_new_code": [
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD2E5",
+      "from_prg_offset": "0x01D2E5",
+      "to_cpu": "0xA087",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "target bank unresolved across unreviewed callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD2E8",
+      "from_prg_offset": "0x01D2E8",
+      "to_cpu": "0xA0C3",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "target bank unresolved across unreviewed callees"
+    }
+  ]
+}

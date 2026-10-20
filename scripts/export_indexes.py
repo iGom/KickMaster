@@ -47,6 +47,10 @@ def main():
             edges.add((owner(x['from_bank'],pc),owner(x['to_bank'],int(x['to_cpu'],16)),x['kind']))
     for x in read('analysis/ppu_task_table.csv'):
         edges.add(('DispatchPpuTask',owner(x['target_bank'],int(x['target_cpu'],16)),'table'))
+    indirect_path=ROOT/'analysis/indirect_dispatch_tables.csv'
+    if indirect_path.exists():
+        for x in read('analysis/indirect_dispatch_tables.csv'):
+            edges.add((owner(x['dispatch_bank'],int(x['dispatch_cpu'],16)),owner(x['target_bank'],int(x['target_cpu'],16)),'table'))
     lines=['digraph ReviewedCalls {','  rankdir=TB;','  node [shape=box];']
     for a,b,k in sorted(edges):lines.append(f'  "{a}" -> "{b}" [label="{k}"];')
     lines.append('}');(ROOT/'analysis/reviewed_call_graph.dot').write_text('\n'.join(lines)+'\n')

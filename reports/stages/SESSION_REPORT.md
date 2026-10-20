@@ -1,64 +1,63 @@
-# KickMaster NTSC-U — raport sesji 01B
+# KickMaster NTSC-U — raport sesji 02A
 
-Kontynuowano od checkpointu 01A, którego SHA-256 i pełną zawartość manifestu ponownie zweryfikowano.
-Zachowano wcześniejsze wyniki. Nie powtarzano badań źródeł, bazowej analizy ROM-u ani 57 wcześniejszych
-przypadków CPU. Nie korzystano z osobnych notatek badawczych użytkownika.
+Kontynuacja od zweryfikowanego checkpointu 01B. Zachowano poprzednie archiwa i wyniki.
+Nie powtarzano bazowych badań źródeł ani wcześniejszych testów bez konkretnej potrzeby.
+Nie korzystano z oddzielnych notatek użytkownika o adresach HP/EXP.
 
-## Najważniejsze ustalenia
+## Wynik sesji
 
-- Zlokalizowano synchronizację pętli z NMI: `$0095` jest sygnałem oczekiwania, a `$0097` zmienia się
-  w każdej iteracji oczekiwania. Dodatkowa procedura miesza `$0097` z X; pełna rola RNG pozostaje otwarta.
-- Kontroler jest odczytywany dwukrotnie. `$0020` przechowuje AND obu próbek, `$001F` nowo naciśnięte
-  przyciski, `$0021` historię A, a `$0713/$0714` starsze wartości przycisków trzymanych.
-- Główna pętla od `$D046` zawiera cztery rozwinięte fazy i 34 wywołania. Ustalono pierwsze cele wrapperów
-  banków 07/08/09 bez zakładania, że nieznani callees zachowują mapowanie.
-- Prześledzono lokalne przejścia front endu, nakładki uruchamianej Startem i menu po wyzerowaniu licznika.
-  Nakładka usuwa adres powrotu ze stosu i skacze do początku cyklu.
-- Odczytano trzy 32-bajtowe tablice następników, ponowienia i kontynuacji. Wewnętrzne indeksy nie mają
-  jeszcze przypisanych nazw ośmiu etapów gry.
+- Ustalono oba źródła `$03B9`: 32 konfiguracje scen oraz 17 konfiguracji układów specjalnych.
+- Odtworzono pozycje gracza i kamery, podstawy scrolla, profile IRQ i układ profilu palety/CHR.
+- Wyeksportowano 192 wskaźniki scen z poprawnym rozróżnieniem banków w oknach R6 i R7.
+- Odtworzono tablice 111 normalnych i 5 alternatywnych par kodów stanu/klatki gracza.
+  W zwykłej rodzinie są 22 różne cele procedur; nie wszystkie są już przeanalizowane.
+- Niezależnie potwierdzono bieżące HP `$06B9`, kopię paska `$06BA` i pojemność paska `$06BB`.
+  Pełna komórka odpowiada 16 jednostkom wewnętrznym; kompletne leczenie i awanse pozostają otwarte.
+- Prześledzono odejmowanie HP, reakcję na trafienie, śmierć, upadek i połączenie z restartem.
+  Wynik dokładnie zero bez pożyczki nie wchodzi w gałąź śmierci tej procedury.
 
-Szczegółowy raport, adresy, równania i diagram: `reports/subsystems/MAIN_LOOP_INPUT_STATE.md`.
+Szczegóły, adresy, diagram i ograniczenia: `reports/subsystems/PLAYER_SCENE_FOUNDATIONS.md`.
 
-## Zakres rekonstrukcji
+## Zakres
 
-| Miara | Etap 01A | Po etapie 01B |
+| Miara | Po 01B | Po 02A |
 |---|---:|---:|
-| Przejrzane obszary kodu | 24 | 68 |
-| Przejrzane obszary danych PRG | 3 | 11 |
-| Przejrzane instrukcje | 431 | 1463 |
-| Bajty PRG z lokalną interpretacją | 969 | 3444 |
-| Udział w PRG | 0,7393% | 2,6276% |
-| Nazwane lokalne role RAM | 35 | 56 |
-| Symbole ogółem | 62 | 135 |
+| Zakresy kodu | 68 | 101 |
+| Zakresy danych PRG | 11 | 45 |
+| Przejrzane instrukcje | 1463 | 2355 |
+| Bajty PRG z lokalną interpretacją | 3444 | 6829 |
+| Udział w PRG | 2,6276% | 5,2101% |
+| Wpisy RAM | 56 | 80 |
+| Symbole | 135 | 226 |
 
-Nie jest to liczba kompletnie zrozumianych funkcji: tablice skoków i obszary z wieloma wejściami są
-liczone jako zakresy. Same tablice usług obejmują 88 wpisów. Automatyczne kandydaty nie zwiększają
-metryki zrozumienia. Pełny reverse engineering pozostaje otwarty.
+Nowy etap obejmuje 3385 bajtów: 1742 kodu i 1643 danych. Zakresy z wieloma wejściami oraz
+tablice skoków nie są liczone jako zbiór całkowicie zrozumianych funkcji.
 
-## Testy i budowanie
+## Weryfikacja
 
-18 nowych grup CPU / 2295 wektorów: **PASS**. Obejmują wszystkie 256 masek kontrolera, zmiany wejścia,
-AND próbek, historię, rzeczywisty handler NMI dostarczony syntetycznie, arytmetykę stanu97, banki,
-porządek faz, ścieżki menu, wybrane efekty palety i granice przewijania. Zapisano 14033 wiersze wybranych
-śladów, a wyniki wszystkich wektorów zachowano w JSON/CSV.
+18 nowych grup CPU, 10137 przypadków: **PASS**. Zapisano 5921 reprezentatywnych wierszy śladu.
+Wśród testów: wszystkie 32 inicjalizacje scen, wszystkie 232 kody w obu rodzinach i kierunkach,
+4096 poprawnych wejść normalizacji Y, granice odejmowania HP, pełne 90 aktualizacji śmierci
+bez atrap w procedurach gracza, 2904 konfiguracje paska HP oraz 1536 próbek klasyfikacji terenu.
+Tam, gdzie użyto atrap, wynik jawnie wskazuje granice testu. Testy starszych etapów zachowano.
 
-Pełny `$D90C` uruchomiono z rzeczywistą procedurą audio w zainicjalizowanym stanie nieaktywnym.
-Testy przejść menu jawnie zastępują wybrane callees. Nie jest to pełna emulacja NES ani weryfikacja
-renderingu, DMC, skanlinii i timingu APU. Nie wykonano natywnego importu do MesenCE/Ghidry.
+Pełna przebudowa ca65/ld65: **PASS**, wszystkie 262160 bajtów identyczne z oryginałem.
+SHA-256 ROM-u: `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
+6845 bajtów jawnego źródła obejmuje nagłówek; 255315 bajtów nadal pochodzi z `.incbin`.
+Audyt potwierdza spójność zakresów, instrukcji, wskaźników, 226 symboli i 198 zakresów
+klasyfikujących cały plik. Graf zawiera 325 krawędzi call/jump/table.
 
-Rozszerzony szkielet ca65/ld65 ponownie odtwarza wszystkie 262160 bajtów oryginału:
-`00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
-3460 bajtów ma jawną reprezentację w źródle, w tym 16 bajtów nagłówka. Pozostałe 258700 bajtów nadal
-pochodzi z `.incbin`. Wymagany jest oryginalny ROM. Zgodność binarna nie oznacza pełnej rekonstrukcji.
+Nie wykonano pełnej emulacji NES, obserwacji obrazu, natywnego importu MesenCE/Ghidra ani CDL.
+Zgodność binarna nie dowodzi pełnego zrozumienia gry. Czasów procedur nie przeliczono na sekundy.
 
-## Trwałość i dalsze zadania
+## Checkpoint i dalsza praca
 
-Nowa paczka: `kickmaster-ntscu-checkpoint-stage01B.zip`. Poprzednie checkpointy pozostawiono bez zmian.
-Archiwum zawiera aktualny RESUME, raporty, mapy, źródła, indeksy, skrypty, wyniki i manifest SHA-256.
-Oryginalny i odbudowany ROM pozostają poza paczką. Identyfikator osobnego załącznika jest w RESUME.
-Końcowy hash ZIP, wynik rozpakowania i odczytu zapisanej kopii są dopisywane do zewnętrznego raportu
-po utworzeniu archiwum, aby uniknąć samoodwołującego się hasha.
+Nowe archiwum: `kickmaster-ntscu-checkpoint-stage02A.zip`. Zawiera aktualny RESUME, źródła,
+raporty, indeksy, testy, wyniki, narzędzia i manifest SHA-256. Oryginalny i przebudowany ROM
+pozostają poza paczką; RESUME wskazuje oryginalny załącznik.
+Końcowy hash ZIP, wynik czystej przebudowy po rozpakowaniu i ponownego odczytu zapisanej kopii
+znajdują się w zewnętrznym raporcie/kwitach, aby uniknąć samoodwołania hasha archiwum.
 
-Następny etap: producenci CE/D3/03B9 i ciała głównych procedur banków 07/08/09, następnie niezależne
-ustalenie HP/MP/EXP i powiązanie indeksów scen z danymi świata. Nadal brakuje obrazów map z etapu 00A
-oraz rzeczywistych testów pełnej gry i integracji debuggerów.
+Następnie: pozostałe procedury gracza i kolizji; zapisy HP w leczeniu; producenci indeksu
+pojemności w `$D3`; powiązanie z EXP i pickupami. Wymagają też domknięcia formaty map,
+wywołania PRG08:$ABC5 i PRG09:$BE90, kontrakt `$A1` z NMI oraz pełne bankowanie pętli.

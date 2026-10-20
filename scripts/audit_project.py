@@ -49,14 +49,34 @@ def main():
         cursor=int(r['file_end_exclusive'])
     assert cursor==len(rom)
     checks+=['complete file classification without gaps or overlaps']
+    pointers=rows('analysis/scene_configuration_pointers.csv');assert len(pointers)==192
+    for r in pointers:
+        source=int(r['source_file_offset'],16);target=int(r['target_cpu'],16);bank=int(r['target_bank'],16)
+        assert int.from_bytes(rom[source:source+2],'little')==target
+        base=0x8000 if target<0xA000 else 0xA000 if target<0xC000 else 0xC000 if target<0xE000 else 0xE000
+        assert int(r['target_prg_offset'],16)==bank*8192+target-base
+        assert int(r['target_file_offset'],16)==16+int(r['target_prg_offset'],16)
+        assert ('R6=' in r['target_mapping_condition'])==(target<0xA000)
+    states=rows('analysis/player_state_dispatch.csv');assert len(states)==116
+    assert sum(r['family']=='0' for r in states)==111 and sum(r['family']=='1' for r in states)==5
+    for r in states:
+        source=int(r['handler_pointer_source'].split(':')[1],16);off=16+8*8192+source-0xA000
+        assert int.from_bytes(rom[off:off+2],'little')==int(r['handler_cpu'],16)
+    checks+=['192 scene pointers retain correct R6/R7 address domains; 116 state-table rows match original pointer bytes']
     build=json.loads((ROOT/'analysis/rebuild_verification.json').read_text());assert build['status']=='PASS' and build['original']==build['rebuilt']
     old=json.loads((ROOT/'analysis/cpu_experiments.json').read_text());new=json.loads((ROOT/'analysis/cpu_stage01B.json').read_text())
     assert old['passed']==57 and new['groups']==new['passed_groups']==18 and new['vectors']==2295
-    checks+=['saved stage01A and stage01B CPU results pass; complete rebuilt image matches']
+    current=json.loads((ROOT/'analysis/cpu_stage02A.json').read_text())
+    assert current['groups']==current['passed_groups']==18 and current['vectors']==10137
+    assert current['vectors']==sum(g['vector_count'] for g in current['results'])
+    assert len(rows('analysis/cpu_stage02A_vectors.csv'))==current['vectors']
+    assert len(rows('analysis/cpu_stage02A_trace.csv'))==current['trace_rows']
+    checks+=['preserved stage01A/01B and new stage02A CPU results pass; complete rebuilt image matches']
     prior={
       '00':'6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f',
       '00A':'88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf',
-      '01A':'d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a'}
+      '01A':'d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a',
+      '01B':'a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d'}
     preserved=[]
     for stage,h in prior.items():
         p=ROOT/f'checkpoints/kickmaster-ntscu-checkpoint-stage{stage}.zip'

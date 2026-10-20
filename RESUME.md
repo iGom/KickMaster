@@ -1,124 +1,140 @@
 # Resume: KickMaster NTSC-U
 
-Current milestone: **Stage 01B control-flow/input foundation complete**.
-Stage 00 complete; stage00A reference baseline established (eight external map images still unread).
-Stage01A and 01B are bounded architecture milestones. Comprehensive game reconstruction is not complete.
+Current milestone: **Stage 02A player/scene foundation complete**, 2026-10-20.
+Stages 00, 00A, 01A, 01B retained. Comprehensive reconstruction is incomplete.
+Continue in Polish. In prose use `$` for addresses, not numeric values; CSV retains explicit 0x notation.
+Do not use separate user reverse-engineering notes as discoveries. Work independently from this ROM.
 
 ## Exact input
 
 - Original: `KickMaster (USA)(1).nes`, 262160 bytes.
 - SHA-256: `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
-- Original attachment Library identity: `libfile_2cc3d8953cd4819194df7416ad5fa8bd`.
-- Specification attachment identity: `libfile_ba372c00278c81918250e7f66698913c`; preserved as project_specification.md.
-- ROMs are excluded from every checkpoint. Recover the same original attachment after reset;
-  request it again only if unavailable. Never fetch another dump or normalize the header.
-- NES 2.0, mapper4/submapper0, NTSC, 128 KiB PRG + 128 KiB CHR; no trainer/battery/declared cart RAM.
+- Original attachment identity: `libfile_2cc3d8953cd4819194df7416ad5fa8bd`.
+- Specification attachment: `libfile_ba372c00278c81918250e7f66698913c`; copy in project_specification.md.
+- Original local path: `/workspace/scratch/073d0612ec00/upload/KickMaster (USA)(1).nes`.
+- Project: `/workspace/scratch/073d0612ec00/kickmaster-ntscu-re`.
+- NES 2.0, mapper 4/submapper 0, NTSC, 128 KiB PRG +128 KiB CHR; no trainer/battery/declared cart RAM.
+- Recover this exact attachment after reset; request again only if unavailable. Never fetch another dump
+  or normalize the header. Original and rebuilt ROMs are excluded from checkpoints.
 
-## Checkpoints and persistence
+## Checkpoints
 
-This snapshot: `kickmaster-ntscu-checkpoint-stage01B.zip`.
-Its final SHA-256 and post-upload readback result are in the external stage01B report and receipts.
-A ZIP cannot contain its own final hash or a future upload result.
+This snapshot: `kickmaster-ntscu-checkpoint-stage02A.zip`.
+Its final hash and save/readback identifiers live in the external stage02A report and receipts;
+an archive cannot contain its own final hash or future upload result.
 
-Previous checkpoints were saved, read back and verified:
-
-| Stage | SHA-256 | Library identity |
+| Stage | SHA-256 | Saved identity |
 |---|---|---|
-| 00 | 6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f | libfile_9936c2d5304c8191af74afd619d8ec84 |
-| 00A | 88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf | libfile_a4d0d65a40b08191a53925e0b1ae05f0 |
-| 01A | d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a | libfile_cedece9827ac81919e818448c976beb2 |
+|00|6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f|libfile_9936c2d5304c8191af74afd619d8ec84|
+|00A|88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf|libfile_a4d0d65a40b08191a53925e0b1ae05f0|
+|01A|d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a|libfile_cedece9827ac81919e818448c976beb2|
+|01B|a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d|libfile_eab08812e5048191af0b39db86eb0810|
 
-Do not delete or overwrite these archives. Prior persistence receipts are in manifests/.
-The stage01A archive was verified again when starting stage01B. The existing workspace remained available.
+Previous snapshots were saved/read back/verified. Never overwrite/delete them. Receipts are in manifests/.
+Stage01B was verified at the start of 02A; its 145-file manifest and extraction passed, workspace intact.
 
-## Read first and reuse
+## Read first, then reuse
 
-- reports/subsystems/MAIN_LOOP_INPUT_STATE.md: current detailed findings and limits, Polish.
-- reports/subsystems/BOOT_MMC3_INTERRUPTS.md: stage01A hardware foundation.
-- reports/stages/SESSION_REPORT.md: current session summary; earlier report retained as SESSION_REPORT_stage01A.md.
-- manifests/rom_identity.json: input/component hashes, header, published payload CRC match.
-- analysis/reviewed_ranges.csv: 68 code ranges + 11 data ranges; 3278+166=3444 bytes.
-- analysis/reviewed_instructions.csv: 1463 reviewed instructions with exact bytes and physical addresses.
-- analysis/service_jump_tables.csv: 88 entries in PRG0E/07/08/09.
-- analysis/main_loop_phases.csv: 34 calls in four unrolled phases.
-- analysis/scene_index_routes.csv: 32 next/restart/continue rows; no stage-name assignments.
-- analysis/cpu_experiments.json and cpu_trace.csv: preserved stage01A, 57 passing cases.
-- analysis/cpu_stage01B.json, cpu_stage01B_vectors.csv and cpu_stage01B_trace.csv:
-  18 passing groups, 2295 vectors, 14033 selected trace rows. Stubs are explicitly listed.
-- analysis/rebuild_verification.json: complete byte-identical mixed assembly/incbin build.
-- analysis/dataset_audit.json: range, address, source and integration consistency checks.
-- maps/ram/ram_map.csv: 56 local roles. analysis/symbols.csv: 135 total symbols.
-- maps/rom/classification.csv: 116 contiguous file ranges covering all 262160 bytes.
-- research/: 51 external reference claims, 29 experiment plans, 5 untested passwords, source gaps/discrepancies.
-- MesenCE/: 135 MLB rows, syntax checked; native import NOT TESTED.
-- ghidra/: portable CSVs; bank07/08/09 bases now A000 for reviewed R7 contexts. No native project/import claim.
-- disassembly/: mixed sources for all banks; full CHR and unknown PRG remain incbin.
-- tools/: vendored py65 and Linux x86_64 ca65/ld65/da65 plus license/provenance.
+- reports/stages/SESSION_REPORT.md and reports/subsystems/PLAYER_SCENE_FOUNDATIONS.md: latest Polish reports.
+- reports/subsystems/MAIN_LOOP_INPUT_STATE.md and BOOT_MMC3_INTERRUPTS.md: earlier foundations.
+- Earlier session reports: SESSION_REPORT_stage01A.md and SESSION_REPORT_stage01B.md.
+- analysis/reviewed_ranges.csv: 101 code +45 data ranges; 5020+1809=6829 PRG bytes, 5.210113525390625%.
+- analysis/reviewed_instructions.csv: 2355 instructions. New C01..C67 adds 892 instructions/3385 bytes.
+- maps/ram/ram_map.csv: 80 local roles; analysis/symbols.csv: 226 symbols; file classification: 198 ranges.
+- analysis/scene_configurations.csv: 32 rows; scene_configuration_pointers.csv: 192 source/target mappings.
+- analysis/player_state_dispatch.csv: 111 normal +5 alternate pairs; 22/3 unique targets respectively.
+- analysis/indirect_dispatch_tables.csv: 138 table edges; reviewed_call_graph.dot: 325 deduplicated edges.
+- analysis/scene_index_routes.csv: 32 next/restart/continue mappings; stage names still unresolved.
+- analysis/cpu_stage02A.json and *_vectors.csv, *_trace.csv: 18 groups/10137 vectors/5921 trace rows, all PASS.
+- Preserved stage01A: 57 cases; stage01B: 18 groups/2295 vectors/14033 trace rows; not rerun in 02A.
+- analysis/rebuild_verification.json: entire 262160-byte image matches; 6845 explicit bytes including header,
+  255315 input-incbin bytes. A matching input-dependent scaffold does not establish full semantics.
+- MesenCE: 226 MLB rows, source-backed syntax validation; actual import NOT TESTED.
+- ghidra: bank-aware CSVs; PRG07/08/09 at A000 for reviewed R7 contexts. No native project/import claim.
+- research: 51 external claims, 29 experiment plans, 5 untested passwords; eight map images unread.
 
-Historical candidate data are separate from manual coverage. fixed_window_candidates.csv has 2924
-stage01A candidates / 6248 bytes; some statuses were updated as ranges were reviewed.
-unresolved.csv is that old traversal's 34 stop records, NOT a current global unresolved total.
-New bank-context gaps are in stage01B_static_summary.json and cross_references.csv.
+Historical candidate decode remains 2924 instructions/6248 bytes. Statuses update only at reviewed
+instruction starts; candidates never count as semantic coverage. analysis/unresolved.csv is the old01A
+traversal's 34 stops, not a global count. See stage01B/02A_static_summary and cross_references for new gaps.
 
-## Established local findings
+## Established findings
 
-- RESET/NMI/IRQ = PRG0F:F010/F0BB/F7B1; reset maps R6=04/R7=05, mode0.
-- Mapper write D6C3 retries if interrupt epoch A6 changes; far-call F4CA saves/restores bank tags.
-- D90C waits for 95=0, sets 95=1, temporarily maps audio banks 00/01, restores mappings and polls input.
-  NMI F116 writes zero to 95 under documented 96=0/1 conditions. RAM symbol renamed FrameNmiHandshake.
-- D977 strobes 4016 and reads eight bits; D0 OR D1 accepted. Masks A/B/Select/Start/U/D/L/R=80/40/20/10/08/04/02/01.
-- Held 20 = sample1 AND sample2; pressed 1F = held AND NOT old held. 21 stores A history; 0713/0714 older held values.
-- 97 is updated every wait-loop iteration and by D9CB using X. Full RNG roles remain unproved.
-- D046 is a four-phase unrolled loop; D90C appears once per phase. Mixer calls occur in phases 1/3.
-- 9A indexes three 32-byte route tables D23F/D25F/D27F, not the four loop phases.
-- CE bit7 selects counter-decrement path; D3 bit7 gates Start. 030E=0 enters a two-choice menu.
-  030E is a candidate attempts/lives counter, not gameplay-validated yet.
-- Start flow D3C4 saves/restores palette/CHR and discards a return word before JMP D046.
-- Counter-zero menu choice0 routes D19A; nonzero eventually JMP(FFFC), reaching F010.
-- FF successor under index1B increments 030C unless already03; normal 0..3 saturates, arbitrary invalid values do not.
-- E2A3 handles palette handshake 06EE=FF; E2E2 handles odd-phase scroll adjustment.
+Hardware/loop retained:
 
-## Setup and commands
+- RESET/NMI/IRQ=PRG0F:F010/F0BB/F7B1. Reset maps R6=04/R7=05, mode0.
+- Mapper D6C3 retries when interrupt epoch A6 changes. Far-call F4CA saves/restores bank tags.
+- D90C waits for 95=0, sets1, services audio in banks00/01 and polls controller twice.
+- Held20=sample1 AND sample2; pressed1F=held AND NOT old-held. Masks80/40/20/10/08/04/02/01=A/B/Select/Start/U/D/L/R.
+- 97 changes in the wait loop and via D9CB/X; complete RNG roles remain unresolved.
+- D046 has four phases, one handshake each. 9A is a scene index, not a loop-phase counter.
+- CE80 drives counter decrement; D3 bit80 blocks Start. Counter-zero choice0 continues via D19A,
+  other choice eventually JMP(FFFC). FF route at index1B increments030C unless equal03.
 
-Python 3.12.14, vendored py65 1.2.0, ca65/ld65 V2.19 Git 8d86ca7.
-Bundled binaries are Linux x86_64; install cc65 on PATH on Windows. build.py prefers PATH tools.
-Original ROM path is the sole build input outside the checkpoint.
+New 02A:
 
-After verifying and unpacking the latest checkpoint, reuse saved analysis. A normal build does not regenerate sources:
+- PRG07:A4E9 initializes camera/player; A537 loads 32 scene configurations. 03B9=B262[9A].
+- A5AB uses 17 special-layout rows indexed04E2. Encoded bank bit7 increments camera X page,
+  then R6 receives low 7 bits. Later A990/A6FE semantics remain unreviewed.
+- Pointers in8000..9FFF use R6; A000..BFFF use R7=07. Scene 17 has R6=03 but
+  B9/BA=07:B59A and palette=07:B563. Never assign all scene pointers to R6.
+- CameraX=A7/A8, CameraY=A9/AA; PlayerY=C9/CA, PlayerX=CB/CC, all little-endian pixel values.
+- F78B normalizes linearY into 240-line pages for high byte 00..0F (4096 tested inputs).
+  AAB6 multiplies by F0 only in domain 00..80; 81..FF yield 0.
+- DB direction bits2..1: down/up/right/left; bit01 dispatch enable, bit08 autostep, bit80 scroll-work gate.
+- PRG08:AB19 clears transient D3 bit80; F8 bit20 branches to scene advance. Otherwise retains only CE bit01.
+- ACF7 uses CE bit01 to choose table family. CD>>1 chooses CHR; CD&FE chooses metasprite/handler;
+  CD bit0 is facing. Right wins over Left in three-sample input history.
+- CurrentHP=06B9, display copy=06BA, bar capacity=06BB. 16 raw units/full cell, 2 raw units/partial step.
+  Copy decreases immediately or rises 1 per B04B call. FDE0=40..B0 by10; D3&07 used on restore.
+  Full healing caps and level-up/EXP producers remain unreviewed; do not import meanings from notes.
+- DDD9 ignores damage if D2 or 01A4 nonzero. Damage>HP starts death; equality yields 0 and hurt.
+  Hurt sets D2=3C, D3bit20, CF0 and direction bit10 from incoming carry. Zero damage also triggers hurt locally.
+- Fatal damage selects BA/BB. Five 15-update animation states lead CA/CB, then 15 more updates set CE80.
+  Both facings tested through 90 complete player/draw updates, then actual D39F decrements 030E from 03 to 02
+  and reaches D17A with A=01. Only final E154 fade is stubbed, not death or sprite code.
+- Fall state C4/C5 adds 4 to Y; low-byte relative Y>=F0 sets CE80, not a full 16-bit distance test.
+- DB02 terrain bit40/80 priority returns 3/0. Otherwise bit10 requests damage 9A+04 except 06BD=08/0593 nonzero.
+  Sample helpers were stubbed in classification tests; complete terrain decoding remains open.
+- B022 normal HUD phases 1..5 target B165,F681,B04B,B104,B0B0; negative A1 skips. NMI/transfer contract open.
+
+## Reproduce only when needed
+
+Python3.12.14, vendored py65 1.2.0, Linux x86_64 ca65/ld65 V2.19 Git8d86ca7. Build prefers PATH tools,
+then bundled executables. Original ROM is the only external input. Keep project basename.
 
 ```sh
-python3 scripts/checkpoint.py --verify /path/to/kickmaster-ntscu-checkpoint-stage01B.zip
+python3 scripts/checkpoint.py --verify /path/to/kickmaster-ntscu-checkpoint-stage02A.zip
 python3 scripts/build.py /path/to/original.nes
 ```
 
-Only when a concrete change needs validation:
+For a concrete validation need:
 
 ```sh
-python3 scripts/cpu_stage01b.py /path/to/original.nes
+python3 scripts/cpu_stage02a.py /path/to/original.nes
 python3 scripts/audit_project.py /path/to/original.nes
 ```
 
-Intentional regeneration sequence:
+Intentional regeneration only (can overwrite manual source edits):
 
 ```sh
-python3 scripts/architecture_stage01b.py /path/to/original.nes
+python3 scripts/architecture_stage02a.py /path/to/original.nes
 python3 scripts/export_indexes.py
 python3 scripts/prepare_sources.py /path/to/original.nes
 python3 scripts/build.py /path/to/original.nes
 ```
 
-architecture_stage01b.py retains old A-series rows and replaces its B-series rows. The old architecture.py
-recreates stage01A only; if deliberately used, apply stage01b afterward. prepare_sources.py regenerates
-assembly from current reviewed CSVs and can overwrite manual assembly edits. Do not run it casually.
+architecture_stage02a replaces C-series and retains A/B. architecture_stage01b replaces B and keeps others,
+but its summaries/table exports are historical; rerun 02a afterward if deliberately regenerating.
+The original architecture.py recreates 01A only: do not casually run it on a later dataset.
 
 ## Next concrete work
 
-1. Follow producers/consumers of CE, D3 and 03B9; establish death/player state and bank contracts.
-2. Analyze PRG07:A0DB/A0FA/A119/B022, PRG08:ABC5/AB19/B04C and PRG09:BE90 under propagated R6/R7.
-3. Independently establish HP/MP/EXP roles. FDE0 copying was observed but HP meaning was not imported from notes.
-4. Map 32 scene indices to headers, collision/spawns and stage names; resolve non-chain indices 02/03/0F.
-5. Confirm native MesenCE/Ghidra imports and obtain actual gameplay/NMI/IRQ observations.
-6. Preserve a distinct verified next checkpoint; test ZIP/manifest/extraction, upload and readback.
+1. Player movement/attack handlers at PRG08:B81D,B8B5 etc; BCEF physics and collision sample paths.
+2. Derive all HP-healing/level writes and producers of D3low3, then MP/EXP and pickups independently.
+3. Reconstruct scene geometry/collision; map 32 indices to eight named stages, including 02/03/0F.
+4. Finish PRG08:ABC5 split-scroll, PRG09:BE90 objects, A1/NMI contract and bank preservation.
+5. Native MesenCE/Ghidra import, actual gameplay, full NMI/IRQ timing and external map images.
+6. Preserve a distinct next checkpoint; verify ZIP/manifest/extraction, clean rebuild, save and readback.
 
-Still unresolved: full player/magic/pickup/RNG systems, map formats and geometry, enemies/bosses, passwords,
-complete audio/graphics reconstruction, full-cycle bank preservation, exact timing and the blocked map images.
+Still open: full magic/pickup/RNG systems, attacks, enemies/bosses, passwords, complete graphics/audio.
+Do not report 90 CPU updates as measured wall-clock duration or 111 state pairs as 111 independent techniques.

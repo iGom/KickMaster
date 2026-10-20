@@ -429,7 +429,46 @@ RestartSceneIndexTable:
 ContinueSceneIndexTable:
     .byte $00,$00,$08,$08,$04,$04,$04,$04,$08,$08,$08,$00,$0C,$0C,$0C,$0C
     .byte $10,$10,$10,$10,$14,$14,$14,$18,$18,$18,$1C,$1C,$1C,$1C,$1C,$1C
-    .incbin "inputs/original.nes", $01D2AF, $0058 ; UNINTERPRETED preserved bytes
+
+; C56: Map scene bank and R7=08 for player initialization, then R7=07 for scene setup; preserve unresolved callee boundaries.
+InitializeSceneBankedServices:
+    JSR a:$d62d              ; D29F 
+    LDX #$06                 ; D2A2 
+    LDA a:$03b9              ; D2A4 
+    JSR a:$d6c3              ; D2A7 
+    LDX #$07                 ; D2AA 
+    LDA #$08                 ; D2AC 
+    JSR a:$d6c3              ; D2AE 
+    JSR a:$a003              ; D2B1 
+    LDA #$00                 ; D2B4 
+    STA a:$03d4              ; D2B6 
+    STA a:$03be              ; D2B9 
+    JSR a:$d6dc              ; D2BC 
+    LDA a:$00f8              ; D2BF 
+    AND #$df                 ; D2C2 
+    STA a:$00f8              ; D2C4 
+    LDA #$07                 ; D2C7 
+    TAX                      ; D2C9 
+    JSR a:$d6c3              ; D2CA 
+    JSR a:$a0ba              ; D2CD 
+    LDX #$07                 ; D2D0 
+    TXA                      ; D2D2 
+    JSR a:$d6c3              ; D2D3 
+    JSR a:$a081              ; D2D6 
+    LDA #$04                 ; D2D9 
+    STA $47                  ; D2DB 
+    JSR a:$d2ec              ; D2DD 
+    LDA #$ff                 ; D2E0 
+    STA a:$04e2              ; D2E2 
+    JSR a:$a087              ; D2E5 
+    JSR a:$a0c3              ; D2E8 
+    RTS                      ; D2EB 
+    LDA #$00                 ; D2EC 
+    LDX #$11                 ; D2EE 
+    STA a:$057f,X            ; D2F0 
+    DEX                      ; D2F3 
+    BNE $d2f0                ; D2F4 
+    RTS                      ; D2F6 
 
 ; B22: Reset selected fields; if 030E is zero set it to 03 and initialize 0306..030B; set digit-like buffers and call F65F.
 ResetRunFields:
@@ -953,4 +992,99 @@ MixTimingStateWithX:
     ADC #$bd                 ; D9D2 
     STA $97                  ; D9D4 
     RTS                      ; D9D6 
-    .incbin "inputs/original.nes", $01D9E7, $0629 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01D9E7, $012B ; UNINTERPRETED preserved bytes
+
+; C57: Choose sample helper with DB bit04; priority bits40/80 return solid/empty; bit10 may invoke damage (9A+04) except active effect08; accumulate terrain bits0C into CE.
+ClassifyPlayerTerrainSample:
+    PHA                      ; DB02 
+    LDA $db                  ; DB03 
+    AND #$04                 ; DB05 
+    BEQ $db10                ; DB07 
+    PLA                      ; DB09 
+    JSR a:$da07              ; DB0A 
+    JMP a:$db14              ; DB0D 
+    PLA                      ; DB10 
+    JSR a:$dac2              ; DB11 
+    BIT $3c                  ; DB14 
+    BVS $db47                ; DB16 
+    BMI $db44                ; DB18 
+    LDA $3c                  ; DB1A 
+    AND #$10                 ; DB1C 
+    BEQ $db39                ; DB1E 
+    LDA a:$06bd              ; DB20 
+    CMP #$08                 ; DB23 
+    BNE $db2c                ; DB25 
+    LDA a:$0593              ; DB27 
+    BNE $db39                ; DB2A 
+    LDA $cd                  ; DB2C 
+    LSR A                    ; DB2E 
+    PHP                      ; DB2F 
+    LDA $9a                  ; DB30 
+    CLC                      ; DB32 
+    ADC #$04                 ; DB33 
+    PLP                      ; DB35 
+    JSR a:$ddd9              ; DB36 
+    LDA $3c                  ; DB39 
+    AND #$0c                 ; DB3B 
+    ORA $ce                  ; DB3D 
+    STA $ce                  ; DB3F 
+    LDA $3c                  ; DB41 
+    RTS                      ; DB43 
+    LDA #$00                 ; DB44 
+    RTS                      ; DB46 
+    LDA #$03                 ; DB47 
+    RTS                      ; DB49 
+    .incbin "inputs/original.nes", $01DB5A, $028F ; UNINTERPRETED preserved bytes
+
+; C58: Ignore while D2 or01A4 nonzero; subtract raw A from06B9. Borrow starts BA/BB death animation; equality zero takes hurt path. Preserve input carry as reaction direction.
+ApplyPlayerDamage:
+    PHP                      ; DDD9 
+    STA $2c                  ; DDDA 
+    LDA $d2                  ; DDDC 
+    ORA a:$01a4              ; DDDE 
+    BNE $de0f                ; DDE1 
+    LDA a:$06b9              ; DDE3 
+    SEC                      ; DDE6 
+    SBC $2c                  ; DDE7 
+    BCS $de11                ; DDE9 BCS includes exact zero: death branch requires unsigned borrow (damage > current raw HP).
+    LDA #$f4                 ; DDEB 
+    STA $01                  ; DDED 
+    LDA $ce                  ; DDEF 
+    AND #$f0                 ; DDF1 
+    STA $ce                  ; DDF3 
+    LDA $db                  ; DDF5 
+    AND #$fe                 ; DDF7 
+    STA $db                  ; DDF9 
+    LDA $d3                  ; DDFB 
+    ORA #$80                 ; DDFD 
+    STA $d3                  ; DDFF 
+    LDA #$5d                 ; DE01 
+    LSR $cd                  ; DE03 
+    ROL A                    ; DE05 
+    STA $cd                  ; DE06 
+    LDA #$00                 ; DE08 
+    STA $cf                  ; DE0A 
+    STA a:$06b9              ; DE0C 
+    PLP                      ; DE0F 
+    RTS                      ; DE10 
+    STA a:$06b9              ; DE11 
+    LDA #$de                 ; DE14 
+    STA $01                  ; DE16 
+    LDA #$3c                 ; DE18 
+    STA $d2                  ; DE1A 
+    LDA $d3                  ; DE1C 
+    ORA #$20                 ; DE1E 
+    STA $d3                  ; DE20 
+    LDA #$00                 ; DE22 
+    STA $cf                  ; DE24 
+    PLP                      ; DE26 Restore caller carry before encoding reaction direction in D3 bit10.
+    BCS $de30                ; DE27 
+    LDA $d3                  ; DE29 
+    AND #$ef                 ; DE2B 
+    STA $d3                  ; DE2D 
+    RTS                      ; DE2F 
+    LDA $d3                  ; DE30 
+    ORA #$10                 ; DE32 
+    STA $d3                  ; DE34 
+    RTS                      ; DE36 
+    .incbin "inputs/original.nes", $01DE47, $01C9 ; UNINTERPRETED preserved bytes

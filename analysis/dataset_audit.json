@@ -7,17 +7,19 @@
     "candidate/source status does not promote reviewed data to code",
     "symbol names unique; MLB count and Ghidra bank bases match current indexes",
     "complete file classification without gaps or overlaps",
-    "saved stage01A and stage01B CPU results pass; complete rebuilt image matches"
+    "192 scene pointers retain correct R6/R7 address domains; 116 state-table rows match original pointer bytes",
+    "preserved stage01A/01B and new stage02A CPU results pass; complete rebuilt image matches"
   ],
-  "reviewed_bytes": 3444,
-  "reviewed_instructions": 1463,
-  "symbols": 135,
-  "ram_entries": 56,
-  "classification_ranges": 116,
+  "reviewed_bytes": 6829,
+  "reviewed_instructions": 2355,
+  "symbols": 226,
+  "ram_entries": 80,
+  "classification_ranges": 198,
   "previous_local_archives_unchanged": [
     "00",
     "00A",
-    "01A"
+    "01A",
+    "01B"
   ],
   "full_Ghidra_Mesen_import": "NOT_TESTED"
 }

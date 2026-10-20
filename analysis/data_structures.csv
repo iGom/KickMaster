@@ -1,4 +1,33 @@
 name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
+SceneEvenTargets,data,07,0xA0F2,0x00F2,0x00E0F2,0x00E102,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes; down/up/right/left order follows DB direction selector.,STATIC_REVIEWED,C02
+SceneOddTargets,data,07,0xA111,0x0111,0x00E111,0x00E121,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for odd phase.,STATIC_REVIEWED,C04
+SceneExtraTargets,data,07,0xA130,0x0130,0x00E130,0x00E140,MMC3 PRG mode 0; R7=07 at A000,8,Four split low/high target bytes for extra even-phase work.,STATIC_REVIEWED,C06
+HudMaintenanceTargets,data,07,0xB03F,0x103F,0x00F03F,0x00F04F,MMC3 PRG mode 0; R7=07 at A000,12,"Six split low/high pointers; valid normal rotation is indexes 01..05, index00 is RTS.",STATIC_REVIEWED,C15
+SceneInitialCameraXPages,data,07,0xB1E2,0x11E2,0x00F1E2,0x00F1F2,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera X high bytes; low byte is zero.,STATIC_REVIEWED,C18
+SceneInitialCameraYScreens,data,07,0xB202,0x1202,0x00F202,0x00F212,MMC3 PRG mode 0; R7=07 at A000,32,32 initial camera Y screen counts multiplied by F0.,STATIC_REVIEWED,C19
+ScenePlayerXOffsets,data,07,0xB222,0x1222,0x00F222,0x00F232,MMC3 PRG mode 0; R7=07 at A000,32,32 player X offsets added to initial camera X.,STATIC_REVIEWED,C20
+ScenePlayerYOffsets,data,07,0xB242,0x1242,0x00F242,0x00F252,MMC3 PRG mode 0; R7=07 at A000,32,32 player Y offsets added to initial camera Y; low result decremented once.,STATIC_REVIEWED,C21
+SceneBank8000Table,data,07,0xB262,0x1262,0x00F262,0x00F272,MMC3 PRG mode 0; R7=07 at A000,32,32 PRG bank bytes for 03B9 and MMC3 R6.,STATIC_REVIEWED,C22
+ScenePointerB9Table,data,07,0xB282,0x1282,0x00F282,0x00F292,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into B9/BA; target meaning not inferred from address alone.,STATIC_REVIEWED,C23
+ScenePointerBBTable,data,07,0xB2C2,0x12C2,0x00F2C2,0x00F2D2,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BB/BC.,STATIC_REVIEWED,C24
+ScenePointerBFTable,data,07,0xB302,0x1302,0x00F302,0x00F312,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BF/C0.,STATIC_REVIEWED,C25
+ScenePointerBDTable,data,07,0xB342,0x1342,0x00F342,0x00F352,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into BD/BE.,STATIC_REVIEWED,C26
+ScenePointerC1Table,data,07,0xB382,0x1382,0x00F382,0x00F392,MMC3 PRG mode 0; R7=07 at A000,64,32 little-endian pointers loaded into C1/C2; used by collision path DA3D.,STATIC_REVIEWED,C27
+ScenePaletteCycleTable,data,07,0xB3C2,0x13C2,0x00F3C2,0x00F3D2,MMC3 PRG mode 0; R7=07 at A000,32,32 bytes loaded into 03BA; downstream palette-cycle encoding not fully reviewed.,STATIC_REVIEWED,C28
+SceneDirectionFlagsTable,data,07,0xB3E2,0x13E2,0x00F3E2,0x00F3F2,MMC3 PRG mode 0; R7=07 at A000,32,"32 DB flag bytes; low direction codes 01 down,03 up,05 right,07 left; bit7 is runtime scroll activity.",STATIC_REVIEWED,C29
+SceneHorizontalBoundPages,data,07,0xB402,0x1402,0x00F402,0x00F412,MMC3 PRG mode 0; R7=07 at A000,32,32 bytes loaded into AF; downstream movement compares camera X page.,STATIC_REVIEWED,C30
+SceneVerticalBoundScreens,data,07,0xB422,0x1422,0x00F422,0x00F432,MMC3 PRG mode 0; R7=07 at A000,32,32 screen counts multiplied by F0 into AD/AE.,STATIC_REVIEWED,C31
+ScenePaletteProfilePointers,data,07,0xB442,0x1442,0x00F442,0x00F452,MMC3 PRG mode 0; R7=07 at A000,64,"32 pointers to 27-byte palette/CHR profiles; some targets reside in R7 bank07, others in R6-selected bank.",STATIC_REVIEWED,C32
+SpecialLayoutArrays,data,07,0xB482,0x1482,0x00F482,0x00F492,MMC3 PRG mode 0; R7=07 at A000,187,"17-entry CHR0, CHR1 and bank/page arrays followed by four arrays of 17 little-endian pointers.",STATIC_REVIEWED,C17
+InitialPlayerStateBytes,data,08,0xB042,0x1042,0x011042,0x011052,MMC3 PRG mode 0; R7=08 at A000,10,C9..D2 initial bytes 80 00 80 00 00 00 00 00 00 00.,STATIC_REVIEWED,C41
+AutomaticCameraStepTargets,data,08,0xB06B,0x106B,0x01106B,0x01107B,MMC3 PRG mode 0; R7=08 at A000,8,"Four split low/high pointers: B073,B07A,B086,B08D.",STATIC_REVIEWED,C43
+PlayerTableFamilyPointers,data,08,0xB099,0x1099,0x011099,0x0110A9,MMC3 PRG mode 0; R7=08 at A000,12,"Three two-entry pointer arrays for CHR, metasprites and state handlers; ACF7 input A=0/1 selects family.",STATIC_REVIEWED,C45
+PlayerNormalChrTable,data,08,0xB0A5,0x10A5,0x0110A5,0x0110B5,MMC3 PRG mode 0; R7=08 at A000,111,"111 CHR bank bytes indexed by CD>>1; table contents identified, not every corresponding state behavior.",STATIC_REVIEWED,C46
+PlayerNormalSpritePointers,data,08,0xB114,0x1114,0x011114,0x011124,MMC3 PRG mode 0; R7=08 at A000,222,111 little-endian metasprite pointers indexed by even CD.,STATIC_REVIEWED,C47
+PlayerNormalHandlerPointers,data,08,0xB1F2,0x11F2,0x0111F2,0x011202,MMC3 PRG mode 0; R7=08 at A000,222,111 little-endian handler pointers covering CD pairs 00/01 through DC/DD; many handlers remain unreviewed.,STATIC_REVIEWED,C48
+PlayerAlternateChrTable,data,08,0xBDF3,0x1DF3,0x011DF3,0x011E03,MMC3 PRG mode 0; R7=08 at A000,5,Five CHR bytes for alternate family; precise gameplay activation not assigned.,STATIC_REVIEWED,C53
+PlayerAlternateSpritePointers,data,08,0xBDF8,0x1DF8,0x011DF8,0x011E08,MMC3 PRG mode 0; R7=08 at A000,10,Five little-endian metasprite pointers for alternate family.,STATIC_REVIEWED,C54
+PlayerAlternateHandlerPointers,data,08,0xBE02,0x1E02,0x011E02,0x011E12,MMC3 PRG mode 0; R7=08 at A000,10,Five little-endian handler pointers for alternate family.,STATIC_REVIEWED,C55
 FrontEndObjectXPair,data,09,0xA555,0x0555,0x012555,0x012565,MMC3 PRG mode 0; R7=09 at A000,2,Two X bytes 1C/E4 copied to 051B/051C by A4B9.,STATIC_REVIEWED,B47
 FrontEndTilePair,data,09,0xA62E,0x062E,0x01262E,0x01263E,MMC3 PRG mode 0; R7=09 at A000,2,Two bytes 21/00 used as a PPU transfer source at A585..A599.,STATIC_REVIEWED,B49
 FrontEndCursorXPair,data,09,0xA695,0x0695,0x012695,0x0126A5,MMC3 PRG mode 0; R7=09 at A000,2,Two cursor X bytes 38/88 for selections 00/01.,STATIC_REVIEWED,B52
@@ -9,13 +38,32 @@ OverlayPalette16,data,0E,0xD459,0x1459,0x01D459,0x01D469,MMC3 PRG mode 0,16,16 p
 CounterZeroCursorPointers,data,0E,0xD5AE,0x15AE,0x01D5AE,0x01D5BE,MMC3 PRG mode 0,4,Two little-endian cursor pointers selected with 2C*2; pointed data not interpreted.,STATIC_REVIEWED,B32
 ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
 PpuTaskPointers,data,0F,0xF16A,0x116A,0x01F16A,0x01F17A,last bank fixed at E000,32,16 little-endian pointers; indices are command&1E divided by 2.,STATIC_REVIEWED,A15
+YPageCorrectionTable,data,0F,0xF7A1,0x17A1,0x01F7A1,0x01F7B1,last bank fixed at E000,16,"16 bytes 00,10,...F0 used by Y-coordinate normalization.",STATIC_REVIEWED,C62
+PlayerHpCapacityByIndex,data,0F,0xFDE0,0x1DE0,0x01FDE0,0x01FDF0,last bank fixed at E000,8,"Eight raw capacities 40,50,60,70,80,90,A0,B0 indexed by D3&07 on restore; match 4..11 sixteen-unit cells.",STATIC_REVIEWED,C64
+SceneIrqProfileIndex,data,0F,0xFE6C,0x1E6C,0x01FE6C,0x01FE7C,last bank fixed at E000,32,32 selectors for six IRQ profiles.,STATIC_REVIEWED,C65
+SceneIrqProfilePointers,data,0F,0xFE8C,0x1E8C,0x01FE8C,0x01FE9C,last bank fixed at E000,12,Six little-endian pointers to F0-terminated latch/index streams.,STATIC_REVIEWED,C66
+SceneIrqProfiles,data,0F,0xFE98,0x1E98,0x01FE98,0x01FEA8,last bank fixed at E000,70,"Six streams; final F0 byte is a terminal latch followed by NMI selector, not an ordinary latch/index pair.",STATIC_REVIEWED,C67
 InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
 ChrBankRegisters,ram,,0x0044,,,,internal RAM; state-specific role,6,MMC3 R0..R5 shadow values; each byte is a bank number,STATIC_REVIEWED_LOCAL_ROLE,A13
 PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
+CameraWorldX,ram,,0x00A7,,,,internal RAM; state-specific role,2,Little-endian camera horizontal position; low byte copied into horizontal scroll shadows.,STATIC_REVIEWED_LOCAL_ROLE,C08;C11;C44
+CameraWorldY,ram,,0x00A9,,,,internal RAM; state-specific role,2,Little-endian camera vertical position in linear pixels; normalized to 240-line pages for PPU shadows.,STATIC_REVIEWED_LOCAL_ROLE,C08;C61;C44
+CameraVerticalBound,ram,,0x00AD,,,,internal RAM; state-specific role,2,Scene count at B422 multiplied by F0; compared in the downstream vertical movement path.,STATIC_REVIEWED_LOCAL_ROLE,C09
+MetaspritePointer,ram,,0x00B6,,,,internal RAM; state-specific role,2,Pointer chosen by state table and consumed by both normal and flipped sprite renderers.,STATIC_REVIEWED_LOCAL_ROLE,C35;C59;C60
+ScenePointerB9,ram,,0x00B9,,,,internal RAM; state-specific role,2,Scene pointer from B282; target can reside in R6 data bank or resident R7 bank07. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBB,ram,,0x00BB,,,,internal RAM; state-specific role,2,Scene pointer from B2C2. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBD,ram,,0x00BD,,,,internal RAM; state-specific role,2,Scene pointer from B342. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerBF,ram,,0x00BF,,,,internal RAM; state-specific role,2,Scene pointer from B302. Full target format unresolved.,STATIC_REVIEWED_LOCAL_ROLE,C09
+ScenePointerC1,ram,,0x00C1,,,,internal RAM; state-specific role,2,Scene pointer from B382; downstream terrain query uses it. Full structure not yet reconstructed.,STATIC_REVIEWED_LOCAL_ROLE,C09
+PlayerDispatchTablePointers,ram,,0x00C3,,,,internal RAM; state-specific role,6,C3/C4 CHR table; C5/C6 handler table; C7/C8 metasprite table. ACF7 chooses one of two families.,STATIC_REVIEWED_LOCAL_ROLE,C35
+PlayerWorldY,ram,,0x00C9,,,,internal RAM; state-specific role,2,"Player vertical position, initial offset from camera Y. C9 low-byte relative difference drives fall thresholds.",STATIC_REVIEWED_LOCAL_ROLE,C08;C34;C50
+PlayerWorldX,ram,,0x00CB,,,,internal RAM; state-specific role,2,Player horizontal position; CB/CC minus camera X becomes sprite horizontal origin 24/25.,STATIC_REVIEWED_LOCAL_ROLE,C08;C34
+PreviousPlayerPositionSnapshot,ram,,0x00D4,,,,internal RAM; state-specific role,4,Copy of C9..CC after player update unless06BD=0B and0593 nonzero.,STATIC_REVIEWED_LOCAL_ROLE,C34
 IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
 SharedDispatchPointer,ram,,0x00E5,,,,internal RAM; state-specific role,2,Shared little-endian PPU-task/IRQ target; lifetime-dependent meaning,STATIC_REVIEWED_LOCAL_ROLE,A13;A14;A22
 PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
 PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
+HpBarTileBuffer,ram,,0x0163,,,,internal RAM; state-specific role,11,"B04B emits up to11 tiles:4F full,48..4E partial,47 empty,3F outside capacity; overlaps page01 stack region.",STATIC_REVIEWED_LOCAL_ROLE,C16
 OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
 ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
 FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21

@@ -1,0 +1,29 @@
+{
+  "verified_at_utc": "2026-10-20T00:45:26.993862+00:00",
+  "status": "PASS",
+  "library_file_id": "libfile_eab08812e5048191af0b39db86eb0810",
+  "file_id": "file_00000000997081f4b7e04446ddd3a6ff",
+  "library_path": "/kickmaster-ntscu-checkpoint-stage01B.zip",
+  "library_current_version_number": 0,
+  "local_archive": "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/checkpoints/kickmaster-ntscu-checkpoint-stage01B.zip",
+  "readback_archive": "/workspace/scratch/073d0612ec00/readback-stage01B/kickmaster-ntscu-checkpoint-stage01B.zip",
+  "readback_equals_local": true,
+  "verification": {
+    "archive": "kickmaster-ntscu-checkpoint-stage01B.zip",
+    "sha256": "a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d",
+    "size_bytes": 769279,
+    "zip_crc_test": "PASS",
+    "manifest_verification": "PASS",
+    "manifest_file_count": 145,
+    "sample_extraction": "PASS",
+    "sample_paths": [
+      "README.md",
+      "RESUME.md",
+      "manifests/rom_identity.json",
+      "scripts/baseline.py"
+    ],
+    "latest_resume_present": true
+  },
+  "fresh_extraction_build": "PASS",
+  "fresh_extraction_receipt": "stage01B.reproducibility.json"
+}
