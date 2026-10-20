@@ -1,0 +1,13 @@
+id,title,url,reliability,access_status,scope,access_date
+S01,Taito instruction manual,https://www.digitpress.com/library/manuals/nes/Kickmaster.pdf,primary gameplay,downloaded and visually inspected,printed pp.5-22; PDF pp.3-12,2026-10-19
+S02,Wyrenth guide,https://gamefaqs.gamespot.com/nes/563430-kickmaster/faqs/19876,secondary gameplay,search-backed content read; direct HTTP 403,Controls; Game screen; Passwords; Items; Kicks; Spells; Sectors 1-8,2026-10-19
+S03,sprays map index,https://gamefaqs.gamespot.com/nes/563430-kickmaster/faqs,secondary cartography,all eight links verified; images not inspected,Maps and Charts,2026-10-19
+S04,GameFAQs cheats,https://gamefaqs.gamespot.com/nes/563430-kickmaster/cheats,community test vectors,search-backed content read; direct HTTP 403,Passwords,2026-10-19
+S05,NesCartDB,https://nescartdb.com/profile/view/2564/kick-master,primary cartridge inspection,read; payload CRCs compared,ROM Details; PCB,2026-10-19
+S06,MobyGames,https://www.mobygames.com/game/18675/kick-master/,secondary catalog,blocked HTTP 403,not read,2026-10-19
+S07,NESdev NES 2.0,https://www.nesdev.org/wiki/NES_2.0,technical specification,search-backed content read; direct HTTP 403,Identification; header fields,2026-10-19
+S08,NESdev MMC3,https://www.nesdev.org/wiki/MMC3,technical hardware documentation,search-backed content read; direct HTTP 403,PRG/CHR modes; register writes,2026-10-19
+S09,NESdev Programming MMC3,https://www.nesdev.org/wiki/Programming_MMC3,technical programming documentation,search-backed content read; direct HTTP 403,banking modes,2026-10-19
+S10,GhidraNes,https://github.com/kylewlacy/GhidraNes,official tool source,README read,Features; Installation; Bank switching,2026-10-19
+S11,MesenCE,https://github.com/nesdev-org/MesenCE,official tool source,README read,repository introduction,2026-10-19
+S12,cc65,https://github.com/cc65/cc65,official assembler source,cloned; build started,Makefile; commit 8d86ca7e7ed15300cc4bfaba61a40a3d00f3114d,2026-10-19

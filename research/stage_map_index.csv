@@ -1,0 +1,9 @@
+stage,name_from_user_specification,map_author,map_url,listing_verified,image_inspected,rom_map_extracted,comparison_status,guide_section,investigation_focus,coordinate_system
+1,The Witches' Forest,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3647-stage-1-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 1,"chest, boss reward and three-item drops",UNRESOLVED
+2,The Caverns of No Return,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3648-stage-2-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 2,horizontal/vertical transitions; hidden boots; breakable terrain,UNRESOLVED
+3,Belzed's First Stronghold,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3649-stage-3-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 3,branching hidden path; chests versus mimics; transforming entities,UNRESOLVED
+4,Bottomless Crevasse,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3650-stage-4-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 4,pit boundaries and spell object,UNRESOLVED
+5,Aboard the Ship of Strife,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3651-stage-5-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 5,ship movement and octopus body-part gating,UNRESOLVED
+6,Across the Swamps,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3652-stage-6-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 6,slow terrain; hidden shield; paired bosses,UNRESOLVED
+7,A Long Way From Home,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3653-stage-7-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 7,spawn triggers and multiple boss encounters,UNRESOLVED
+8,Belzed's Haunted Tower,sprays,https://gamefaqs.gamespot.com/nes/563430-kickmaster/map/3654-stage-8-map,True,False,False,BLOCKED_IMAGE_RETRIEVAL,Sector 8,vertical camera kill boundary; guardian sequence; final transition,UNRESOLVED

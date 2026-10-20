@@ -1,0 +1,11 @@
+{
+  "source_id": "S01",
+  "size_bytes": 993310,
+  "sha256": "80079d83608a208e7704cc1f1ce32275ebf20d207bc70d94b5adeca03a0615a7",
+  "pdf_pages": 12,
+  "format": "scanned two-page spreads",
+  "printed_page_to_pdf_page": "floor(printed_page/2)+1 for printed pages 2-23",
+  "pdf_in_checkpoint": false,
+  "text_extraction": "no usable text",
+  "visual_read": "printed gameplay pp.5-22; contents p.3"
+}

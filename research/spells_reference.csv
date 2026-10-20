@@ -1,0 +1,13 @@
+canonical_name,aliases,mp_cost_reference,effect_reference,manual_printed_page,rom_internal_id,rom_unlock_flag,rom_verified
+Bouncing Bulb,Bouncing Bulb Spirit,3,Bouncing magical projectile,12,,,False
+Life Up 1,,60,Restores up to 2 HP,12,,,False
+Magic Boots,,20,Temporary protection against hazardous terrain,13,,,False
+Twin Power,,20,Creates a decoy that distracts enemies,13,,,False
+?? Magic,??,1,Deliberately undocumented/mysterious effect,13,,,False
+Lightning,Lightning Spirit,20,Electrical attack effect,13,,,False
+Life Up 2,,90,Restores up to 4 HP,14,,,False
+Pulse Wave,Pulse Wave Spirit,5,Expanding energy-wave attack,14,,,False
+Whip Lightning,,30,Multi-directional lightning attack,14,,,False
+Force Shield,,30,Defensive barrier,14,,,False
+Harpy Flying,Harpy Wings,"10 per second, nominal",Temporary flight,14,,,False
+Earthquake,,20,Temporarily stops enemies,13,,,False

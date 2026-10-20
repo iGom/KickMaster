@@ -1,0 +1,11 @@
+level,technique,manual_input,guide_input_conflict,rom_internal_id,rom_verified
+0,High Kick,B,False,,False
+0,Sweep Kick,Down+B,False,,False
+0,Vertical Press Kick,Up+B,False,,False
+1,Knee Drop,"A, then Down+B",False,,False
+2,Sliding Kick,Down+(Left|Right)+B,False,,False
+3,Double Front Kick,Up+(Left|Right)+B,False,,False
+4,Roundhouse Kick,(Left|Right)+B,True,,False
+5,Flying Kick,"A, then (Left|Right)+B",False,,False
+6,Double Butterfly Kick,(Left|Right)+B,True,,False
+7,Blazing Flip Kick,Up+B,False,,False

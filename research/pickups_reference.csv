@@ -1,0 +1,10 @@
+pickup,effect,manual_printed_page,rom_internal_id,rom_verified
+Small EXP Coin,+10 EXP,9,,False
+Medium EXP Coin,+30 EXP,9,,False
+Large EXP Coin,+50 EXP,9,,False
+Heart,+1 HP,9,,False
+Small Magic Bottle,+5 MP,9,,False
+Large Magic Bottle,+10 MP,9,,False
+Jewel / Crystal,+100 score,9,,False
+1-UP,+1 life,9,,False
+Poison / Skull,Damages the player,9,,False

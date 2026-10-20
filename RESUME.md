@@ -1,12 +1,13 @@
 # Resume: KickMaster NTSC-U
 
-Current milestone: Stage 00 complete; Stage 00A next.
+Current milestone: Stage 00A research baseline established; external map-image review incomplete. Stage 01 next.
 
 Input SHA-256: `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
 Original filename: `KickMaster (USA)(1).nes`; 262160 bytes. The original is excluded from checkpoints.
 Do not normalize the NES 2.0 header or substitute another dump.
 
-This snapshot is `kickmaster-ntscu-checkpoint-stage00.zip`.
+This snapshot is `kickmaster-ntscu-checkpoint-stage00A.zip`.
+Previous verified checkpoint: stage00; persisted and read back successfully (see manifests/stage00_persistence.json).
 Its integrity and persistence are recorded by the external verification/readback receipts because the ZIP
 cannot contain its own final hash or the result of a future upload.
 
@@ -37,3 +38,5 @@ python3 -m unittest discover -s tests -v
 Directories: `manifests` for identities; `analysis` for structured evidence; `maps` for memory/ROM maps;
 `research` for cited gameplay baseline; `reports` for milestone/subsystem reports; `disassembly` for source;
 `ghidra` and `MesenCE` for integration; `scripts`/`tests` for reproducibility; `checkpoints` for archives.
+
+Stage 00A additions: 51 source-indexed claims, 8 map links and stage stubs, 29 experiment plans, 5 password vectors, 8 discrepancy records. No map-image inspection or gameplay validation.

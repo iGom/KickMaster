@@ -1,0 +1,9 @@
+level,cumulative_exp,max_hp_display,max_mp_display,manual_printed_page,pdf_page_1_based,rom_verified
+0,0,4,100,8,5,False
+1,1000,5,200,8,5,False
+2,2000,6,300,8,5,False
+3,3000,7,400,8,5,False
+4,4000,8,500,8,5,False
+5,5000,9,600,8,5,False
+6,6000,10,700,8,5,False
+7,7000,11,999,8,5,False

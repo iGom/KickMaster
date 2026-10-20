@@ -1,0 +1,30 @@
+id,subsystem,setup,observations_required,status,evidence_class_required,rom_address
+T01,progression,Collect each EXP size from identical controlled state,Record stat writes before/after actual collection; verify 10/30/50 and no gain on death alone,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T02,progression,Cross each decimal carry boundary and each level threshold,"Compare 9->10, 99->100, 999->1000; find per-digit representation and carry sites",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T03,progression,Level with partially depleted HP and MP,Log current and maximum values separately; check refill versus capacity-only change,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T04,progression,Collect at level 7 and near internal/display limits,"Watch saturation, wrap, threshold suppression and displayed versus stored EXP",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T05,player,Level 4 and 6; neutral B versus left+B and right+B,"Resolve D01 using state IDs, input bits, frame trace and animation",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T06,player,Execute all ten kicks from grounded and airborne states,"Record input edges, level gates, attack duration, movement and cancellation",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T07,combat,One target; one attack; disable unrelated contacts through controlled input only,Measure per-hit HP writes and collision intervals; count multi-hit damage,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T08,combat,Damage player across HP fraction boundaries,"Determine raw HP unit, damage source, recoil and invulnerability timer",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T09,pickups,Defeat same enemy repeatedly from same savestate and inputs,Separate RNG determinism from drop table weighting; log all three slots,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T10,pickups,Change only one input frame before same kill,Identify RNG update cadence and whether input or elapsed frames perturb it,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T11,pickups,Fill entity pool before killing an enemy,"Measure allocation failure, partial drops and replacement/despawn rules",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T12,pickups,"Compare ordinary enemy, miniboss, boss and observed 1-UP drop","Test count constraints, exclusions and whether selections are independent",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T13,pickups,Collect poison in air near other rewards,"Log damage, recoil, immunity and consequences for collection",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T14,spells,"Each spell at cost-1, cost and cost+1 MP",Resolve nominal cost and insufficient-MP behavior; keep selection and casting separate,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T15,spells,"Life Up spells at full HP and 1,2,3,4 HP below maximum","Verify clipping, casting permission and MP charge even when healing is clipped",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T16,spells,Harpy effect over at least 240 frames,"Log every MP deduction, input, frame counter and termination trigger; resolve D04",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T17,spells,Switch selection while shield/twin/flight is active,Distinguish cancel-on-selection from cancel-on-cast or timeout,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T18,spells,Cast mystery spell with and without nearby hidden objects,Observe object flags and rendering/collision changes without assuming the effect,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T19,stages,"Cross hidden reward, chest and boss reward triggers",Compare unlock writes and transition calls; check optional versus mandatory rewards,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T20,stages,Approach camera boundaries in both directions and vertical areas,"Record world/camera coordinates, scrolling clamps, activation and falling-death limits",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T21,password,"Generate, decode and restore multiple ordinary states",Record encoded bit fields/checksum and omitted fields; test round trips,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T22,password,Try special debug and level-selection vectors separately,Record special comparison path and flags; do not conflate with normal decoder,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T23,password,Restore WDFGQN 77TGJQ; exhaust attempts,Resolve displayed spare lives versus total lives D06,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T24,difficulty,Finish game and compare same enemy across restored quests,"Record reset/carry state, HP/AI/spawn differences and ending selection",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T25,system,Trace from RESET through first main loop,Record physical PRG bank for every instruction and every mapper write,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T26,system,Break on NMI and IRQ while switching PRG/CHR,"Test bank-select restoration, scratch RAM sharing and interrupt sequencing",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T27,graphics,"Decode CHR tiles with provenance, then correlate palette writes",Do not infer palette or object role from a grayscale tile alone,NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T28,audio,Invoke sound test and log APU writes,"Map command IDs, tracks, channel ownership and timing",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
+T29,rebuild,Assemble annotated ranges and preserve unexplored bytes,"Compare entire output, bank hashes and exact size; separate semantic byte count",NOT_RUN,EMULATOR or explicitly bounded CPU_TEST,UNRESOLVED
