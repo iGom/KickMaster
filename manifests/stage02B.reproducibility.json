@@ -1,0 +1,40 @@
+{
+  "stage": "02B",
+  "status": "PASS",
+  "archive_sha256": "397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b",
+  "archive_manifest_files": 177,
+  "fresh_extraction": "/workspace/scratch/073d0612ec00/repro-stage02B/kickmaster-ntscu-re",
+  "input_original_sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+  "build": {
+    "status": "PASS",
+    "comparison": "complete byte-for-byte comparison",
+    "requires_original_ROM": true,
+    "original": {
+      "size": 262160,
+      "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+      "sha1": "e329254370f4a66b110fee46988da585989a586e",
+      "crc32": "EABD6104"
+    },
+    "rebuilt": {
+      "size": 262160,
+      "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+      "sha1": "e329254370f4a66b110fee46988da585989a586e",
+      "crc32": "EABD6104"
+    },
+    "binary_reconstruction_bytes": 262160,
+    "interpretation": "Input-dependent mixed assembly/incbin scaffold. Exact reconstruction does not establish semantic understanding.",
+    "original_and_rebuilt_ROM_in_checkpoint": false
+  },
+  "command_returncode": 0,
+  "source_regeneration": "NOT_PERFORMED; archive source compiled directly",
+  "toolchain": "archived ca65/ld65; external original ROM only",
+  "current_session_validation": {
+    "checked_at_utc": "2026-10-20T12:33:45.017582+00:00",
+    "build_execution": "NOT_REPEATED; reused actual prior clean-extraction build recorded in this conversation",
+    "reason": "User requested no repetition of completed analysis/tests without concrete need",
+    "compiled_source_files_matched_to_verified_archive": 24,
+    "retained_rebuilt_ROM_compared_to_original": "PASS",
+    "retained_rebuilt_sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+    "new_CPU_tests_for_02B": "NOT_RUN"
+  }
+}

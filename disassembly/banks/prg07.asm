@@ -356,7 +356,260 @@ MultiplyScreenCountBy240:
     PLA                      ; AAD5 
     TAX                      ; AAD6 
     RTS                      ; AAD7 
-    .incbin "inputs/original.nes", $00EAE8, $0362 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $00EAE8, $0108 ; UNINTERPRETED preserved bytes
+
+; E01: Twelve Y/X byte pairs for menu cells; not world coordinates.
+MagicMenuIconCoordinates:
+    .byte $70,$48,$70,$68,$70,$88,$70,$A8,$90,$48,$90,$68,$90,$88,$90,$A8
+    .byte $B0,$48,$B0,$68,$B0,$88,$B0,$A8
+    .incbin "inputs/original.nes", $00EC08, $003D ; UNINTERPRETED preserved bytes
+
+; E02: Twelve-cell order05,00,08,0B,09,03,01,06,04,0A,02,07; permutation of acquired-effect bits.
+MagicMenuCellToEffect:
+    .byte $05,$00,$08,$0B,$09,$03,$01,$06,$04,$0A,$02,$07
+    .incbin "inputs/original.nes", $00EC51, $0001 ; UNINTERPRETED preserved bytes
+
+; E03: Locate current cell, service frame and cursor, optional level cycle; Start exits before A selection, A requests selection, redraw then repeat. Frame/graphics callees not all reviewed.
+RunMagicSelectionMenu:
+    JSR a:$aeb6              ; AC42 
+    JSR a:$c74c              ; AC45 
+    JSR a:$aaff              ; AC48 
+    JSR a:$acbd              ; AC4B 
+    JSR a:$ad03              ; AC4E 
+    LDA $1f                  ; AC51 
+    AND #$10                 ; AC53 
+    BNE $ac6d                ; AC55 
+    LDA $1f                  ; AC57 
+    AND #$80                 ; AC59 
+    BEQ $ac64                ; AC5B 
+    LDA #$37                 ; AC5D 
+    STA $01                  ; AC5F 
+    JSR a:$ad65              ; AC61 
+    JSR a:$ad21              ; AC64 
+    JSR a:$c74f              ; AC67 
+    JMP a:$ac45              ; AC6A 
+    LDA #$00                 ; AC6D 
+    STA $1f                  ; AC6F 
+    JSR a:$c74c              ; AC71 
+    RTS                      ; AC74 
+
+; E04: Twelve byte pairs used as cursor origin by AD21; not CPU pointers.
+MagicCursorCoordinates:
+    .byte $7F,$4C,$7F,$6C,$7F,$8C,$7F,$AC,$9F,$4C,$9F,$6C,$9F,$8C,$9F,$AC
+    .byte $BF,$4C,$BF,$6C,$BF,$8C,$BF,$AC
+
+; E05: Twelve four-byte effect-indexed sprite arguments for selected-cell rendering.
+MagicSelectionGlyphs:
+    .byte $BF,$8B,$85,$BF,$BF,$9D,$85,$BF,$95,$85,$8F,$9F,$BF,$87,$85,$BF
+    .byte $BF,$97,$85,$BF,$BF,$BF,$97,$BF,$BF,$BF,$99,$BF,$BF,$87,$85,$BF
+    .byte $BF,$87,$85,$BF,$BF,$3B,$3D,$BF,$BF,$97,$85,$BF,$BF,$87,$85,$BF
+
+; E06: 12-cell4-column grid; Right/Left/Down/Up priority from pressed1F; rejected first direction does not fall back. Restore1F, sound39 only on move.
+MoveMagicMenuCursor:
+    LDY $1f                  ; ACBD 
+    LSR $1f                  ; ACBF First pressed direction wins even when blocked at an edge.
+    BCS $acdb                ; ACC1 
+    LSR $1f                  ; ACC3 
+    BCS $ace7                ; ACC5 
+    LSR $1f                  ; ACC7 
+    BCS $acf1                ; ACC9 
+    LSR $1f                  ; ACCB 
+    BCC $ad00                ; ACCD 
+    LDA $2c                  ; ACCF 
+    SEC                      ; ACD1 
+    SBC #$04                 ; ACD2 
+    BCC $ad00                ; ACD4 
+    STA $2c                  ; ACD6 
+    JMP a:$acfc              ; ACD8 
+    LDA $2c                  ; ACDB 
+    AND #$03                 ; ACDD 
+    CMP #$03                 ; ACDF 
+    BEQ $ad00                ; ACE1 
+    INC $2c                  ; ACE3 
+    BNE $acfc                ; ACE5 
+    LDA $2c                  ; ACE7 
+    AND #$03                 ; ACE9 
+    BEQ $ad00                ; ACEB 
+    DEC $2c                  ; ACED 
+    BPL $acfc                ; ACEF 
+    LDA $2c                  ; ACF1 
+    CMP #$08                 ; ACF3 
+    BCS $ad00                ; ACF5 
+    CLC                      ; ACF7 
+    ADC #$04                 ; ACF8 
+    STA $2c                  ; ACFA 
+    LDA #$39                 ; ACFC 
+    STA $01                  ; ACFE 
+    STY $1f                  ; AD00 
+    RTS                      ; AD02 
+
+; E07: Pressed B and01A5 nonzero: D3=(old&F0)|((old+1)&7), dropping bit3; does not recompute capacities.
+CycleLevelUnderBypassFlag:
+    LDA $1f                  ; AD03 
+    AND #$40                 ; AD05 
+    BNE $ad0a                ; AD07 
+    RTS                      ; AD09 
+    LDA a:$01a5              ; AD0A 
+    BEQ $ad20                ; AD0D 
+    LDA $d3                  ; AD0F 
+    AND #$f0                 ; AD11 
+    STA $2d                  ; AD13 
+    LDA $d3                  ; AD15 
+    CLC                      ; AD17 
+    ADC #$01                 ; AD18 
+    AND #$07                 ; AD1A Mask07 drops old bit3; high nibble is restored separately.
+    ORA $2d                  ; AD1C 
+    STA $d3                  ; AD1E 
+    RTS                      ; AD20 
+
+; E08: Draw cursor and four selected-effect glyphs only when acquired bit is set; calls sprite serviceC755.
+DrawMagicMenuCursor:
+    LDA $2c                  ; AD21 
+    ASL A                    ; AD23 
+    TAY                      ; AD24 
+    LDA a:$ac75,Y            ; AD25 
+    STA $22                  ; AD28 
+    LDA a:$ac76,Y            ; AD2A 
+    STA $23                  ; AD2D 
+    LDA #$a1                 ; AD2F 
+    LDX #$03                 ; AD31 
+    JSR a:$c755              ; AD33 
+    LDA $22                  ; AD36 
+    CLC                      ; AD38 
+    ADC #$e0                 ; AD39 
+    STA $22                  ; AD3B 
+    LDA $23                  ; AD3D 
+    CLC                      ; AD3F 
+    ADC #$ec                 ; AD40 
+    STA $23                  ; AD42 
+    LDX $2c                  ; AD44 
+    JSR a:$aea0              ; AD46 
+    BCC $ad64                ; AD49 
+    LDA #$03                 ; AD4B 
+    STA $3c                  ; AD4D 
+    LDY $2c                  ; AD4F 
+    LDA a:$ac35,Y            ; AD51 
+    ASL A                    ; AD54 
+    ASL A                    ; AD55 
+    TAY                      ; AD56 
+    LDA a:$ac8d,Y            ; AD57 
+    LDX #$03                 ; AD5A 
+    JSR a:$c755              ; AD5C 
+    INY                      ; AD5F 
+    DEC $3c                  ; AD60 
+    BPL $ad57                ; AD62 
+    RTS                      ; AD64 
+
+; E09: Locked selection returns unchanged; acquired cell writes06BD, animates icon toward HUD in16 update steps and invokes AE3A. Frame/draw callees bounded separately.
+CommitMagicMenuSelection:
+    LDA $2c                  ; AD65 
+    PHA                      ; AD67 
+    LDX $2c                  ; AD68 
+    JSR a:$aea0              ; AD6A 
+    BCS $ad73                ; AD6D 
+    PLA                      ; AD6F 
+    STA $2c                  ; AD70 
+    RTS                      ; AD72 
+    LDA #$00                 ; AD73 
+    STA $32                  ; AD75 
+    STA $33                  ; AD77 
+    LDX $2c                  ; AD79 
+    LDA a:$ac35,X            ; AD7B 
+    STA a:$06bd              ; AD7E 
+    TXA                      ; AD81 
+    ASL A                    ; AD82 
+    TAX                      ; AD83 
+    LDA #$68                 ; AD84 
+    SEC                      ; AD86 
+    SBC a:$abe1,X            ; AD87 
+    STA $30                  ; AD8A 
+    BPL $ad90                ; AD8C 
+    DEC $32                  ; AD8E 
+    ASL $30                  ; AD90 
+    ROL $32                  ; AD92 
+    ASL $30                  ; AD94 
+    ROL $32                  ; AD96 
+    ASL $30                  ; AD98 
+    ROL $32                  ; AD9A 
+    ASL $30                  ; AD9C 
+    ROL $32                  ; AD9E 
+    LDA #$d0                 ; ADA0 
+    SEC                      ; ADA2 
+    SBC a:$abe0,X            ; ADA3 
+    STA $31                  ; ADA6 
+    BPL $adac                ; ADA8 
+    DEC $33                  ; ADAA 
+    ASL $31                  ; ADAC 
+    ROL $33                  ; ADAE 
+    ASL $31                  ; ADB0 
+    ROL $33                  ; ADB2 
+    ASL $31                  ; ADB4 
+    ROL $33                  ; ADB6 
+    ASL $31                  ; ADB8 
+    ROL $33                  ; ADBA 
+    LDA a:$abe1,X            ; ADBC 
+    STA $2c                  ; ADBF 
+    LDA a:$abe0,X            ; ADC1 
+    STA $2d                  ; ADC4 
+    LDA #$00                 ; ADC6 
+    STA $2e                  ; ADC8 
+    STA $2f                  ; ADCA 
+    LDA #$10                 ; ADCC 
+    STA $43                  ; ADCE 
+    JSR a:$c74c              ; ADD0 
+    LDA #$00                 ; ADD3 
+    STA $99                  ; ADD5 
+    JSR a:$aaff              ; ADD7 
+    LDA $2c                  ; ADDA 
+    PHA                      ; ADDC 
+    JSR a:$aeb6              ; ADDD 
+    JSR a:$ad21              ; ADE0 
+    LDA $2c                  ; ADE3 
+    ASL A                    ; ADE5 
+    ASL A                    ; ADE6 
+    ASL A                    ; ADE7 
+    TAX                      ; ADE8 
+    PLA                      ; ADE9 
+    STA $2c                  ; ADEA 
+    LDA $2e                  ; ADEC 
+    CLC                      ; ADEE 
+    ADC $30                  ; ADEF 
+    STA $2e                  ; ADF1 
+    LDA $2c                  ; ADF3 
+    ADC $32                  ; ADF5 
+    STA $2c                  ; ADF7 
+    LDA $2f                  ; ADF9 
+    CLC                      ; ADFB 
+    ADC $31                  ; ADFC 
+    STA $2f                  ; ADFE 
+    LDA $2d                  ; AE00 
+    ADC $33                  ; AE02 
+    STA $2d                  ; AE04 
+    LDA $2c                  ; AE06 
+    STA a:$0203,X            ; AE08 
+    LDA $2d                  ; AE0B 
+    STA a:$0200,X            ; AE0D 
+    LDA $2c                  ; AE10 
+    CLC                      ; AE12 
+    ADC #$08                 ; AE13 
+    STA a:$0207,X            ; AE15 
+    LDA $2d                  ; AE18 
+    STA a:$0204,X            ; AE1A 
+    JSR a:$c74f              ; AE1D 
+    DEC $43                  ; AE20 
+    BNE $add0                ; AE22 
+    LDA a:$06bd              ; AE24 
+    ASL A                    ; AE27 
+    ASL A                    ; AE28 
+    ASL A                    ; AE29 
+    TAX                      ; AE2A 
+    LDA #$f1                 ; AE2B 
+    STA a:$0200,X            ; AE2D 
+    STA a:$0204,X            ; AE30 
+    JSR a:$ae3a              ; AE33 
+    PLA                      ; AE36 
+    STA $2c                  ; AE37 
+    RTS                      ; AE39 
 
 ; D01: Clear three reserved active flags; 06BD selects encoded type; initialize global slot3, flags88/8C, player position and zero velocities; refresh HUD icon.
 InitializeSelectedSpellObject:
@@ -401,7 +654,31 @@ InitializeSelectedSpellObject:
 ; D02: Thirteen bytes for selector00..0C; 00/01 map70/72 healing handlers,0C disables slot3. Full spell identities unresolved.
 SelectedSpellObjectTypes:
     .byte $70,$72,$74,$77,$78,$7A,$7C,$7E,$80,$82,$84,$86,$00
-    .incbin "inputs/original.nes", $00EEB0, $0026 ; UNINTERPRETED preserved bytes
+
+; E10: Copy06BE/BF into scratch3A/B, translate cell viaAC35, shift to carry; carry equals acquired bit.
+TestMagicMenuCellOwned:
+    LDA a:$06be              ; AEA0 
+    STA $3a                  ; AEA3 
+    LDA a:$06bf              ; AEA5 
+    STA $3b                  ; AEA8 
+    LDA a:$ac35,X            ; AEAA 
+    TAX                      ; AEAD 
+    LSR $3b                  ; AEAE 
+    ROR $3a                  ; AEB0 
+    DEX                      ; AEB2 
+    BPL $aeae                ; AEB3 
+    RTS                      ; AEB5 
+
+; E11: Reverse-search cells11..1; match returns index, unmatched selection including0C falls back to cell0.
+FindSelectedMagicMenuCell:
+    LDX #$0b                 ; AEB6 
+    LDA a:$ac35,X            ; AEB8 
+    CMP a:$06bd              ; AEBB 
+    BEQ $aec3                ; AEBE 
+    DEX                      ; AEC0 
+    BNE $aeb8                ; AEC1 
+    STX $2c                  ; AEC3 
+    RTS                      ; AEC5 
 
 ; D03: Save level, current HP, MP, EXP and two flag bytes in eleven-byte block06C2..06CC.
 SnapshotPlayerProgression:

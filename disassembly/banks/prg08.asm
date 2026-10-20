@@ -336,7 +336,79 @@ CollectDamageHazard:
     LDA #$04                 ; A7D5 
     JMP a:$c76d              ; A7D7 
     RTS                      ; A7DA 
-    .incbin "inputs/original.nes", $0107EB, $009D ; UNINTERPRETED preserved bytes
+
+; E12: Remember pickup inD0, set acquired bit, audio00=2D/01=0,CF0,CEbit0clear,CD=CC/facing; move pickup to playerX±5,playerY-26hex. Does not immediately deactivate or change06BD.
+CollectMagicAndBeginPresentation:
+    STY $d0                  ; A7DB 
+    JSR a:$a831              ; A7DD 
+    LDA #$2d                 ; A7E0 
+    STA $00                  ; A7E2 
+    LDA #$00                 ; A7E4 
+    STA $cf                  ; A7E6 
+    STA $01                  ; A7E8 
+    LDA a:$00ce              ; A7EA 
+    AND #$fe                 ; A7ED 
+    STA a:$00ce              ; A7EF 
+    LDA #$00                 ; A7F2 
+    STA $23                  ; A7F4 
+    LDA $cd                  ; A7F6 
+    AND #$01                 ; A7F8 
+    ORA #$cc                 ; A7FA 
+    STA $cd                  ; A7FC 
+    LSR A                    ; A7FE 
+    BCS $a806                ; A7FF 
+    LDA #$05                 ; A801 
+    JMP a:$a808              ; A803 
+    LDA #$fb                 ; A806 
+    STA $22                  ; A808 
+    BPL $a80e                ; A80A 
+    DEC $23                  ; A80C 
+    LDA #$26                 ; A80E 
+    STA $24                  ; A810 
+    LDA $cb                  ; A812 
+    CLC                      ; A814 
+    ADC $22                  ; A815 
+    STA a:$051b,Y            ; A817 
+    LDA $cc                  ; A81A 
+    ADC $23                  ; A81C 
+    STA a:$052f,Y            ; A81E 
+    LDA $c9                  ; A821 
+    SEC                      ; A823 
+    SBC $24                  ; A824 
+    STA a:$04f3,Y            ; A826 
+    LDA $ca                  ; A829 
+    SBC #$00                 ; A82B 
+    STA a:$0507,Y            ; A82D 
+    RTS                      ; A830 
+
+; E13: For type50..67, OR one of12 little-endian bit masks into06BE/BF;04E3=effectID; fill06C0 if exactly0C,otherwise overwrite06C1. Duplicate acquisition not suppressed.
+UnlockMagicEffect:
+    LDA a:$056b,Y            ; A831 
+    SEC                      ; A834 
+    SBC #$50                 ; A835 
+    AND #$fe                 ; A837 
+    TAX                      ; A839 
+    LDA a:$a860,X            ; A83A 
+    ORA a:$06be              ; A83D 
+    STA a:$06be              ; A840 
+    LDA a:$a861,X            ; A843 
+    ORA a:$06bf              ; A846 
+    STA a:$06bf              ; A849 
+    TXA                      ; A84C 
+    LSR A                    ; A84D 
+    STA a:$04e3              ; A84E 
+    LDX a:$06c0              ; A851 06C0/06C1 are two pending icon slots; duplicates are not checked here.
+    CPX #$0c                 ; A854 
+    BNE $a85c                ; A856 
+    STA a:$06c0              ; A858 
+    RTS                      ; A85B 
+    STA a:$06c1              ; A85C 
+    RTS                      ; A85F 
+
+; E14: Twelve little-endian masks1<<effectID, bits0..11; internalID=(type&FE-50)/2.
+MagicUnlockBitMasks:
+    .byte $01,$00,$02,$00,$04,$00,$08,$00,$10,$00,$20,$00,$40,$00,$80,$00
+    .byte $00,$01,$00,$02,$00,$04,$00,$08
 
 ; D24: Allocate collectible-relative slot; if available, type96 active80 at player position with velocityY=FD and velocityX=0.
 SpawnLevelUpObject:
@@ -747,7 +819,93 @@ FinishPlayerDeathDelay:
     SEC                      ; BBA9 
     ROR $ce                  ; BBAA 
     RTS                      ; BBAC 
-    .incbin "inputs/original.nes", $011BBD, $0246 ; UNINTERPRETED preserved bytes
+
+; E15: SetD3bit80, clear collected-object flag20, incrementCF; table indexedCF>>3 choosesCC/CE/D0 states. On terminal0 clearCF and pickup then jumpBD56.
+AdvanceMagicAcquisitionAnimation:
+    ASL $d3                  ; BBAD 
+    SEC                      ; BBAF 
+    ROR $d3                  ; BBB0 
+    LDY $d0                  ; BBB2 
+    LDA a:$057f,Y            ; BBB4 
+    AND #$df                 ; BBB7 
+    STA a:$057f,Y            ; BBB9 
+    INC $cf                  ; BBBC 
+    LDA $cf                  ; BBBE 
+    LSR A                    ; BBC0 
+    LSR A                    ; BBC1 
+    LSR A                    ; BBC2 
+    TAY                      ; BBC3 
+    LDA $cd                  ; BBC4 
+    AND #$01                 ; BBC6 
+    ORA a:$bbdc,Y            ; BBC8 
+    STA $cd                  ; BBCB 
+    BMI $bbdb                ; BBCD 
+    LDY $d0                  ; BBCF 
+    LDA #$00                 ; BBD1 
+    STA $cf                  ; BBD3 
+    STA a:$057f,Y            ; BBD5 
+    JMP a:$bd56              ; BBD8 
+    RTS                      ; BBDB 
+
+; E16: Thirteen states CC CE D0 D0 D0 CE CC CC CC CC CC CC 00; startingCF0 reaches presentation on96th invocation.
+MagicAcquisitionAnimationStates:
+    .byte $CC,$CE,$D0,$D0,$D0,$CE,$CC,$CC,$CC,$CC,$CC,$CC,$00
+    .incbin "inputs/original.nes", $011BF9, $016D ; UNINTERPRETED preserved bytes
+
+; E17: Fade, far-call07:A0BD with layout7, mapR6=3 and read effect description pointer; wait Start/A then fade and use32-entry routing table. Presentation/NMI/text pipeline not fully executed.
+PresentAcquiredMagicAndRoute:
+    JSR a:$c788              ; BD56 
+    LDA #$bd                 ; BD59 
+    STA a:$04ea              ; BD5B 
+    LDA #$a0                 ; BD5E 
+    STA a:$04eb              ; BD60 
+    LDA #$07                 ; BD63 
+    STA a:$04ec              ; BD65 
+    LDA #$07                 ; BD68 
+    STA a:$04e2              ; BD6A 
+    JSR a:$f4ca              ; BD6D 
+    LDA #$03                 ; BD70 
+    LDX #$06                 ; BD72 
+    JSR a:$c76a              ; BD74 
+    LDA a:$04e3              ; BD77 
+    ASL A                    ; BD7A 
+    TAX                      ; BD7B 
+    LDA a:$bddb,X            ; BD7C 
+    STA $3a                  ; BD7F 
+    LDA a:$bddc,X            ; BD81 
+    STA $3b                  ; BD84 
+    LDA #$00                 ; BD86 
+    STA $38                  ; BD88 
+    JSR a:$c782              ; BD8A 
+    LDA #$3e                 ; BD8D 
+    STA $00                  ; BD8F 
+    LDX #$3c                 ; BD91 
+    JSR a:$f6d3              ; BD93 
+    JSR a:$c74c              ; BD96 
+    LDA $1f                  ; BD99 
+    AND #$90                 ; BD9B 
+    BNE $bda7                ; BD9D 
+    LDA #$03                 ; BD9F 
+    JSR a:$f60b              ; BDA1 
+    JMP a:$bd96              ; BDA4 
+    JSR a:$c788              ; BDA7 
+    LDY $9a                  ; BDAA 
+    LDA a:$bdbb,Y            ; BDAC 
+    CMP #$ff                 ; BDAF 
+    BEQ $bdb8                ; BDB1 
+    STA $9a                  ; BDB3 
+    JMP a:$c77f              ; BDB5 
+    JMP a:$c79d              ; BDB8 
+
+; E18: 32 scene routes: FF tails scene-advance serviceC79D; other bytes replace9A then tail restartC77F.
+MagicAcquisitionSceneRoutes:
+    .byte $01,$00,$03,$00,$05,$00,$00,$FF,$00,$00,$FF,$FF,$0D,$00,$FF,$00
+    .byte $00,$00,$00,$FF,$15,$00,$FF,$FF,$00,$00,$00,$FF,$00,$00,$00,$00
+
+; E19: Twelve little-endian pointers selected by04E3; explicit R6=03 maps text in8000 window. Text payload semantics unreviewed.
+MagicDescriptionPointers:
+    .byte $00,$80,$49,$80,$8F,$80,$CD,$80,$21,$81,$7C,$81,$DD,$81,$25,$82
+    .byte $6B,$82,$C1,$82,$EE,$82,$3C,$83
 
 ; C53: Five CHR bytes for alternate family; precise gameplay activation not assigned.
 PlayerAlternateChrTable:

@@ -1,0 +1,17 @@
+held_direction_nibble,aim_target,projectile_velocity_x,projectile_velocity_y,zero_nibble_caveat,source_bank,source_cpu,source_bank_offset,source_prg_offset,source_file_offset,source_mapping_condition,velocity_x_source_cpu,velocity_y_source_cpu
+0x00,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B2,0x17B2,0x0137B2,0x0137C2,MMC3 PRG mode 0; R7=09 at A000,0xB727,0xB737
+0x01,2,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B3,0x17B3,0x0137B3,0x0137C3,MMC3 PRG mode 0; R7=09 at A000,0xB728,0xB738
+0x02,6,-8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B4,0x17B4,0x0137B4,0x0137C4,MMC3 PRG mode 0; R7=09 at A000,0xB729,0xB739
+0x03,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B5,0x17B5,0x0137B5,0x0137C5,MMC3 PRG mode 0; R7=09 at A000,0xB72A,0xB73A
+0x04,4,0,8,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B6,0x17B6,0x0137B6,0x0137C6,MMC3 PRG mode 0; R7=09 at A000,0xB72B,0xB73B
+0x05,8,6,6,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B7,0x17B7,0x0137B7,0x0137C7,MMC3 PRG mode 0; R7=09 at A000,0xB72C,0xB73C
+0x06,0,-6,6,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B8,0x17B8,0x0137B8,0x0137C8,MMC3 PRG mode 0; R7=09 at A000,0xB72D,0xB73D
+0x07,3,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7B9,0x17B9,0x0137B9,0x0137C9,MMC3 PRG mode 0; R7=09 at A000,0xB72E,0xB73E
+0x08,4,0,-8,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BA,0x17BA,0x0137BA,0x0137CA,MMC3 PRG mode 0; R7=09 at A000,0xB72F,0xB73F
+0x09,1,6,-6,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BB,0x17BB,0x0137BB,0x0137CB,MMC3 PRG mode 0; R7=09 at A000,0xB730,0xB740
+0x0A,7,-6,-6,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BC,0x17BC,0x0137BC,0x0137CC,MMC3 PRG mode 0; R7=09 at A000,0xB731,0xB741
+0x0B,2,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BD,0x17BD,0x0137BD,0x0137CD,MMC3 PRG mode 0; R7=09 at A000,0xB732,0xB742
+0x0C,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BE,0x17BE,0x0137BE,0x0137CE,MMC3 PRG mode 0; R7=09 at A000,0xB733,0xB743
+0x0D,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7BF,0x17BF,0x0137BF,0x0137CF,MMC3 PRG mode 0; R7=09 at A000,0xB734,0xB744
+0x0E,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7C0,0x17C0,0x0137C0,0x0137D0,MMC3 PRG mode 0; R7=09 at A000,0xB735,0xB745
+0x0F,4,8,0,"runtime substitutes1(right)/2(left) based on facing, not literal row0",09,0xB7C1,0x17C1,0x0137C1,0x0137D1,MMC3 PRG mode 0; R7=09 at A000,0xB736,0xB746

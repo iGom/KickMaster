@@ -101,9 +101,9 @@ PlayerStateFamily0,08,0xAD36,98,CD&FE byte offset; A selects family,08,0xB2B6,08
 PlayerStateFamily0,08,0xAD36,99,CD&FE byte offset; A selects family,08,0xB2B8,08,0xBB6E,UpdatePlayerHurtReaction
 PlayerStateFamily0,08,0xAD36,100,CD&FE byte offset; A selects family,08,0xB2BA,08,0xBB6E,UpdatePlayerHurtReaction
 PlayerStateFamily0,08,0xAD36,101,CD&FE byte offset; A selects family,08,0xB2BC,08,0xBB99,FinishPlayerDeathDelay
-PlayerStateFamily0,08,0xAD36,102,CD&FE byte offset; A selects family,08,0xB2BE,08,0xBBAD,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,103,CD&FE byte offset; A selects family,08,0xB2C0,08,0xBBAD,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,104,CD&FE byte offset; A selects family,08,0xB2C2,08,0xBBAD,UNREVIEWED
+PlayerStateFamily0,08,0xAD36,102,CD&FE byte offset; A selects family,08,0xB2BE,08,0xBBAD,AdvanceMagicAcquisitionAnimation
+PlayerStateFamily0,08,0xAD36,103,CD&FE byte offset; A selects family,08,0xB2C0,08,0xBBAD,AdvanceMagicAcquisitionAnimation
+PlayerStateFamily0,08,0xAD36,104,CD&FE byte offset; A selects family,08,0xB2C2,08,0xBBAD,AdvanceMagicAcquisitionAnimation
 PlayerStateFamily0,08,0xAD36,105,CD&FE byte offset; A selects family,08,0xB2C4,08,0xBBE9,UNREVIEWED
 PlayerStateFamily0,08,0xAD36,106,CD&FE byte offset; A selects family,08,0xB2C6,08,0xBBE9,UNREVIEWED
 PlayerStateFamily0,08,0xAD36,107,CD&FE byte offset; A selects family,08,0xB2C8,08,0xBBE9,UNREVIEWED
@@ -145,37 +145,49 @@ D_Collectibles,08,0xA665,4,"056B,Y in40..6F; even type",08,0xA671,08,0xA6B4,EXP 
 D_Collectibles,08,0xA665,5,"056B,Y in40..6F; even type",08,0xA673,08,0xA6BD,EXP +50 decimal
 D_Collectibles,08,0xA665,6,"056B,Y in40..6F; even type",08,0xA675,08,0xA7A3,score +100 decimal
 D_Collectibles,08,0xA665,7,"056B,Y in40..6F; even type",08,0xA677,08,0xA7B5,scene transition from object field
-D_Collectibles,08,0xA665,8,"056B,Y in40..6F; even type",08,0xA679,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,9,"056B,Y in40..6F; even type",08,0xA67B,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,10,"056B,Y in40..6F; even type",08,0xA67D,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,11,"056B,Y in40..6F; even type",08,0xA67F,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,12,"056B,Y in40..6F; even type",08,0xA681,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,13,"056B,Y in40..6F; even type",08,0xA683,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,14,"056B,Y in40..6F; even type",08,0xA685,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,15,"056B,Y in40..6F; even type",08,0xA687,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,16,"056B,Y in40..6F; even type",08,0xA689,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,17,"056B,Y in40..6F; even type",08,0xA68B,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,18,"056B,Y in40..6F; even type",08,0xA68D,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
-D_Collectibles,08,0xA665,19,"056B,Y in40..6F; even type",08,0xA68F,08,0xA7DB,UNREVIEWED shared handler; no spell identity assigned
+D_Collectibles,08,0xA665,8,"056B,Y in40..6F; even type",08,0xA679,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,9,"056B,Y in40..6F; even type",08,0xA67B,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,10,"056B,Y in40..6F; even type",08,0xA67D,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,11,"056B,Y in40..6F; even type",08,0xA67F,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,12,"056B,Y in40..6F; even type",08,0xA681,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,13,"056B,Y in40..6F; even type",08,0xA683,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,14,"056B,Y in40..6F; even type",08,0xA685,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,15,"056B,Y in40..6F; even type",08,0xA687,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,16,"056B,Y in40..6F; even type",08,0xA689,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,17,"056B,Y in40..6F; even type",08,0xA68B,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,18,"056B,Y in40..6F; even type",08,0xA68D,08,0xA7DB,CollectMagicAndBeginPresentation
+D_Collectibles,08,0xA665,19,"056B,Y in40..6F; even type",08,0xA68F,08,0xA7DB,CollectMagicAndBeginPresentation
 D_Collectibles,08,0xA665,20,"056B,Y in40..6F; even type",08,0xA691,08,0xA7CB,deactivate then damage4 raw
 D_Collectibles,08,0xA665,21,"056B,Y in40..6F; even type",08,0xA693,08,0xA699,extra attempt unless exactly10
 D_Collectibles,08,0xA665,22,"056B,Y in40..6F; even type",08,0xA695,08,0xA7CE,damage4 raw without initial deactivation
 D_Collectibles,08,0xA665,23,"056B,Y in40..6F; even type",08,0xA697,08,0xA7CB,deactivate then damage4 raw
 D_SelectedSpellObjects,09,0xBF65,0,"0568,X&FE; selected effect global slot3",09,0xABF7,09,0xB6BA,heal2cells
 D_SelectedSpellObjects,09,0xBF65,1,"0568,X&FE; selected effect global slot3",09,0xABF9,09,0xB6CD,heal4cells
-D_SelectedSpellObjects,09,0xBF65,2,"0568,X&FE; selected effect global slot3",09,0xABFB,09,0xBA3B,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,3,"0568,X&FE; selected effect global slot3",09,0xABFD,09,0xB869,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,4,"0568,X&FE; selected effect global slot3",09,0xABFF,09,0xBA75,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,5,"0568,X&FE; selected effect global slot3",09,0xAC01,09,0xB6DF,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,6,"0568,X&FE; selected effect global slot3",09,0xAC03,09,0xB7D4,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,7,"0568,X&FE; selected effect global slot3",09,0xAC05,09,0xB88E,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,8,"0568,X&FE; selected effect global slot3",09,0xAC07,09,0xB8B7,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,9,"0568,X&FE; selected effect global slot3",09,0xAC09,09,0xB830,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,10,"0568,X&FE; selected effect global slot3",09,0xAC0B,09,0xB8F0,UNREVIEWED
-D_SelectedSpellObjects,09,0xBF65,11,"0568,X&FE; selected effect global slot3",09,0xAC0D,09,0xB90C,UNREVIEWED
+D_SelectedSpellObjects,09,0xBF65,2,"0568,X&FE; selected effect global slot3",09,0xABFB,09,0xBA3B,ToggleAndRechargeFlight
+D_SelectedSpellObjects,09,0xBF65,3,"0568,X&FE; selected effect global slot3",09,0xABFD,09,0xB869,StartOverheadLightning
+D_SelectedSpellObjects,09,0xBF65,4,"0568,X&FE; selected effect global slot3",09,0xABFF,09,0xBA75,StartThreeColumnLightning
+D_SelectedSpellObjects,09,0xBF65,5,"0568,X&FE; selected effect global slot3",09,0xAC01,09,0xB6DF,CastDirectionalMagicProjectile
+D_SelectedSpellObjects,09,0xBF65,6,"0568,X&FE; selected effect global slot3",09,0xAC03,09,0xB7D4,CastHorizontalMagicWave
+D_SelectedSpellObjects,09,0xBF65,7,"0568,X&FE; selected effect global slot3",09,0xAC05,09,0xB88E,StartQuakeAndUpdateScrollPhase
+D_SelectedSpellObjects,09,0xBF65,8,"0568,X&FE; selected effect global slot3",09,0xAC07,09,0xB8B7,StartTerrainProtectionTimer
+D_SelectedSpellObjects,09,0xBF65,9,"0568,X&FE; selected effect global slot3",09,0xAC09,09,0xB830,ToggleObjectAttributeEffect
+D_SelectedSpellObjects,09,0xBF65,10,"0568,X&FE; selected effect global slot3",09,0xAC0B,09,0xB8F0,StartShieldEffect
+D_SelectedSpellObjects,09,0xBF65,11,"0568,X&FE; selected effect global slot3",09,0xAC0D,09,0xB90C,StartDecoyEffect
 D_CollisionPhases,08,0xA024,0,A1 low phase0..5; bitsC0 skip,08,0xA028 + high at 0xA02E,08,0xA668,phase entry; downstream code may remain unreviewed
 D_CollisionPhases,08,0xA024,1,A1 low phase0..5; bitsC0 skip,08,0xA029 + high at 0xA02F,08,0xA03D,phase entry; downstream code may remain unreviewed
 D_CollisionPhases,08,0xA024,2,A1 low phase0..5; bitsC0 skip,08,0xA02A + high at 0xA030,08,0xA034,phase entry; downstream code may remain unreviewed
 D_CollisionPhases,08,0xA024,3,A1 low phase0..5; bitsC0 skip,08,0xA02B + high at 0xA031,08,0xA046,phase entry; downstream code may remain unreviewed
 D_CollisionPhases,08,0xA024,4,A1 low phase0..5; bitsC0 skip,08,0xA02C + high at 0xA032,08,0xA04F,phase entry; downstream code may remain unreviewed
 D_CollisionPhases,08,0xA024,5,A1 low phase0..5; bitsC0 skip,08,0xA02D + high at 0xA033,08,0xA055,phase entry; downstream code may remain unreviewed
+E_MagicContinuations,09,0xBF65,0,"0568,X&FE equals0x88",09,0xAC0F,09,0xB930,UpdateDecoyLifetimeAndBounds
+E_MagicContinuations,09,0xBF65,1,"0568,X&FE equals0x8A",09,0xAC11,09,0xB964,UpdateShieldAnchorOrFinish
+E_MagicContinuations,09,0xBF65,2,"0568,X&FE equals0x8C",09,0xAC13,09,0xB972,RaiseLightningToCameraTop
+E_MagicContinuations,09,0xBF65,3,"0568,X&FE equals0x8E",09,0xAC15,09,0xB991,SpawnOverheadLightningBolts
+E_MagicContinuations,09,0xBF65,4,"0568,X&FE equals0x90",09,0xAC17,09,0xB9E1,HoldAndLowerLightning
+E_MagicContinuations,09,0xBF65,5,"0568,X&FE equals0x92",09,0xAC19,09,0xB9E1,HoldAndLowerLightning
+E_MagicContinuations,09,0xBF65,6,"0568,X&FE equals0x94",09,0xAC1B,09,0xBA19,FinishLightningNearPlayer
+E_MagicContinuations,09,0xBF65,7,"0568,X&FE equals0x96",09,0xAC1D,09,0xB570,UNREVIEWED
+E_MagicContinuations,09,0xBF65,8,"0568,X&FE equals0x98",09,0xAC1F,09,0xBAC7,UpdateLightningColumn
+E_MagicContinuations,09,0xBF65,9,"0568,X&FE equals0x9A",09,0xAC21,09,0xBAC7,UpdateLightningColumn
+E_MagicContinuations,09,0xBF65,10,"0568,X&FE equals0x9C",09,0xAC23,09,0xBAC7,UpdateLightningColumn
+E_MagicContinuations,09,0xBF65,11,"0568,X&FE equals0x9E",09,0xAC25,09,0xBAC7,UpdateLightningColumn

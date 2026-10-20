@@ -736,7 +736,14 @@ SceneIrqProfiles:
     .byte $71,$00,$F0,$00,$00,$00,$83,$00,$0D,$00,$3B,$00,$F0,$01,$AF,$01
     .byte $1E,$00,$F0,$00,$3D,$02,$50,$01,$3E,$00,$F0,$00,$00,$00,$61,$00
     .byte $3F,$00,$2C,$00,$F0,$01
-    .incbin "inputs/original.nes", $01FEEE, $004C ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01FEEE, $0018 ; UNINTERPRETED preserved bytes
+
+; E51: Thirteen four-byte icon argument groups; two A/X pairs consumed by menu sprite calls; last group used for locked icons.
+MagicMenuIconSpriteArguments:
+    .byte $01,$01,$11,$01,$03,$01,$13,$01,$0B,$02,$1B,$02,$23,$00,$33,$00
+    .byte $25,$00,$35,$00,$21,$00,$31,$00,$0F,$00,$1F,$00,$27,$00,$37,$00
+    .byte $05,$01,$15,$01,$0D,$02,$1D,$02,$07,$01,$17,$01,$09,$02,$19,$02
+    .byte $29,$03,$39,$03
 
 ; D42: Thirteen four-tile glyph groups for06BD0..0C; visual identity not independently rendered.
 SelectedSpellIconTiles:

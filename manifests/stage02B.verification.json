@@ -1,0 +1,25 @@
+{
+  "archive": "kickmaster-ntscu-checkpoint-stage02B.zip",
+  "sha256": "397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b",
+  "size_bytes": 1762502,
+  "zip_crc_test": "PASS",
+  "manifest_verification": "PASS",
+  "manifest_file_count": 177,
+  "sample_extraction": "PASS",
+  "sample_paths": [
+    "README.md",
+    "RESUME.md",
+    "manifests/rom_identity.json",
+    "scripts/baseline.py"
+  ],
+  "latest_resume_present": true,
+  "stage": "02B",
+  "checked_at_utc": "2026-10-20T12:33:10.263302+00:00",
+  "verification_source": "fresh Library materialization; existing archive not uploaded again",
+  "library_file_id": "libfile_2de6444368d08191ad09d2e9fde8dec5",
+  "file_id": "file_00000000c7bc8210a3d224071b493a4d",
+  "version": 0,
+  "expected_sha256_match": "PASS",
+  "workspace_files_compared": 177,
+  "workspace_hash_mismatches": []
+}

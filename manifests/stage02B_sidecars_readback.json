@@ -1,0 +1,36 @@
+{
+  "stage": "02B",
+  "all_three_sidecars_saved_and_read_back": "PASS",
+  "checked_at_utc": "2026-10-20T12:35:44.934119+00:00",
+  "files": [
+    {
+      "file_name": "stage02B.verification.json",
+      "library_file_id": "libfile_c9cfc26db9b08191839d75ae43be5587",
+      "file_id": "file_00000000d000821190d79de0d56443e7",
+      "version": 0,
+      "sha256": "d6e211d1dd4616f89f970dbf2a4380beec747838d8ab02b9f03839d6588579e9",
+      "size_bytes": 849,
+      "readback_byte_equal": true
+    },
+    {
+      "file_name": "stage02B.reproducibility.json",
+      "library_file_id": "libfile_614b9c9b909081919146040d0cd35b25",
+      "file_id": "file_00000000227481f48193d5078694feae",
+      "version": 0,
+      "sha256": "2f6049adc0f96ec0b55e4cc4c64f816290324d440547e36ed44c12ecb0ce8f3a",
+      "size_bytes": 1870,
+      "readback_byte_equal": true
+    },
+    {
+      "file_name": "stage02B.persistence.json",
+      "library_file_id": "libfile_36bc1bff95ec8191a6d59b0eaa362aea",
+      "file_id": "file_000000007e1c8243ad287dc173503c4d",
+      "version": 0,
+      "sha256": "c878cd001154a936a9a63571a1b333db313ff170ce16f74fc077640bdfda43ba",
+      "size_bytes": 1784,
+      "readback_byte_equal": true
+    }
+  ],
+  "original_archive_not_uploaded_again": true,
+  "old02B_reports": "External old RESUME/REPORT still describe prior failure; superseded by these receipts and new02C reports; old ZIP unchanged"
+}

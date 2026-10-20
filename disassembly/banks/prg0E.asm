@@ -882,7 +882,25 @@ Bank0CEntry6:
     LDA #$0c                 ; D6E8 
     JSR a:$d6c3              ; D6EA 
     JMP a:$8006              ; D6ED 
-    .incbin "inputs/original.nes", $01D700, $01C5 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01D700, $00F7 ; UNINTERPRETED preserved bytes
+
+; E50: For8 entries0473..047A,bit20 excludes; elseclearbits40/10 then set10. Set03DC=1. Freeze timer consumption not reconstructed.
+MarkEnemiesForQuake:
+    LDY #$00                 ; D7E7 
+    LDA a:$0473,Y            ; D7E9 
+    AND #$20                 ; D7EC 
+    BNE $d7fa                ; D7EE 
+    LDA a:$0473,Y            ; D7F0 
+    AND #$af                 ; D7F3 
+    ORA #$10                 ; D7F5 
+    STA a:$0473,Y            ; D7F7 
+    INY                      ; D7FA 
+    CPY #$08                 ; D7FB 
+    BNE $d7e9                ; D7FD 
+    LDA #$01                 ; D7FF 
+    STA a:$03dc              ; D801 
+    RTS                      ; D804 
+    .incbin "inputs/original.nes", $01D815, $00B0 ; UNINTERPRETED preserved bytes
 
 ; D35: A high nibble increment, low3 digit position; six base20 decimal digits. Overflow clamps999999 and skips awards; otherwise at most one threshold award, advancing threshold by6 even at attempts cap0A.
 AddScoreAndCheckAttemptAward:

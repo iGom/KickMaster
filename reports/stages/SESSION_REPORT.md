@@ -1,93 +1,102 @@
-# KickMaster NTSC-U — raport sesji 02B
+# KickMaster NTSC-U — raport sesji 02C
 
-Data: 2026-10-20. Ukończono ograniczony etap postępu postaci, zbierania przedmiotów
-i dwóch zaklęć leczących. Całościowa rekonstrukcja gry trwa.
+Data: 2026-10-20. Uporządkowano trwałość 02B, przyjęto oryginalne źródła użytkownika
+oraz przeanalizowano zdobywanie, wybór i sterowanie efektami magicznymi.
+Całościowa rekonstrukcja gry pozostaje nieukończona.
 
-## Najważniejsze ustalenia
+## Checkpoint 02B i brakujące raporty
 
-- EXP, bieżące MP i maksymalne MP są cyframi dziesiętnymi w osobnych bajtach,
-  z przesunięciem 60 hex; RAM przechowuje najmniej znaczącą cyfrę najpierw.
-  Bieżące MP zajmuje $EA–$EC, EXP $ED–$F0, następny próg $F1–$F4, maksymalne MP $F5–$F7.
-- Awans aktualizuje maksymalne HP/MP oraz następny próg, ale nie uzupełnia bieżących
-  HP ani MP. Następuje najwyżej jeden awans na zebranie przedmiotu.
-  Ostatni próg EXP w tabeli to 9999 dziesiętnie; poziom kończy się na 7.
-- Dwa prześledzone efekty leczą 2 lub 4 komórki HP, za odpowiednio 60 lub 90 MP.
-  Koszt jest pobierany także przy pełnym HP. Nieudane odjęcie MP przywraca licznik.
-- Odtwarzanie snapshotu najpierw kopiuje zapisane HP, potem nadpisuje je pełną
-  wartością z tabeli poziomu. Ta procedura nie aktualizuje $06BB i nie ogranicza
-  bieżącego MP do maksimum; nie uogólniamy tego na wszystkie warianty continue/hasła.
-- Wynik punktowy używa sześciu cyfr z przesunięciem 20 hex. Progi dodatkowych prób
-  wynoszą 10000, 50000, 100000, 200000, 500000 i 999999 dziesiętnie.
-  HUD wyświetla liczbę prób o jeden mniejszą niż $030E.
-- Powstały kompletne mapowania 24 par typów przedmiotów i 13 wyborów zaklęcia.
-  To mapowania wskaźników; 12 par przedmiotów prowadzących do $A7DB oraz większość
-  efektów magicznych nadal nie mają zatwierdzonej pełnej semantyki.
+Odczytano istniejące archiwum z Library:
+`libfile_2de6444368d08191ad09d2e9fde8dec5`, wersja 0.
+Jego SHA-256 wynosi dokładnie
+`397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b`.
+Rozmiar: 1762502 bajty. CRC ZIP, wszystkie 177 plików manifestu, próbne rozpakowanie,
+porównanie z lokalnym ZIP-em i stanem projektu: PASS. Archiwum nie było ponownie przesyłane.
+Nie ustalamy, która wcześniejsza operacja doprowadziła do pojawienia się tej kopii;
+potwierdzamy jej aktualną obecność i właściwe bajty.
 
-Szczegóły, warunki wejściowe, odstępstwa przy sztucznych stanach i źródła kodowe:
-`reports/subsystems/PROGRESSION_PICKUPS_MAGIC.md`.
+Utworzono brakujące, osobne pliki `stage02B.verification.json`,
+`stage02B.reproducibility.json` i `stage02B.persistence.json`.
+Standardowy zapis nadal zwracał 403; zgodnie z wyraźną zgodą użytkownika zastosowano
+zapis bezpośredni. Wszystkie trzy pliki pobrano ponownie i porównano bajt po bajcie: PASS.
+Ich identyfikatory i hashe znajdują się w `manifests/stage02B_sidecars_readback.json`.
 
-## Przyrost projektu
+Odtwarzalność 02B oparto na faktycznie wykonanej wcześniej kompilacji po czystym
+rozpakowaniu. Teraz sprawdzono zachowane źródła kompilowane względem zweryfikowanego
+archiwum oraz ponownie porównano zachowany wynik z oryginalnym ROM-em. Kompilacji
+02B i jego 52382 przypadków CPU nie uruchamiano ponownie. Raport JSON odróżnia
+te nowe porównania od zachowanego wyniku wcześniejszego wykonania.
+Stare raporty 02B opisujące nieudany zapis są historyczne; nowe potwierdzenia je uzupełniają.
 
-| Miara | Po 02A | Po 02B |
+## Źródła użytkownika
+
+W `research/originals/` zachowano pełny poradnik Wyrentha, niezmienione `maps.zip`
+i osiem oryginalnych PNG sprays. Każdy plik ma SHA-256 w `originals_manifest.csv`.
+Integralność PNG i wymiary sprawdzono bez zmiany rozdzielczości. Indeks źródeł,
+indeks map i osiem kart etapów wskazują teraz dostępność lokalnych oryginałów.
+
+Nie powtarzano Stage00A. Z poradnika odczytano celowo sekcję magii; nie deklarujemy
+nowego przeczytania całości. Szczegółowa wizualna analiza map i porównanie z ROM-em
+pozostają częścią przyszłych prac nad geometrią. Nie przypisano sektorów do indeksów
+scen na podstawie samych nazw plików.
+
+## Nowe ustalenia
+
+- $06BE/$06BF to bitset dwunastu odblokowanych efektów. Typy przedmiotów 50–67
+  ustawiają odpowiedni bit; numer komórki menu przekładany jest osobną permutacją.
+- Zdobycie nie wybiera automatycznie czaru. Uruchamia animację i prezentację;
+  od $CF=0 przejście do prezentacji następuje po 96 wywołaniach jej kontrolera.
+- Odnaleziono 32 trasy scen po prezentacji magii oraz 12 wskaźników opisów w R6=03.
+  Pełne renderowanie prezentacji nie zostało wykonane.
+- Potwierdzono koszty i warunki aktywacji pozostałych dziesięciu efektów.
+  Pełna pula trzech pocisków nie zużywa MP; lot ponawia koszt 10 MP co 30 aktywnych
+  wywołań; kilka efektów ignoruje ponowną aktywację do wygaśnięcia.
+- Wyznaczono liczniki oraz fazy błyskawic, ochrony terenu, maski atrybutów i sobowtóra.
+  Liczby wywołań nie są przedstawiane jako sekundy bez weryfikacji harmonogramu gry.
+- Odróżniono kolejkę żądań trafienia od rzeczywistego odejmowania HP wrogów.
+  Tarcza, odporności, końcowe obrażenia, czas ogłuszenia i AI wymagają dalszych badań.
+
+Pełne adresy, warunki wejściowe i ograniczenia: `MAGIC_ACQUISITION_AND_EFFECTS.md`.
+Korelacje oficjalnych nazw opierają się na opisach/kosztach źródeł; nie oznaczają
+potwierdzenia wszystkich zachowań deklarowanych w poradniku.
+
+## Miary i weryfikacja
+
+| Miara | Po 02B | Po 02C |
 |---|---:|---:|
-| Zakresy kodu | 101 | 134 |
-| Zakresy danych PRG | 45 | 54 |
-| Przejrzane instrukcje | 2355 | 3055 |
-| Bajty kodu PRG | 5020 | 6484 |
-| Bajty danych PRG | 1809 | 2074 |
-| Suma bajtów PRG z lokalną interpretacją | 6829 | 8558 |
-| Odsetek PRG | 5,2101% | 6,5292% |
-| Wpisy RAM | 80 | 101 |
-| Symbole | 226 | 289 |
-| Krawędzie pośrednich tabel | 138 | 180 |
-| Krawędzie grafu call/jump/table | 325 | 386 |
+| Zakresy kodu | 134 | 168 |
+| Zakresy danych | 54 | 71 |
+| Przejrzane instrukcje | 3055 | 3930 |
+| Bajty kodu PRG | 6484 | 8376 |
+| Bajty danych PRG | 2074 | 2442 |
+| Bajty PRG z lokalną interpretacją | 8558 | 10818 |
+| Pokrycie PRG | 6,5292% | 8,2535% |
+| Wpisy RAM | 101 | 112 |
+| Symbole | 289 | 351 |
+| Krawędzie tabel pośrednich | 180 | 192 |
+| Krawędzie grafu call/jump/table | 386 | 442 |
 
-Nowa seria D01–D42 wnosi 1729 bajtów i 700 instrukcji. Historyczne dekodowanie
-kandydatów nie liczy się do pokrycia semantycznego. CHR nadal nie ma pełnej interpretacji.
+Nowe testy: 18 grup / 16460 przypadków / 5906 wierszy śladu: PASS.
+Starsze zestawy CPU zachowano bez ponownego wykonania. Jawne zatrzymania testów
+prefiksu wyboru i prezentacji opisano w danych; nie użyto atrap podprogramów.
+To izolowane wykonanie CPU z modelem magistrali, nie test pełnego NES-a.
 
-## Weryfikacja
-
-Nowe testy CPU: 16 grup, 52382 przypadki, 9976 wierszy śladu; wszystkie PASS.
-Obejmują pełne domeny liczbowe EXP i poprawnych MP, przeniesienia, cofnięcie wydatku,
-progi awansu/wyniku, granice prostokąta i prędkości podnoszenia, bramki i SP,
-sloty efektu poziomu oraz snapshot. Integracja leczenia przechodzi przez rzeczywisty
-wybór efektu, pętlę obiektów i rysowanie. Nie użyto atrap wywoływanych podprogramów.
-Osobne próby dispatcherów zatrzymują się przed handlerem, co jest zapisane w ich wynikach.
-
-Starsze testy 01A (57), 01B (18 grup/2295 przypadków) i 02A (18 grup/10137 przypadków)
-zachowano bez ponownego wykonywania. Nie uruchamiano pełnego emulatora NES.
-
-Odbudowa źródeł ca65/ld65 daje dokładnie oryginalne 262160 bajtów:
+Aktualna kompilacja ca65/ld65 odtwarza cały obraz 262160 bajtów identycznie:
 SHA-256 `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
-Jawne źródło obejmuje 8574 bajty z nagłówkiem; 253586 bajtów pochodzi nadal z `.incbin`.
-Zgodność całego obrazu nie dowodzi pełnej rekonstrukcji semantycznej.
+10834 bajty jawnego źródła obejmują nagłówek; 251326 bajtów nadal pochodzi z `.incbin`.
+Audyt PASS obejmuje bajty, zakresy, tabele, symbole, dowody CPU, źródła użytkownika
+oraz potwierdzenia 02B. Import natywny MesenCE/Ghidra nadal NIEPRZETESTOWANY.
 
-Audyt PASS: bajty i granice kodu, pokrycie, symbole, klasyfikacja całego pliku,
-wcześniejsze 192 wskaźniki scen i 116 par stanów, nowe tabele oraz pliki dowodowe.
-289 etykiet MLB ma sprawdzoną składnię; import w MesenCE/Ghidra pozostaje NIEPRZETESTOWANY.
+## Zamknięcie i następne prace
 
-## Wznowienie i checkpoint
+Nowy checkpoint: `kickmaster-ntscu-checkpoint-stage02C.zip`.
+Nie zawiera ROM-u wejściowego ani odbudowanego; zawiera źródła, narzędzia, dane,
+raporty, poprawione potwierdzenia 02B oraz oryginalne materiały dostarczone przez użytkownika.
+Jego końcowy hash, wynik odbudowy po czystym rozpakowaniu i odczyt po zapisie są
+zapisywane w osobnych raportach 02C, po utworzeniu archiwum.
 
-Na początku sesji ponownie pobrano etap 02A wskazany identyfikatorem
-`libfile_66e039ad85b08191b3f07f153c6f0afa`. Hash archiwum oraz 159 plików manifestu
-były poprawne. Wszystkie 159 lokalnych plików odpowiadało archiwum; wykorzystano
-istniejący projekt. Oryginalny identyfikator wcześniejszego zapisu 02A zachowano osobno.
-Poprzednich archiwów 00, 00A, 01A, 01B i 02A nie nadpisano.
-
-Nowe archiwum to `kickmaster-ntscu-checkpoint-stage02B.zip`. Zawiera źródła, dane,
-raporty, narzędzia i `RESUME.md`; nie zawiera oryginalnego ani odbudowanego ROM-u.
-Manifest obejmuje każdy zawarty plik poza sobą samym.
-Hash gotowego ZIP-u, wynik czystej odbudowy oraz potwierdzenie ponownego odczytu
-po zapisie znajdują się w zewnętrznym raporcie `KickMaster_STAGE02B_REPORT.md`
-i towarzyszących JSON-ach. Nie umieszczamy przyszłych wyników zapisu wewnątrz
-archiwum, którego hash właśnie od nich by zależał.
-
-## Następny zakres
-
-1. PRG08:$A7DB i pozostałe efekty: odblokowanie czarów, flagi, koszty, czas i obrażenia.
-2. Pozostali producenci $D3 i $01A5, hasła i cała ścieżka odtwarzania postępu.
-3. Ruch/ataki gracza, próbki kolizji i geometria scen; mapowanie 32 indeksów na etapy.
-4. Pełny kontrakt NMI/IRQ/PPU i natywna walidacja emulatorowa.
-
-Oryginalny ROM pozostaje jedynym wejściem. Osobnych notatek użytkownika nie użyto
-jako źródła odkryć; nie wprowadzono modyfikacji mechaniki gry.
+Następny konkretny zakres: ruch i kolizje pocisków, konsument kolejki trafień
+$0441/$0469, tarcza i ogłuszenie, następnie pełne powiązanie z ruchem/atakami gracza.
+Geometria scen będzie porównywana z dostępnymi już mapami przy ustalaniu transformacji
+współrzędnych i mapowania 32 konfiguracji na osiem sektorów.
+Poprzednich checkpointów nie nadpisano.

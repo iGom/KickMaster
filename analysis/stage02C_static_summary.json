@@ -1,0 +1,14 @@
+{
+  "new_ranges": 51,
+  "new_code_ranges": 34,
+  "new_data_ranges": 17,
+  "new_instructions": 875,
+  "new_bytes": 2260,
+  "magic_effect_rows": 12,
+  "menu_cells": 12,
+  "acquisition_routes": 32,
+  "description_pointers": 12,
+  "new_indirect_edges": 12,
+  "unresolved_targets_from_new_code": [],
+  "scope": "bounded acquisition/menu/effect control; downstream collision/projectile AI not complete"
+}

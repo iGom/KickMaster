@@ -1,0 +1,33 @@
+{
+  "stage": "02B",
+  "saved_and_read_back": "PASS",
+  "checked_at_utc": "2026-10-20T12:35:07.577098+00:00",
+  "archive_library_file_id": "libfile_2de6444368d08191ad09d2e9fde8dec5",
+  "archive_file_id": "file_00000000c7bc8210a3d224071b493a4d",
+  "archive_version": 0,
+  "archive_sha256": "397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b",
+  "archive_readback": "PASS; fresh materialization, complete SHA256/CRC/177-file manifest and local-byte comparison",
+  "archive_uploaded_again": false,
+  "archive_original_upload_provenance": "User reported existing successful Library download; this session verifies current bytes, not which prior operation created it",
+  "verification_and_reproducibility_artifacts": [
+    {
+      "file_name": "stage02B.verification.json",
+      "library_file_id": "libfile_c9cfc26db9b08191839d75ae43be5587",
+      "file_id": "file_00000000d000821190d79de0d56443e7",
+      "version": 0,
+      "sha256": "d6e211d1dd4616f89f970dbf2a4380beec747838d8ab02b9f03839d6588579e9",
+      "readback_byte_equal": true
+    },
+    {
+      "file_name": "stage02B.reproducibility.json",
+      "library_file_id": "libfile_614b9c9b909081919146040d0cd35b25",
+      "file_id": "file_00000000227481f48193d5078694feae",
+      "version": 0,
+      "sha256": "2f6049adc0f96ec0b55e4cc4c64f816290324d440547e36ed44c12ecb0ce8f3a",
+      "readback_byte_equal": true
+    }
+  ],
+  "reproducibility_execution": "Existing actual clean rebuild reused; retained source/output verified; CPU suites not repeated",
+  "self_readback_record": "Recorded externally after saving this file, in next checkpoint manifests/stage02B_sidecars_readback.json to avoid self-reference",
+  "prior_save_failures": "HTTP403 from prepared upload helper; direct save explicitly authorized by user"
+}

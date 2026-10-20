@@ -3,7 +3,9 @@
 Access date: 2026-10-19. `source_index.csv` is the machine-readable access/status index.
 `gameplay_claims.csv` separates source reading from ROM verification. The seed reference tables were
 supplied by the user in `project_specification.md`; each cross-check records a source location.
-No full copyrighted guide, map image or manual is redistributed in this checkpoint.
+Stage02C preserves the full guide and all eight original PNGs explicitly supplied by the user,
+plus maps.zip, unchanged, as requested for this private project checkpoint. The manual is not bundled.
+Integrity and dimensions are recorded in originals_manifest.csv; reference bytes are not ROM evidence.
 
 ## Source hierarchy and access
 
@@ -17,8 +19,9 @@ No full copyrighted guide, map image or manual is redistributed in this checkpoi
    document body/history says v1.1b/2017. Preserve both in citations rather than silently choosing a date.
 3. **sprays maps**: https://gamefaqs.gamespot.com/nes/563430-kickmaster/faqs
    All eight entries independently verified in the listing. Stage 3 and 5 landing pages also retrieved.
-   **Images could not be read.** No visual map comparison is claimed. Exact page links are in
-   `stage_map_index.csv`; revisit this outstanding work at Stage 05.
+   Stage00A image access was blocked. Since02C all eight user-supplied original PNGs are available
+   with checked integrity/dimensions. Detailed visual/ROM comparison remains pending; exact paths,
+   dimensions and hashes are in `stage_map_index.csv`. Use them during geometry/scroll/spawn work.
 4. **GameFAQs cheats**: https://gamefaqs.gamespot.com/nes/563430-kickmaster/cheats
    Community test vectors. Search-backed reading succeeded after direct HTTP 403.
    Password acceptance, advertised state and quest counts are not ROM-verified.
@@ -45,3 +48,12 @@ No full copyrighted guide, map image or manual is redistributed in this checkpoi
 - A boss's estimated number of kicks is not a measured HP value or single-hit damage value.
 - Map names, guide names, manual names and future ROM IDs need separate columns.
 - Unavailable source material is an explicit gap, not a license to fill in details from memory.
+
+## User-supplied originals — update 2026-10-20
+
+The full Wyrenth text and maps.zip arrived during02C. This is an availability update, not a rerun
+of Stage00A. Original TXT, ZIP and eight PNG payloads are preserved byte-for-byte. Full reading of
+the new text is not implied by header/integrity checks. Use targeted sections when investigating
+spells, enemies, objects and routes. Map geometry, pixel/world transforms and the32-scene/eight-sector
+mapping must be derived from ROM evidence before assigning coordinates or scene identities.
+Future crops, if needed, use original scale and explicit source rectangles; originals stay untouched.

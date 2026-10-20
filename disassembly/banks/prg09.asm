@@ -276,7 +276,37 @@ SelectedSpellSpritePointers:
 SelectedSpellHandlerPointers:
     .byte $BA,$B6,$CD,$B6,$3B,$BA,$69,$B8,$75,$BA,$DF,$B6,$D4,$B7,$8E,$B8
     .byte $B7,$B8,$30,$B8,$F0,$B8,$0C,$B9
-    .incbin "inputs/original.nes", $012C1F, $0AAB ; UNINTERPRETED preserved bytes
+
+; E20: Twelve handlers for even types88..9E;96 level-up visual remains unreviewed; others control decoy/shield/lightning continuations.
+MagicContinuationHandlerPointers:
+    .byte $30,$B9,$64,$B9,$72,$B9,$91,$B9,$E1,$B9,$E1,$B9,$19,$BA,$70,$B5
+    .byte $C7,$BA,$C7,$BA,$C7,$BA,$C7,$BA
+    .incbin "inputs/original.nes", $012C37, $0A37 ; UNINTERPRETED preserved bytes
+
+; E21: Copy selected effect slot3 Y/X pairs to global objectY; preservesY.
+CopySelectedEffectPositionToObject:
+    LDA a:$04f3              ; B65E 
+    STA a:$04f0,Y            ; B661 
+    LDA a:$0507              ; B664 
+    STA a:$0504,Y            ; B667 
+    LDA a:$051b              ; B66A 
+    STA a:$0518,Y            ; B66D 
+    LDA a:$052f              ; B670 
+    STA a:$052c,Y            ; B673 
+    RTS                      ; B676 
+
+; E22: Copy player worldY/X to reserved global slot3.
+AnchorSelectedEffectToPlayer:
+    LDA $cb                  ; B677 
+    STA a:$051b              ; B679 
+    LDA $cc                  ; B67C 
+    STA a:$052f              ; B67E 
+    LDA $c9                  ; B681 
+    STA a:$04f3              ; B683 
+    LDA $ca                  ; B686 
+    STA a:$0507              ; B688 
+    RTS                      ; B68B 
+    .incbin "inputs/original.nes", $01369C, $002E ; UNINTERPRETED preserved bytes
 
 ; D27: New Select bit20 triggers cost60 decimal MP; on success add20 hex raw HP through BD98.
 HealSpellTwoCells:
@@ -300,7 +330,567 @@ HealSpellFourCells:
     BCS $b6cc                ; B6D8 
     LDA #$40                 ; B6DA 
     JMP a:$bd98              ; B6DC 
-    .incbin "inputs/original.nes", $0136EF, $0667 ; UNINTERPRETED preserved bytes
+
+; E23: Update aiming orb; newSelect, free reserved projectile slot and cost3MP required; spawn type10 flags80 with one of16 direction velocities; restoreX.
+CastDirectionalMagicProjectile:
+    JSR a:$b747              ; B6DF 
+    LDA $1f                  ; B6E2 
+    AND #$20                 ; B6E4 
+    BEQ $b724                ; B6E6 
+    JSR a:$bda8              ; B6E8 
+    BMI $b724                ; B6EB 
+    LDA #$03                 ; B6ED 
+    JSR a:$bd46              ; B6EF 
+    BCS $b724                ; B6F2 
+    LDA #$59                 ; B6F4 
+    STA $01                  ; B6F6 
+    JSR a:$b65e              ; B6F8 
+    LDA $20                  ; B6FB 
+    AND #$0f                 ; B6FD 
+    BNE $b708                ; B6FF 
+    LDA $cd                  ; B701 
+    AND #$01                 ; B703 
+    CLC                      ; B705 
+    ADC #$01                 ; B706 
+    TAX                      ; B708 
+    LDA a:$b727,X            ; B709 
+    STA a:$0540,Y            ; B70C 
+    LDA a:$b737,X            ; B70F 
+    STA a:$0554,Y            ; B712 
+    LDA #$10                 ; B715 
+    STA a:$0568,Y            ; B717 
+    LDA #$80                 ; B71A 
+    STA a:$057c,Y            ; B71C 
+    LDA #$00                 ; B71F 
+    STA a:$0590,Y            ; B721 
+    LDX $3e                  ; B724 
+    RTS                      ; B726 
+
+; E24: Sixteen signed X velocities indexed held direction nibble; no-direction uses player facing.
+DirectionalProjectileVelocityX:
+    .byte $08,$08,$F8,$08,$00,$06,$FA,$08,$00,$06,$FA,$08,$08,$08,$08,$08
+
+; E25: Sixteen signed Y velocities paired with B727.
+DirectionalProjectileVelocityY:
+    .byte $00,$00,$00,$00,$08,$06,$06,$00,$F8,$FA,$FA,$00,$00,$00,$00,$00
+
+; E26: SaveX, copy facing, move current aim index one step toward previous target, position at signed offset from player, then derive next target from held-direction nibble.
+UpdateMagicAimingOrb:
+    STX $3e                  ; B747 
+    LSR a:$056b              ; B749 
+    LDA $cd                  ; B74C 
+    LSR A                    ; B74E 
+    ROL a:$056b              ; B74F 
+    LDA a:$0593              ; B752 
+    CMP a:$05a7              ; B755 
+    BEQ $b765                ; B758 
+    BCC $b762                ; B75A 
+    DEC a:$0593              ; B75C 
+    JMP a:$b765              ; B75F 
+    INC a:$0593              ; B762 
+    LDA #$00                 ; B765 
+    STA $3c                  ; B767 
+    STA $3d                  ; B769 
+    LDA a:$0593              ; B76B 
+    ASL A                    ; B76E 
+    TAY                      ; B76F 
+    LDA a:$b7c2,Y            ; B770 
+    BPL $b777                ; B773 
+    DEC $3c                  ; B775 
+    CLC                      ; B777 
+    ADC $cb                  ; B778 
+    STA a:$051b              ; B77A 
+    LDA $cc                  ; B77D 
+    ADC $3c                  ; B77F 
+    STA a:$052f              ; B781 
+    LDA a:$b7c3,Y            ; B784 
+    BPL $b78b                ; B787 
+    DEC $3d                  ; B789 
+    CLC                      ; B78B 
+    ADC $c9                  ; B78C 
+    STA a:$04f3              ; B78E 
+    LDA $ca                  ; B791 
+    ADC $3d                  ; B793 
+    STA a:$0507              ; B795 
+    LDA $20                  ; B798 
+    AND #$0f                 ; B79A 
+    BNE $b7aa                ; B79C 
+    LDA $cd                  ; B79E 
+    LSR A                    ; B7A0 
+    BCC $b7a8                ; B7A1 
+    LDA #$02                 ; B7A3 
+    JMP a:$b7aa              ; B7A5 
+    LDA #$01                 ; B7A8 
+    TAY                      ; B7AA 
+    LDA a:$b7b2,Y            ; B7AB 
+    STA a:$05a7              ; B7AE 
+    RTS                      ; B7B1 
+
+; E27: Sixteen direction-nibble target indices0..8; default facing suppliesLeft/Right.
+MagicAimTargetIndices:
+    .byte $04,$02,$06,$04,$04,$08,$00,$03,$04,$01,$07,$02,$04,$04,$04,$04
+
+; E28: Nine signed X/Y offset pairs; original scale pixels, player-relative.
+MagicAimOffsets:
+    .byte $EC,$F0,$EC,$E8,$F0,$E0,$F8,$DC,$00,$D8,$08,$DC,$10,$E0,$14,$E8
+    .byte $14,$F0
+
+; E29: Update aiming orb; newSelect, free reserved projectile slot and cost5MP required; spawn type00/01,flags90,velocityX±8,Y0 at orbY-8.
+CastHorizontalMagicWave:
+    JSR a:$b747              ; B7D4 
+    LDA $1f                  ; B7D7 
+    AND #$20                 ; B7D9 
+    BEQ $b82d                ; B7DB 
+    JSR a:$bda8              ; B7DD Projectile allocation precedes MP charge: full reserved pool costs nothing.
+    BMI $b82d                ; B7E0 
+    LDA #$05                 ; B7E2 
+    JSR a:$bd46              ; B7E4 
+    BCS $b82d                ; B7E7 
+    LDA #$66                 ; B7E9 
+    STA $01                  ; B7EB 
+    LDA a:$04f3              ; B7ED 
+    SEC                      ; B7F0 
+    SBC #$08                 ; B7F1 
+    STA a:$04f0,Y            ; B7F3 
+    LDA a:$0507              ; B7F6 
+    SBC #$00                 ; B7F9 
+    STA a:$0504,Y            ; B7FB 
+    LDA a:$051b              ; B7FE 
+    STA a:$0518,Y            ; B801 
+    LDA a:$052f              ; B804 
+    STA a:$052c,Y            ; B807 
+    LDA #$00                 ; B80A 
+    STA a:$0554,Y            ; B80C 
+    STA a:$0568,Y            ; B80F 
+    STA a:$0590,Y            ; B812 
+    LDA #$90                 ; B815 
+    STA a:$057c,Y            ; B817 
+    LDA $cd                  ; B81A 
+    LSR A                    ; B81C 
+    BCC $b828                ; B81D 
+    LDA #$01                 ; B81F 
+    STA a:$0568,Y            ; B821 
+    LDA #$f8                 ; B824 
+    BMI $b82a                ; B826 
+    LDA #$08                 ; B828 
+    STA a:$0540,Y            ; B82A 
+    LDX $3e                  ; B82D 
+    RTS                      ; B82F 
+
+; E30: Cost1MP starts240-count effect and setsB8=DF; active calls decrement, toggleB8bit20 on multiples4, restoreFF at expiry. Hidden-object reveal semantics not established.
+ToggleObjectAttributeEffect:
+    LDA a:$0593              ; B830 
+    BNE $b850                ; B833 
+    LDA $1f                  ; B835 
+    AND #$20                 ; B837 
+    BEQ $b868                ; B839 
+    LDA #$01                 ; B83B 
+    JSR a:$bd46              ; B83D 
+    BCS $b868                ; B840 
+    LDA #$a9                 ; B842 
+    STA $01                  ; B844 
+    LDA #$f0                 ; B846 
+    STA a:$0593              ; B848 
+    LDA #$df                 ; B84B 
+    STA $b8                  ; B84D 
+    RTS                      ; B84F 
+    DEC a:$0593              ; B850 
+    LDA a:$0593              ; B853 
+    BEQ $b863                ; B856 
+    AND #$03                 ; B858 
+    BNE $b868                ; B85A 
+    LDA $b8                  ; B85C 
+    EOR #$20                 ; B85E 
+    STA $b8                  ; B860 
+    RTS                      ; B862 
+    LDA #$ff                 ; B863 
+    STA a:$00b8              ; B865 
+    RTS                      ; B868 
+
+; E31: NewSelect and20MP reanchor slot3, set velocityY=F8,type8C,counter5,secondarycounter0.
+StartOverheadLightning:
+    LDA $1f                  ; B869 
+    AND #$20                 ; B86B 
+    BEQ $b88d                ; B86D 
+    LDA #$20                 ; B86F 
+    JSR a:$bd46              ; B871 
+    BCS $b88d                ; B874 
+    JSR a:$b677              ; B876 
+    LDA #$f8                 ; B879 
+    STA a:$0557              ; B87B 
+    LDA #$8c                 ; B87E 
+    STA a:$056b              ; B880 
+    LDA #$05                 ; B883 
+    STA a:$0593              ; B885 
+    LDA #$00                 ; B888 
+    STA a:$05a7              ; B88A 
+    RTS                      ; B88D 
+
+; E32: Cost20MP invokesC7BE once; cycle0593/03D6 from1 through59 then0. Active calls ignore newSelect; enemy duration beyond flag setter unresolved.
+StartQuakeAndUpdateScrollPhase:
+    LDY a:$0593              ; B88E 
+    BNE $b8a9                ; B891 
+    LDA $1f                  ; B893 
+    AND #$20                 ; B895 
+    BEQ $b8b6                ; B897 
+    LDA #$20                 ; B899 
+    JSR a:$bd46              ; B89B 
+    BCS $b8b6                ; B89E 
+    LDA #$b5                 ; B8A0 
+    STA $01                  ; B8A2 
+    JSR a:$c7be              ; B8A4 
+    LDY #$00                 ; B8A7 
+    INY                      ; B8A9 
+    CPY #$3c                 ; B8AA 
+    BNE $b8b0                ; B8AC 
+    LDY #$00                 ; B8AE 
+    STY a:$0593              ; B8B0 
+    STY a:$03d6              ; B8B3 
+    RTS                      ; B8B6 
+
+; E33: Cost20MP sets palette0158=16,counters04:F0; same invocation decrements lowcounter. Expiry after1008 handler invocations restoresFFB5 palette byte.
+StartTerrainProtectionTimer:
+    LDA a:$0593              ; B8B7 
+    ORA a:$05a7              ; B8BA 
+    BNE $b8df                ; B8BD 
+    LDA $1f                  ; B8BF 
+    AND #$20                 ; B8C1 
+    BEQ $b8ef                ; B8C3 
+    LDA #$20                 ; B8C5 
+    JSR a:$bd46              ; B8C7 
+    BCS $b8ef                ; B8CA 
+    LDA #$98                 ; B8CC 
+    STA $01                  ; B8CE 
+    LDA #$16                 ; B8D0 
+    STA a:$0158              ; B8D2 
+    LDA #$04                 ; B8D5 
+    STA a:$05a7              ; B8D7 
+    LDA #$f0                 ; B8DA 
+    STA a:$0593              ; B8DC 
+    DEC a:$0593              ; B8DF Activation falls through decrement; total is F0+3*100=3F0 hex handler calls.
+    BNE $b8ef                ; B8E2 
+    DEC a:$05a7              ; B8E4 
+    BNE $b8ef                ; B8E7 
+    LDA a:$ffb5              ; B8E9 
+    STA a:$0158              ; B8EC 
+    RTS                      ; B8EF 
+
+; E34: Cost30MP sets sound9D,secondarycounter0A,type8A; actual hit consumption not reviewed.
+StartShieldEffect:
+    LDA $1f                  ; B8F0 
+    AND #$20                 ; B8F2 
+    BEQ $b90b                ; B8F4 
+    LDA #$30                 ; B8F6 
+    JSR a:$bd46              ; B8F8 
+    BCS $b90b                ; B8FB 
+    LDA #$9d                 ; B8FD 
+    STA $01                  ; B8FF 
+    LDA #$0a                 ; B901 
+    STA a:$05a7              ; B903 
+    LDA #$8a                 ; B906 
+    STA a:$056b              ; B908 
+    RTS                      ; B90B 
+
+; E35: Cost20MP reanchors slot3,sets counterC9,type88,flags84.
+StartDecoyEffect:
+    LDA $1f                  ; B90C 
+    AND #$20                 ; B90E 
+    BEQ $b92f                ; B910 
+    LDA #$20                 ; B912 
+    JSR a:$bd46              ; B914 
+    BCS $b92f                ; B917 
+    LDA #$aa                 ; B919 
+    STA $01                  ; B91B 
+    JSR a:$b677              ; B91D 
+    LDA #$c9                 ; B920 
+    STA a:$0593              ; B922 
+    LDA #$88                 ; B925 
+    STA a:$056b              ; B927 
+    LDA #$84                 ; B92A 
+    STA a:$057f              ; B92C 
+    RTS                      ; B92F 
+
+; E36: Require same cameraX page and relativeY in0..EF; then decrementC9 lifetime. Offscreen or zero resets type86 and counter0.
+UpdateDecoyLifetimeAndBounds:
+    LDA a:$051b              ; B930 
+    SEC                      ; B933 
+    SBC $a7                  ; B934 
+    LDA a:$052f              ; B936 
+    SBC $a8                  ; B939 
+    BNE $b959                ; B93B 
+    LDA a:$04f3              ; B93D 
+    SEC                      ; B940 
+    SBC $a9                  ; B941 
+    STA a:$05a7              ; B943 
+    LDA a:$0507              ; B946 
+    SBC $aa                  ; B949 
+    BNE $b959                ; B94B 
+    LDA a:$05a7              ; B94D 
+    CMP #$f0                 ; B950 
+    BCS $b959                ; B952 
+    DEC a:$0593              ; B954 
+    BNE $b963                ; B957 
+    LDA #$00                 ; B959 
+    STA a:$0593              ; B95B 
+    LDA #$86                 ; B95E 
+    STA a:$056b              ; B960 
+    RTS                      ; B963 
+
+; E37: While05A7 nonnegative anchor slot3 to player; negative returns type84. Consumer of shield budget outside this range.
+UpdateShieldAnchorOrFinish:
+    LDA a:$05a7              ; B964 
+    BMI $b96c                ; B967 
+    JMP a:$b677              ; B969 
+    LDA #$84                 ; B96C 
+    STA a:$056b              ; B96E 
+    RTS                      ; B971 
+
+; E38: Track playerX; low-byte effectY-cameraY<30 stops vertical velocity and changes type8E.
+RaiseLightningToCameraTop:
+    LDA $cb                  ; B972 
+    STA a:$051b              ; B974 
+    LDA $cc                  ; B977 
+    STA a:$052f              ; B979 
+    LDA a:$04f3              ; B97C 
+    SEC                      ; B97F 
+    SBC $a9                  ; B980 
+    CMP #$30                 ; B982 
+    BCS $b990                ; B984 
+    LDA #$00                 ; B986 
+    STA a:$0557              ; B988 
+    LDA #$8e                 ; B98B 
+    STA a:$056b              ; B98D 
+    RTS                      ; B990 
+
+; E39: Anchor selected effect at cameraY+30 and playerX; after5-count wait spawn3 slots with types28,18,29,flagsD4,zero velocities; selectedtype90.
+SpawnOverheadLightningBolts:
+    LDA $cb                  ; B991 
+    STA a:$051b              ; B993 
+    LDA $cc                  ; B996 
+    STA a:$052f              ; B998 
+    LDA $a9                  ; B99B 
+    CLC                      ; B99D 
+    ADC #$30                 ; B99E 
+    STA a:$04f3              ; B9A0 
+    LDA $aa                  ; B9A3 
+    ADC #$00                 ; B9A5 
+    STA a:$0507              ; B9A7 
+    DEC a:$0593              ; B9AA 
+    BNE $b9da                ; B9AD 
+    LDY #$02                 ; B9AF 
+    JSR a:$b65e              ; B9B1 
+    LDA #$00                 ; B9B4 
+    STA a:$0540,Y            ; B9B6 
+    STA a:$0554,Y            ; B9B9 
+    LDA a:$b9de,Y            ; B9BC 
+    STA a:$0590,Y            ; B9BF 
+    LDA #$02                 ; B9C2 
+    STA a:$05a4,Y            ; B9C4 
+    LDA a:$b9db,Y            ; B9C7 
+    STA a:$0568,Y            ; B9CA 
+    LDA #$d4                 ; B9CD 
+    STA a:$057c,Y            ; B9CF 
+    DEY                      ; B9D2 
+    BPL $b9b1                ; B9D3 
+    LDA #$90                 ; B9D5 
+    STA a:$056b              ; B9D7 
+    RTS                      ; B9DA 
+
+; E40: Three types28,18,29 then three counters08,15,08; not three-byte CPU pointers.
+LightningBoltTypesAndCounters:
+    .byte $28,$18,$29,$08,$15,$08
+
+; E41: Anchor at cameraY+30/playerX; decrement05A7 seeded0 (256 invocations), toggle90/92 on odd remaining count; zero selects94 and downwardvelocity8.
+HoldAndLowerLightning:
+    LDA $cb                  ; B9E1 
+    STA a:$051b              ; B9E3 
+    LDA $cc                  ; B9E6 
+    STA a:$052f              ; B9E8 
+    LDA $a9                  ; B9EB 
+    CLC                      ; B9ED 
+    ADC #$30                 ; B9EE 
+    STA a:$04f3              ; B9F0 
+    LDA $aa                  ; B9F3 
+    ADC #$00                 ; B9F5 
+    STA a:$0507              ; B9F7 
+    DEC a:$05a7              ; B9FA 
+    BEQ $ba0e                ; B9FD 
+    LDA a:$05a7              ; B9FF 
+    LSR A                    ; BA02 
+    BCC $ba0d                ; BA03 
+    LDA a:$056b              ; BA05 
+    EOR #$02                 ; BA08 
+    STA a:$056b              ; BA0A 
+    RTS                      ; BA0D 
+    LDA #$94                 ; BA0E 
+    STA a:$056b              ; BA10 
+    LDA #$08                 ; BA13 
+    STA a:$0557              ; BA15 
+    RTS                      ; BA18 
+
+; E42: TrackplayerX; wrapped(effectY-playerY+10hex)<40hex stops velocity and restores readytype76.
+FinishLightningNearPlayer:
+    LDA $cb                  ; BA19 
+    STA a:$051b              ; BA1B 
+    LDA $cc                  ; BA1E 
+    STA a:$052f              ; BA20 
+    LDA a:$04f3              ; BA23 
+    SEC                      ; BA26 
+    SBC $c9                  ; BA27 
+    CLC                      ; BA29 
+    ADC #$10                 ; BA2A 
+    CMP #$40                 ; BA2C 
+    BCS $ba3a                ; BA2E 
+    LDA #$00                 ; BA30 
+    STA a:$0557              ; BA32 
+    LDA #$76                 ; BA35 
+    STA a:$056b              ; BA37 
+    RTS                      ; BA3A 
+
+; E43: NegativeD3 blocks before any cost; Select togglesCEbit0 and clearsCD to facing. Starting or every30 active handler updates spends10MP; failure clears flightbit.
+ToggleAndRechargeFlight:
+    LDA $d3                  ; BA3B 
+    BMI $ba74                ; BA3D 
+    LDA $1f                  ; BA3F 
+    AND #$20                 ; BA41 
+    BNE $ba50                ; BA43 
+    LDA $ce                  ; BA45 
+    LSR A                    ; BA47 
+    BCC $ba74                ; BA48 
+    DEC a:$0593              ; BA4A 
+    BEQ $ba5b                ; BA4D 
+    RTS                      ; BA4F 
+    LDA $cd                  ; BA50 
+    AND #$01                 ; BA52 
+    STA $cd                  ; BA54 
+    LDA $ce                  ; BA56 
+    LSR A                    ; BA58 
+    BCS $ba6e                ; BA59 
+    LDA #$10                 ; BA5B 10 is packed decimal10MP; counter1E is30 handler calls,not verified seconds.
+    JSR a:$bd46              ; BA5D 
+    BCS $ba6e                ; BA60 
+    LDA #$1e                 ; BA62 
+    STA a:$0593              ; BA64 
+    LDA $ce                  ; BA67 
+    ORA #$01                 ; BA69 
+    STA $ce                  ; BA6B 
+    RTS                      ; BA6D 
+    LDA $ce                  ; BA6E 
+    AND #$fe                 ; BA70 
+    STA $ce                  ; BA72 
+    RTS                      ; BA74 
+
+; E44: If not active, Select and30MP set0593=1 and populate global slots0..2 atcameraX+20/80/E0,cameraY+CF,types98,flags84.
+StartThreeColumnLightning:
+    LDA a:$0593              ; BA75 
+    BNE $bac3                ; BA78 
+    LDA $1f                  ; BA7A 
+    AND #$20                 ; BA7C 
+    BEQ $bac3                ; BA7E 
+    LDA #$30                 ; BA80 
+    JSR a:$bd46              ; BA82 
+    BCS $bac3                ; BA85 
+    INC a:$0593              ; BA87 
+    LDY #$02                 ; BA8A 
+    LDA $a7                  ; BA8C 
+    CLC                      ; BA8E 
+    ADC a:$bac4,Y            ; BA8F 
+    STA a:$0518,Y            ; BA92 
+    LDA $a8                  ; BA95 
+    ADC #$00                 ; BA97 
+    STA a:$052c,Y            ; BA99 
+    LDA $a9                  ; BA9C 
+    CLC                      ; BA9E 
+    ADC #$cf                 ; BA9F 
+    STA a:$04f0,Y            ; BAA1 
+    LDA $aa                  ; BAA4 
+    ADC #$00                 ; BAA6 
+    STA a:$0504,Y            ; BAA8 
+    LDA #$00                 ; BAAB 
+    STA a:$0540,Y            ; BAAD 
+    STA a:$0554,Y            ; BAB0 
+    STA a:$0590,Y            ; BAB3 
+    LDA #$98                 ; BAB6 
+    STA a:$0568,Y            ; BAB8 
+    LDA #$84                 ; BABB 
+    STA a:$057c,Y            ; BABD 
+    DEY                      ; BAC0 
+    BPL $ba8c                ; BAC1 
+    RTS                      ; BAC3 
+
+; E45: Three camera-relative X offsets20,80,E0.
+LightningColumnOffsets:
+    .byte $20,$80,$E0
+
+; E46: Followcamera,increment0590; slot0 requests queued damage6 on ticks8/16/24. Tick30deactivates and clears selected active marker; type animation table otherwise.
+UpdateLightningColumn:
+    LDA $a7                  ; BAC7 
+    CLC                      ; BAC9 
+    ADC a:$bac4,X            ; BACA 
+    STA a:$0518,X            ; BACD 
+    LDA $a8                  ; BAD0 
+    ADC #$00                 ; BAD2 
+    STA a:$052c,X            ; BAD4 
+    LDA $a9                  ; BAD7 
+    CLC                      ; BAD9 
+    ADC #$cf                 ; BADA 
+    STA a:$04f0,X            ; BADC 
+    LDA $aa                  ; BADF 
+    ADC #$00                 ; BAE1 
+    STA a:$0504,X            ; BAE3 
+    INC a:$0590,X            ; BAE6 
+    TXA                      ; BAE9 
+    BNE $bafc                ; BAEA 
+    LDA #$97                 ; BAEC 
+    STA $01                  ; BAEE 
+    LDA a:$0590,X            ; BAF0 
+    AND #$07                 ; BAF3 
+    BNE $bafc                ; BAF5 
+    LDA #$06                 ; BAF7 
+    JSR a:$bd1b              ; BAF9 
+    LDA a:$0590,X            ; BAFC 
+    CMP #$1e                 ; BAFF 
+    BEQ $bb14                ; BB01 
+    CPX #$01                 ; BB03 
+    BNE $bb0a                ; BB05 
+    CLC                      ; BB07 
+    ADC #$07                 ; BB08 
+    AND #$0f                 ; BB0A 
+    TAY                      ; BB0C 
+    LDA a:$bb1d,Y            ; BB0D 
+    STA a:$0568,X            ; BB10 
+    RTS                      ; BB13 
+    LDA #$00                 ; BB14 
+    STA a:$057c,X            ; BB16 
+    STA a:$0593              ; BB19 
+    RTS                      ; BB1C 
+
+; E47: Sixteen even/odd type bytes; facing ignored by handler dispatch, preserved by rendering.
+LightningColumnTypeSequence:
+    .byte $98,$E0,$9C,$9E,$9F,$9D,$9B,$99,$99,$9B,$9D,$9E,$9E,$9C,$9A,$98
+    .incbin "inputs/original.nes", $013B3D, $01EE ; UNINTERPRETED preserved bytes
+
+; E48: Scan10 slots9..0; flags0469>=C0 and0473&3==0 accept raw requestA into0441,OR0469bit20,clear047Dlow3. Does not apply HP damage here.
+QueueDamageForEligibleEnemies:
+    STA $3c                  ; BD1B Queue request only; enemy HP, immunity and final resolution are separate.
+    LDY #$09                 ; BD1D 
+    LDA a:$0469,Y            ; BD1F 
+    CMP #$c0                 ; BD22 
+    BCC $bd42                ; BD24 
+    LDA a:$0473,Y            ; BD26 
+    AND #$03                 ; BD29 
+    BNE $bd42                ; BD2B 
+    LDA $3c                  ; BD2D 
+    STA a:$0441,Y            ; BD2F 
+    LDA a:$0469,Y            ; BD32 
+    ORA #$20                 ; BD35 
+    STA a:$0469,Y            ; BD37 
+    LDA a:$047d,Y            ; BD3A 
+    AND #$f8                 ; BD3D 
+    STA a:$047d,Y            ; BD3F 
+    DEY                      ; BD42 
+    BPL $bd1f                ; BD43 
+    RTS                      ; BD45 
 
 ; D29: A packed decimal cost;01A5 nonzero bypasses cost before D3 bit80 gate. Subtract base60 digits with borrow; insufficient MP rolls back all three digits and returns carry set.
 SpendMagicPoints:
@@ -360,7 +950,16 @@ AddHpClamped:
     LDA a:$06bb              ; BDA1 
     STA a:$06b9              ; BDA4 
     RTS                      ; BDA7 
-    .incbin "inputs/original.nes", $013DB8, $00E8 ; UNINTERPRETED preserved bytes
+
+; E49: Scan global slots2..0 for nonnegative057C; allbusy returnsY=FF/Nset. Distinct from general collectible allocator.
+FindFreeReservedProjectileSlot:
+    LDY #$02                 ; BDA8 
+    LDA a:$057c,Y            ; BDAA 
+    BPL $bdb2                ; BDAD 
+    DEY                      ; BDAF 
+    BPL $bdaa                ; BDB0 
+    RTS                      ; BDB2 
+    .incbin "inputs/original.nes", $013DC3, $00DD ; UNINTERPRETED preserved bytes
 
 ; D31: Increment object clocks, scan04EF+4 global slots, apply flags/parity gates, dispatch handlers, integrate/cull, preserve reserved slot3 offscreen, draw visible sprites.
 UpdateAndDrawObjects:

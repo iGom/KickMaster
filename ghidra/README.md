@@ -27,6 +27,7 @@ Sources:
 Stage01B handoff: review FourPhaseMainLoop, WaitNmiAndServiceAudio, ReadControllerSerial and the
 three scene route tables. service_jump_tables.csv distinguishes the physically different bank07/08/09
 entries at shared CPU addresses. cross_references.csv deliberately leaves target-bank gaps after unknown
-callees; inspect stage01B_static_summary.json, stage02A_static_summary.json and stage02B_static_summary.json for those gaps.
+callees; inspect stage01B_static_summary.json, stage02A_static_summary.json, stage02B_static_summary.json
+and stage02C_static_summary.json for those gaps. Resolved target banks do not imply reviewed target bodies.
 Scene pointer exports preserve both R6 and R7 targets. A CPU pointer in the A000 window must not
 be assigned to the R6 data bank merely because it was read from that scene's configuration.

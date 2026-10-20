@@ -10,19 +10,24 @@
     "192 scene pointers retain correct R6/R7 address domains; 116 state-table rows match original pointer bytes",
     "preserved stage01A/01B/02A CPU results pass; complete rebuilt image matches",
     "stage02B: 16 groups/52382 CPU vectors pass with no callee stubs; bounded dispatch stops explicitly recorded",
-    "8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and180 indirect edges match original ROM domains"
+    "8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and192 indirect edges match original ROM domains",
+    "stage02C:18 groups/16460 vectors pass; scoped stopping boundaries preserved",
+    "12 unlock/menu mappings,32 acquisition scene routes and12 R6-qualified description pointers verified",
+    "user-supplied guide,ZIP and8 original PNGs retain exact hashes/dimensions; no ROM geometry comparison claimed",
+    "three repaired02B sidecar files match recorded successful Library readback hashes"
   ],
-  "reviewed_bytes": 8558,
-  "reviewed_instructions": 3055,
-  "symbols": 289,
-  "ram_entries": 101,
-  "classification_ranges": 256,
+  "reviewed_bytes": 10818,
+  "reviewed_instructions": 3930,
+  "symbols": 351,
+  "ram_entries": 112,
+  "classification_ranges": 309,
   "previous_local_archives_unchanged": [
     "00",
     "00A",
     "01A",
     "01B",
-    "02A"
+    "02A",
+    "02B"
   ],
   "full_Ghidra_Mesen_import": "NOT_TESTED"
 }

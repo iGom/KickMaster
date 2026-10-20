@@ -1,0 +1,1255 @@
+============================================================================
+                             Kick Master - NES
+                                Version 1.1b
+============================================================================
+Greetings, and welcome to yet another of my writings! This time I'm writing
+up... that's right, a full-fledged Walkthrough! GASP! That's right, I've
+decided to do a full walkthrough on the 1991 Tatio game, Kick Master for the
+Nintendo Entertainment System. Who knew?
+
+It's a fun, challenging game with fairly decent graphics, good sound, and
+excellent music for its day. It's essentially a platform action game, but it
+mixes adventure/RPG elements. Try it! You'll like it!
+
+I started this project early March of 2001, and stopped work on it in April,
+having done a detailed walkthrough for the entire game up to Area 7. I had
+noticed no one did a walkthrough for the game, so I figured I would do one.
+I had fun with this game when I had rented it so many years ago. Alas, other
+things came up, and this walkthrough was put on hold for well over a year.
+
+It's now late October 2002, and it took quite a bit of effort to finish this
+thing for two reasons. One...after that long a pause, I was a little rusty!
+And two...my gamepad broke!  >_<;
+
+Anyway, this is finally done, so if anyone is getting frustrated over this
+game, then I hope this helps! :)
+
+============================================================================
+What's New:
+
+v1.1 - Removed e-mail contact information. To contact me about this FAQ,
+  please visit my website and click on "Feedback" to see what my current
+  e-mail address is. Hopefully, using this method, I no longer have to
+  update this FAQ every time a mail server stops offering services or I
+  switch ISPs.
+
+============================================================================
+How to Use This Guide:
+
+This guide is formatted for 76-character lines. A maximised Notepad in
+640 x 480 resolution should display it properly. 
+============================================================================
+Availability on the Web:
+
+This guide may be used freely on the following web site(s):
+
+www.gamefaqs.com
+
+This guide may not be used on ANY other web site, and I will probably not
+grant permission to allow it to be done. Why? Because if I update it, I
+don't want to have to search out every single old copy of it to fix it. That
+wastes my time. Any other site that does have it is probably using an old
+and outdated copy.
+============================================================================
+Legal Crap:
+
+Simply put, you may not use, publish, edit, alter, or publish any edits or
+alterations in any format, for profit or non-profit purposes, without my
+written permission. This guide is freeware, and no part of it may be used in
+any formats (written or electronic) in any media that requires a purchase,
+even if you gain no profit from that purchase. In laymen's terms...don't try
+and copy my work, then try and sell it, claiming it as your own.
+
+Also, I take no responsibility for any damage done to you, your machine,
+your goldfish, your dog, your sanity, your home life, your social life,
+your sex life...you get the point. Use At Your Own Risk. ©2002 Wyrenth.
+============================================================================
+And now, on with the show!
+
+The Story of Kick Master:
+-------------------------
+The once peaceful kingdom of Lowrel has been attacked and burned by the evil
+wizard Belzed's monstrous forces. The king and queen are killed, and their
+only child, the princess Silphee is kidnapped. All of the king's guards are
+defeated in battle except for the powerful knight Macren.
+
+Macren and his younger brother Thonolan, an aspiring martial artist, take
+off on a long journey to rescue Princess Silphee, and defeat the wicked
+Belzed.
+
+They start their long struggle in the Witches' Forest outside the Kingdom of
+Lowrel.
+
+Controls:
+---------
++ Pad: This moves Thonolan left and right. In conjunction with A
+  and B, and when you are skilled enough, it is also used to execute special
+  kicks. Press down to crouch.
+    A: This makes Thonolan jump.
+    B: This makes Thonolan kick. See the Kicks section for details.
+Start: This pauses the game, bringing up the spell selection screen. You
+       can also see your score. You get an extra life at 10000 points, and
+       another at 50000 points.  To select a spell, press A.
+Select:This uses a spell that you've selected.
+
+Game screen:
+------------
+At the bottom of the main game screen, you will notice a bunch of vital
+information. It looks roughly like so:
+              ___          _ _ _ _
+EX:   0/1000 |   |Lev0 HP:|_|_|_|_|
+MP:   0/ 100 |   |  @2 EN:¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+              ¯¯¯         ¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯
+EX is your Experience. You gain a level every 1000 experience points, so
+be sure and collect those vital Experience Awards!
+
+MP is your Magic Power. To use spells, you'll need MP. You start with none,
+and gain some as you find and collect MP Bottles. You gain 100 Max MP every
+level, but must find MP Bottles to restore it. It cannot be stressed enough
+how valuable MP is in this game. Do not use magic wastefully, or you may
+find yourself at the end of the game, desperately needing healing magic,
+and have none.
+
+The box in the center shows which spell you currently have equipped. To use
+it, press Select. If a cloaked figure with a ? mark is in the box, then you
+have no spell equipped.
+
+"Lev" shows you what your Experience Level is. At level 7, you've learned
+all there is to learn.
+
+@ (a picture of Thonolan's head) shows you how many lives you have left.
+You start with two. When you die, you're not only sent back to the beginning
+of an area, your Exp and MP rewind back to the point they were before you
+died! Avoid losing lives at all costs unless you've made some sort of vital
+mistake and need to go back, or you feel that you got very poor experience
+in an area and can afford the loss. Sacrificing a life for experience is not
+reccomended, however. I would say it's safe to lose a life at the beginning
+of a sector, though, if you're critically low on life and don't want to use
+valuable MP to restore it.
+
+HP is your Hit Points, or your health. As you get hit, this bar decreases.
+Find Hearts to restore yourself, or cast a Life Up spell. You gain one bar
+of maximum life per level, but it is not healed when you level up.
+
+EN is your enemies health. When you reach a boss enemy, their life will be
+displayed here.
+
+Kick Master scrolls in one direction, so you cannot go back to any area
+you've already been to. Be very careful not to rush ahead! You may miss
+something important! There are many hidden items in the game, so keep alert.
+
+Passwords and Advancement:
+--------------------------
+Passwords keep track of your current area, experience level, spells, MP, and
+lives. They do not keep track of your Experience, Score, or current HP. For
+this reason, it's VITAL to try and level up before you reach the end of
+an area. If, for any reason, you need to use a password to return, you'll
+have lost any Experience you earned between your current level and the next
+level. If you can level up once per area, you're doing great. If you can
+level up more than once in any area (maybe not in every area, but at least
+one), you're doing super.
+
+Once you reach level 7, you've maxed out on Experience. Even better, you
+max out on MP! From this point onward, concern yourself ONLY with MP Bottles
+instead of Experience Awards. If you're doing well, you should be level 7
+by the time you reach the middle of Sector 5.
+
+- JJZ2GK (spade)3HK6S
+Area 2, Level 1, 135 MP, 3 Lives. Bulb, Life 1.
+
+- (diamond)ND4TC  J5BBK2
+Area 3, Level 3, 245 MP, 5 Lives. Boots, Twin.
+
+- T9RCHB  Z(heart)K5N(club)
+Area 4, Level 4, 425 MP, 5 Lives. ?? Magic, Lit.Spirit.
+
+- (club)9RFMB  S(club)M0MC
+Area 5, Level 6, 610 MP, 5 Lives. Life 2, Wave.
+
+- G(spade)KR9(heart)  VQY7KP
+Area 6, Level 7, 935 MP, 6 Lives. Whip Lit.
+
+- (heart)P?(spade)(club)X  JFDK7W
+Area 7, Level 7, 974 MP, 8 Lives. Shield, Wings.
+
+- WDFGQN  77TGJQ
+Area 8, Level 7, 999 MP, 9 Lives. Earthquake.
+
+Items:
+------
+When you defeat an enemy, three items will fly into the air. Try to collect
+all three, but if you can only collect one, try to collect one that gives
+Experience or MP. Here is a list of all the items they can drop.
+
+       Small Heart: This restores your HP by 1 bar.
+Small Magic Bottle: This bottle gives you 5 MP.
+Large Magic Bottle: This bottle gives you 10 MP.
+   Small Exp Award: A small, round orange item, gives you 10 Exp.
+  Medium Exp Award: A large, almost round item, gives you 30 Exp.
+   Large Exp Award: Resembles a kite shield, gives you 50 Exp.
+           Crystal: Adds 100 points to your Score.
+              1-Up: This rare item gives you an extra life! GRAB IT!! It
+                    seems to only appear by itself.
+             Skull: This is poison. You take damage and get knocked back
+                    from your leap, often causing you to miss the rest of
+                    the awards.
+
+Kicks:
+------
+You start with three basic kicks. As you gain experience, you will learn new
+techniques.
+
+Level 0: High Kick - This is a basic standing kick. To execute it, simply
+   press B while moving or standing still. This move is a bit slow, however,
+   and you may wish to use the Sweep Kick so you can make a leap at the
+   awards.
+
+Level 0: Sweep Kick - This is a basic sweeping kick. To execute it, press
+   Down (crouch) and B. This move is fast and useful for avoiding some
+   attacks.
+
+Level 0: Vertical Press Kick - This move allows you to attack above you.
+   To execute it, press Up, then B. It is also a fast move, most useful in
+   conjunction with leaps to attack flying enemies.
+
+Level 1: Knee Drop - This move allows you to land on an enemy. To execute
+   it, jump, then press Down and B. You will immediately drop down. This
+   move is handy for avoiding damage in open areas from monsters on the
+   ground, and to quickly avoid taking damage in the air. It is probably
+   the most useful attack in the game, properly mastered.
+
+Level 2: Sliding Kick - This move allows you to slide along the ground.
+   To execute it, press either left or right, plus down and B. You'll slide
+   in the direction you're walking. This is a useful move to avoid getting
+   hurt at times or to move along the ground quickly, but not very powerful,
+   and you risk not being able to get Awards when you defeat monsters with
+   it. You can also slide underneath low areas and attacks aimed at your
+   head.
+
+Level 3: Double Front Kick - This move allows you to kick twice in the air.
+   To execute it, press Up and either Left or Right, plus B. You'll do a
+   high kick, then leap up slightly for another kick. This is a fairly
+   strong attack, but it can be difficult to set up and execute flawlessly.
+
+Level 4: Roundhouse Kick - This move replaces your High Kick, and allows you
+   to kick, spin, and kick again. It's slightly slower than your High Kick,
+   but gives more kicks in the span of time that High Kick would. Be careful
+   not to set yourself out in the line of fire when using it, since you
+   can't jump out of the way while kicking. To execute it, just press B.
+
+Level 5: Flying Kick - This move allows you to perform a flying kick in the
+   air. To execute it, press Left or Right, Jump, then B. You'll fly forward
+   (you'll also fly downward a bit--gravity and all that) feet first. This
+   is very useful for getting across jumps in tight spaces, especially in
+   areas that you don't have enough head room for a full jump. Careful when
+   coming out of a landing that you don't land on top of an enemy. If you
+   can, knee drop as you land to help prevent damage (you'll need to be very
+   quick, though). You can also execute these in a chain, one after the
+   other, if you're quick enough.
+
+Level 6: Double Butterfly Kick - This move replaces your High/Roundhouse
+   Kick, just press B to execute it. It's a rather fancy move. You kick,
+   then do a split in the air, spinning around. It's somewhat quick (but
+   slower than most of your other moves), and can keep enemies off of you
+   from all sides. It would also appear that you're invulnerable to certain
+   forms of attack while in your spin. All in all, a very useful move.
+
+Level 7: Blazing Flip Kick - This move allows you to do a spinning backflip
+   kick that acts much like a buzzsaw. A powerful move that keeps you well
+   protected in it's use. It replaces your Vertical Press Kick. To execute
+   it, press Up and B.
+
+Spells:
+-------
+
+Bouncing Bulb Spirit: Costs 3 MP. Allows you to throw a ball of energy at
+  your enemies. You can aim the direction the ball flies with the arrow pad,
+  and the bulb will bounce off of walls. It is, however, weaker than your
+  standard kick. You can fire up to three of these at once.
+
+Life Up 1: Costs 60 MP. This heals your HP by 2 bars. Expensive for its
+  rather small effect, it's nevertheless quite vital to your survival. Save
+  your MP for Life Up 2 if you can, it's more efficient with MP.
+
+Magic Boots: Costs 20 MP. This will protect you from hazards such as spiked
+  floors for a while. Strangely, the only place you can immediately use this
+  spell is skipped when you grab the spell.
+
+Twin Power: Costs 20 MP. This creates an illusion that enemies will fight
+  instead of you. Only lasts for a short time.
+
+?? Magic: Costs 1 MP. This spell is, naturally, wrapped in a bit of mystery.
+  I think it allows you to see hidden items. It's also useful for sticking
+  in your spell box so you don't accidentally blow 60-90 MP on a healing
+  spell if you accidentally press select when you didn't mean to.
+
+Lightning Spirit: Costs 20 MP. This spell summons a spirit of lightning,
+  which flies above you and sprays three bolts down: One directly on you,
+  one in front of you, and one behind you. The stream of electricity lasts
+  for a few seconds, but is not very powerful unless you concentrate the
+  shot on an enemy. A glancing blow won't do much harm. Still, this is a
+  useful spell to keep yourself protected from enemies.
+
+Life Up 2: Costs 90 MP. Extremely expensive in terms of MP costs (this is
+  why you should be hoarding your MP!!), but more efficient with MP than
+  Life Up 1 is. It restores all of 4 life bars! Only use it when you can
+  restore the full 4 bars with it, or you'll have wasted MP.
+
+Pulse Wave Spirit: Costs 5 MP. More or less an upgrade to Bouncing Bulb
+  Spirit, this spell allows you to send an expanding wave of energy either
+  to the left or the right (despite having an aiming orb above you). You
+  can fire up to three of these at once.
+
+Whip Lightning: Costs 30 MP. An upgrade to the Lightning Spirit, this spell
+  causes three bolts of lightning to whip back and forth across the screen,
+  zapping everything in the area. Useful for a full-screen barrage, but a
+  concentrated and properly timed Lightning Spirit can probably do more
+  damage to a single foe.
+
+Force Shield: Costs 30 MP. This spell creates a shield around you that
+  protects you from fired objects. It does NOT protect you from direct
+  damage. It will absorb a certain amount of damage before it vanishes.
+  It's strong enough to absorb quite a few normal shots, but it won't last
+  long vs lightning spells. If you select a different spell, the shield will
+  vanish.
+
+Harpy Wings: Costs 10 MP per Second. This spell gives you the ability to
+  fly! You will lose your wings if you get hurt, try to attack, or press
+  Select again. To use it, press A and you will fly a wee bit into the air.
+  For best results, first jump into the air, enable it, then press the A
+  button rapidly until you've done what you needed in the air. When you've
+  done what you needed to do in the air, press Select, and for saftey, Knee
+  Drop. Unfortuantely, one "second" in this game is more like half a second,
+  kinda like one "second" on Super Mario Bros.
+
+Earthquake: Costs 20 MP. This handy little spell shakes the ground, causing
+  all enemies in the area to freeze! They'll remain stunned for somewhere
+  around 8 seconds (real ones, not Super Mario seconds). The enemies will
+  flash pretty colors when the spell is about to wear off. This spell is
+  incredibly useful, especially for bosses, and it's a shame that the only
+  place you get to use this spell is the last sector of the game.
+
+----------------------------------------------------------------------------
+Walkthrough:
+------------
+When fighting bosses, and I list how many of a kick will defeat it, note
+that certain kicks strike multiple times. If one of the strikes miss, then
+the number I give won't be accurate.
+
+
+Sector 1 - The Witches' Forest
+
+With the death of your brother, you're all alone in this quest. In this
+stage, get used to the controls and learn how to grab all three rewards
+from an enemy. This will take practice, but it is possible if you have
+enough space to manuver. The easiest way to do this is with Sweep Kick.
+
+Also try to practice defeating one enemy at a time, and getting the rewards
+for it. Always defeat every single enemy you can to get as much experience
+and MP as possible. Near the end of the game, you may find yourself
+EXTREMELY short on MP if you need healing spells often. This stage is a fine
+opportunity for some easy experience. Try to level up before the end.
+
+You'll find Skeletons, Harpies, blue hopping crows, and what looks like
+hopping headless chickens in the first half. Skeletons are easy to defeat,
+just get in close and quickly Sweep Kick them. Harpies are also fairly easy.
+Crouch and wait for them. When they come close they will fly up or down
+(depending on where you are compared to them). Kick them and get the reward
+before the next one comes in. The blue hoppy crows and undead chickens are
+simple to defeat, just kick them with your standard kick or Sweep Kick.
+
+Eventually, you will find a chest. Kick it open for your first spell, the
+Bouncing Bulb Spirit. It's not very powerful, but can be handy to attack
+enemies from afar at odd angles. Save your MP for healing spells, though.
+
+If you skip the spell, you can gain the experience from more monsters.
+Specifically... a crow and two of a new enemy, axe lizards. I don't
+reccomend skipping over any spells.
+
+In the second half, you'll find more of the same, plus a new enemy, yellow
+Axe Lizards. They will stand still for the most part, but once you get too
+close, they'll swing their axe wildly (often at nothing). If you're trying
+to attack them, and they suddenly decide to do this, you can get smacked a
+good one. If you're patient, wait until just after they've finished
+swinging. They have a pretty long range, so don't underestimate them.
+(i.e. don't stand in front of them looking silly)
+
+The game will mix Harpies with Lizards. My reccomendation is to attack the
+Harpies first. In the area where you first see Lizards, do a "Scroll-Leap".
+By this, I mean to leap over the head of a monster, and as you reach the
+peak of the jump, steer hard to the left back to where you started your
+jump. This scrolls the screen, triggering the incoming Harpy, and leaving
+the Lizards to be defeated at your leisure.
+
+If you've been defeating every enemy and getting as many experience awards
+as you can from them, you should be at Level 1 by the time you've reached
+the boss of this area.
+
+The end boss of this area is a giant witch (must be those forest shrooms).
+She will summon a new enemy, Armadillo Grunts, and float around above you.
+Once you defeat the Armadillos, she will hasten to the right side of the
+screen and drop energy arcs, which bounce once and burst, as she travels to
+the left. Then she'll re-summon the Armadillos. Both her spells and contact
+damage from her and the Armadillos will do a lot of damage to you. AVOID
+THEM!
+
+TACTICS: Simply defeat one of the Armadillos, then leap at her and use your
+Vertical Press Kick on her. Nine of this attack will defeat her. You can
+also try using the Knee Drop if you have it. This will only take four or
+five hits to defeat her, but is much harder to do since this technique is
+designed to attack ground-bound monsters. Armadillos take two kicks to
+defeat (or one knee drop), and if you attack them while they're rolling,
+chances are likely you'll be getting hurt, even if you hurt them.
+
+When you've beaten her, chances are you'll be in the air, and will only be
+able to get one line of experience awards (bosses give a bunch of awards at
+once). Grab whatever you can. Then the Life Up 1 spell will appear. Grab it
+to advance to the next area.
+
+
+Sector 2 - The Caverns of No Return
+
+The enemies here are a bit tougher, and worse, in most of the area you don't
+have the leisure of having enough overhead room to grab all the awards.
+This is the first area with hidden areas (a spell is hidden in one of them).
+
+You'll find Reapers, Blobs, Bats, and Frogs in the first half of this area.
+Reapers hang from the ceiling, then drop down to attack you with a scythe
+when you step close. Attack them as soon as they land with a Sweep Kick, or
+hit them with a Knee Drop. If they start swiping at you, it'll be harder to
+take them toe-to-toe. They will only walk to the left, until they find you.
+Meaning if you leap past them, they'll just keep on going. Blobs crawl
+foward a bit, and some of them will spit at you. Knee Drop the ones that
+spit. Try to lure them away from areas where Reapers will drop so you can
+get the awards. Bats circle around endlessly and are easy to defeat. Hit
+them with a standard or Sweep Kick. Frogs leap in one direction and keep
+going. They may come back, even if you've scrolled past them, but try to
+defeat them before they do that, just in case. This can be difficult if
+there's one right after the other. They will also spit at you. It might be
+easiest just to Knee Drop them.
+
+You will encounter an area with yellow boulders. You can kick these boulders
+to destroy them. The first time you see them, you can find hidden awards
+waiting for you: a Small Bottle, a Large Bottle, a Small Award, and a
+Medium Award, giving you 30 MP and 40 Exp.
+
+Soon after, you'll find floating platforms and what looks like dangerous
+liquid. Don't worry, it won't harm you, but it WILL slow you down. Try not
+to fight in it, as it can screw up your attempts to grab awards. In this
+area, try to defeat the bats and get those awards before going after the
+frogs. Slowly scroll ahead and wait for them to come to you.
+
+After the first swamp, you'll find more boulders and more hidden items:
+three Medium Awards for 120 Exp. Get them, but it'll trigger a Reaper, so
+beware. Continue on. You'll find some golden platforms sticking out from
+the ground, over a pit. Careful! If you stand on them for too long, they'll
+crumble! You can get the Magic Boots spell here by walking on the lower
+platform. Head left, it's hidden inside of the wall.
+
+If you skip the spell, you'll find an area with a bridge made of these
+crumbling platforms and many Large Awards. Unfortunately, the floor below
+the bridge has spikes and some blobs. The resulting 200 Exp you could get,
+at risk to life and limb, is not worth the loss of the valuable Magic Boots
+spell, which would protect you from said spikes in the first place.
+
+Once you get the spell, you'll be in a vertically scrolling area. These
+areas are a major pain, because if you fall down, the game figures it's a
+pit and kills you, even if the platform had only just barely been scrolled
+off. You'll find Armadillos here, and stationary orbs that fire off balls
+of energy at you. The Armadillos are much harder to defeat than the ones
+the Witch summoned at the end of Sector 1, and will take a few hits to
+defeat. Slide past them, then use your standard kick from behind. If they
+roll off the edge of the screen, they're gone for good. As you climb this
+area, try to manuver them so they drop on top of you, and use a standing
+Vertical Press Kick as fast as you can. That'll defeat them. The stationary
+orbs will aim at you, but they can only fire at you if you are at an angle
+opposite to the corner they are in. In other words, if they're in the air,
+they can only fire down. If they're on the ground, they can only fire up.
+They cannot fire to the side, so you can safely smack them with a Sweep
+Kick if they're on the ground, but be careful not to leap toward them when
+they fire, or you'll get hit. Time ones on the ceiling with a Vertical
+Press Kick after their shot is out of the way. You will have problems
+getting their awards, so don't fret too much, just try to get one Experience
+Award if you can.
+
+When you reach the top, you'll be back to horizontal scrolling again, and
+at a swamp with frogs and blobs and Armadillos that drop from the sky. Take
+this area SLOWLY. You can quickly get overwhelmed if you rush ahead. Wait
+for frogs to come to you and knee-drop them. Then slowly proceed. If you see
+an Armadillo dropping, get below it and Vertical Press Kick it to death.
+
+Once past this area, you'll have reached the boss, a woman and her pack of
+Hell Hounds. She'll launch a spray of spinning energy at you, then summon
+her hounds, which stick to the edges of the screen. As each hound jumps for
+another area of the screen, it'll fire a single spinning shot at you.
+
+TACTICS: Stand just under the 4th hound or around the center to avoid the
+spray. To defeat her, first defeat ALL her hounds. This will not be easy.
+Then she is vulnerable to your attacks. While you're going after one hound,
+others will be hopping around, firing shots, and the woman will continue to
+fire sprays of shots downward. Each hound takes a few hits to be defeated.
+5 Vertical Press Kicks, 2 Knee Drops, 4 High Kicks, 4 Sliding Kicks,
+7 Sweep Kicks, or 1 Double Front Kick (if both hits connect) will defeat a
+hound. I would suggest Knee Drops, as they're easier to do than Double Front
+Kicks, and can help you evade shots if you watch what's going on. DO NOT
+Knee Drop them if they're in the ground. Yes, IN the ground. Unless you're
+practiced, you WILL get hurt. For some very stupid reason, the game has the
+hounds on the edges of the screen, and the floor doesn't count as that. You
+CAN hurt them with a Knee Drop on the ground, but it's a lot more tricky.
+Once you've defeated the hounds (and if you can do so without getting hurt
+at all, consider yourself either a pro, or very very lucky), you can go
+after the woman behind the mess. She'll fire a spray as soon as you defeat
+the last hound (which, if she's already firing a spray, means two sprays to
+dodge...what fun!). Then you can attack her. 4 Vertical Press Kicks
+(if it hits twice per kick, 7 if not), 2 Knee Drops, 6 Kigh Kicks, or
+1 Double Front Kick (if both hits connect) will drive her to the ground.
+
+Again, you'll be in the air when you beat her, so try to get one full award
+stream, preferably an Experience one, but go for magic if you've leveled
+twice in this area and feel the need to boost your MP.
+
+Once defeated, you'll recieve the Twin Power spell.
+
+
+Sector 3 - Belzed's First Stronghold
+
+The first enemy you'll find here is a shielded rat. Not too difficult, but
+cannot be harmed while his shield is up. He uses his sword and a tail whip
+attack. One Knee Drop should take care of it.
+
+You'll find chests in this area, much like what contained the spell Bouncing
+Bulb Spirit in the first sector. These contain mundane items like Hearts,
+MP Bottles, and so forth, but some of them are Mimics! There are also
+patches of muck that will slow you down. You can tell where they are because
+the entire floor tile has pink slime on it instead of the beige stone.
+The other patches of pink slime are just background effects.
+
+If you need it, grab the Heart in the first chest, then continue onward.
+Shortly, you'll run into a sub-boss, an annoying wizard-type that shoots all
+sorts of nasties at you, including summoning a chain from the sky (perhaps
+the Japanese were a little confused on the concept of "Chain Lightning"...)
+He can be very difficult to fight without getting hurt. Worse, there's two
+patches of muck that'll slow you down when you're trying to get somewhere.
+When he first appears, jump and do two Vertical Press Kicks as quickly as
+you can, then be ready to dodge his first shot. If you can hit him with
+both kicks in a Double Front Kick, that'll take a good chunk off of him.
+Knee Drop is a safe bet. I suggest combining all the kicks you know and
+staying off the ground as much as possible (since that muck will throw you
+off kilter). If you can position him so he's directly above you, and in
+range of a standing Vertical Press Kick, you can have an easy victory just
+by flailing at him like that. When he dies, he tosses up a double award
+(you may not see it, but it should be there), so be sure and grab what you
+can. If you can manage not to get hurt in this fight, then that's superb.
+Try not to lose more than 1 or 2 life bars total, though. Magic is becoming
+more and more precious as you gain levels.
+
+The second chest and third chest here contain a Small and Large MP bottle,
+respectively. Grab them.
+
+Immediately after this battle, you'll run into two Ninjas wearing green.
+They are pretty quick, can dodge your incoming Knee Drop if they see it,
+and throw ninja stars. They also can do a lot of hurtin'. You can position
+yourself so you only have to fight one at a time, you'll find it easier.
+Despite the fact that they can dodge your Knee Drop, it seems to be the
+safest way of tackling them.
+
+The 4th chest you run into is a mimic. One knee drop will take care of it.
+The next ninja you run into is, strangely, rather weak and stupid. One
+Knee Drop and he's toast. Continue on, and you will find an area with
+floating platforms, Experience Awards, and a new enemy. I'm not really sure
+what they are. Maybe mutant Big Macs? Anyway, their movement is a bit
+erratic, but one Knee Drop will take care of them. They also hang from the
+ceiling, waiting to drop on you. When getting the Exp Awards, take care not
+to get dripped upon by the acid. There's four Large ones for 200 Exp total.
+
+Once you've disposed of the Rabid Burgers, you'll find two more Large Awards
+for another 100 Exp, more Rat men, and an area of kickable boulders.
+Defeat what monsters you can without scrolling too far (I suggest luring
+them and being patient), then kick the boulders and continue down the
+resulting hole.
+
+Note, you have the option of going the other way. You'll end up skipping the
+sub-boss, but you won't gain the "??" Spell. I consider spells more
+important than shortcuts or experience, so I'm walking you through that
+way. If you really want to, you can go without the ?? spell.
+
+You'll find chests galore here, but you want the first one with boulders.
+First, however, drop down to the right side and get the chest there for
+30 Exp. The two chests on the other side, which are now inaccessable due to
+scrolling too far down, contain two Crystals. The Exp is more valuable right
+now. Grab that, then jump back up and get the chest with the boulders for
+the ?? Spell. Don't skip it, it's why you're down here.
+
+You'll end up not far from where you started. Two Large Awards, a Large MP
+Bottle, and a Heart wait for you here. Get them, then continue onward.
+You'll run into another sub-boss.
+
+This guy doesn't have much for variety in attacks, he just floats around,
+pauses, then zooms forward in one direction. If you're in the middle of a
+Knee Drop while he's zooming at you in the air, you should be safe. Just use
+any attacks you wish, you can take it pretty leisurely here. The only thing
+to be careful of is not to Knee Drop him while he's on the ground. You'll
+get hurt when you come out of the drop. He also gives a double award. Grab
+what you can. The flashing things that follow in this boss's wake don't seem
+to hurt you any.
+
+You'll come to a rather large knight blocking the passage onward. As you
+harm him, he'll change into other shapes. He can do a LOT of damage in his
+knight form, so be careful. I suggest luring him out into the open and Knee
+Dropping him until he changes form, then change your strategy depending on
+what form he assumes.
+
+Continue on to reach the boss of this sector a Gargoyle with lightning
+attacks. He'll toss up a ball of energy, which will shoot out bolts of
+lightning in a downward spread. Then he'll fly about and fire small shots
+at you while you're trying to kick him.
+
+TACTICS: Whenever you walk under him, he'll land and fire more balls of
+lightning. If you want to Knee Drop him, do so, but take care not to get
+landed on. It'll take 7 shots of Knee Drop to kill him. 7 Roundhouse Kicks
+(if both connect), or 3 Double Front Kicks (if both connect) will defeat
+it. This boss is a pain in the ass, and you WILL get hurt. This is one of
+the reasons you've been hoarding MP the first couple of levels...you will
+need some of it for Healing now. My suggestion is to master the Double Front
+Kick before you get in here and use that. You'll need to get him on the
+ground, so walk under him as soon as he takes wing, but try not to get
+smacked by his lightning.
+
+When you defeat him, you'll get the Lightning Spirit spell.
+
+
+Sector 4 - Bottomless Crevasse
+
+Ah, back in the open again! A little too open. Careful of all the pits in
+this area. It's not called the Bottomless Crevasse for nothing!
+
+The first enemy you'll run into is a karate-chopping Gorilla. They're dumb
+as rocks, but a little unpredictable. They may leap forward and chop at you.
+A Knee Drop will take care of them. You'll also find Red Mages that drop
+fireballs on the ground, which roll along toward you until they reach the
+edge of the screen. A Knee Drop will take care of them. You could also use
+a Flying Kick on them, but this will prevent you from getting more than one
+award. You'll also find Eagles, which fly straight down, then zoom at you
+straight on as soon as they're level with you. Wait on the ground for them
+to fly at you, then quickly leap and Knee Drop them. That, or wait directly
+below them and use your Vertical Press Kick.
+
+Not far into this area, you'll find the Life Up 2 magic. For reasons that
+are quite obvious, YOU SHOULD NOT MISS THIS SPELL!
+
+Continuing onward, you'll find more Eagles. Take it slow so you can defeat
+them and get the awards from it. You'll soon find an area with many pits,
+and pillars with spikes that pop in and out. Take this area slow and careful
+so you can take out all the Eagles while avoiding spikes, which do a
+not-so-healthy chunk of damage. You'll find a Heart and a Large Award later
+on. After making it past the pits, you'll meet up with a sub-boss, a mage.
+There's a spike in the center of the ground that pops in and out, so be
+careful when you're attacking. If you've been grabbing as much Experience as
+you can, you should be at Level 6 around the time you defeat him (I levelled
+as soon as I beat him).
+
+Immediately after the sub-boss, you'll be fighting the main boss, the
+Chimerae. It shoots small fireballs, then pounces toward you. Then it
+begins it's fireball charge. It will charge back and forth, turning into a
+streak of fire. Then it'll eventually stop and repeat the process.
+
+TACTICS: When this boss is charging, you should be dodging. Jump straight up
+and don't even bother trying to harm it when it's on the other side. Wait
+until after it's shot it's fireballs out and starts leaping. Then use your
+Knee Drop on it. 13 Butterfly Kick strikes, 8 Double Front strikes, or
+9 Knee Drops will kill it. Knee Drop really is the easiest way to defeat it,
+especially when it's in Leap Mode. If you dodge the other attacks, you
+should have absolutely no problem with this boss.
+
+When you win, you'll recieve the Pulse Wave Spirit.
+
+
+Sector 5 - Aboard the Ship of Strife
+
+Hope you're not seasick! New enemies here. Reapers drop down from the skies,
+and that's all they do. Use your Vertical Press Kick quickly before they
+vanish. There are also Fishmen who spit bubbles in an arc (they can't aim
+at you) and leap at you. Knee Drop them for an easy win.
+
+As you hike, you'll find areas where Reapers seem to drop like rain. Don't
+panic too badly if you can't kill them all and get all the experience. If
+you've been carefully fighting up to this point, the loss is minimal. They
+can overwhelm you, though, if you're fighting Fishmen, so be careful.
+
+You'll find what appears to be a the ship's cabin about one third of the
+way through the stage. Here, you can jump inside and get two Hearts, two
+Large MP Bottles, and a Large Experience Award. A welcome treasure, to be
+sure, mateys. Yah-har! ..*blink* Oh yeah, the Walkthrough.
+
+You'll also find a sub-boss here. This guy isn't too hard to defeat. Simply
+stand in the middle and, when he dives at you, use your Vertical Press Kick,
+or, if you have it, Blazing Flip Kick. You may want to save the goodies in
+the cabin for after you win, especially if you're already at full health.
+
+Next, you'll run into some green-garbed Fighters. These guys aren't much for
+brains. They'll run at you and try and kick you. A single Butterfly kick is
+a good bet here, as they tend to come at you in bunches, and from both
+sides. Then some grey Eagles that sit and wait for you. They're fast, so
+be ready with either a Roundhouse, Butterfly, Knee Drop, or whatever.
+
+Right after the Eagles, you'll fight another sub-boss. It's the same wizard
+you fought at the beginning of Sector 3, only now you've more tricks up your
+sleeve. Pound him to oblivion, then continue on. (You might get a 1-Up from
+your score at around this time.) If you have the Blazing Flip Kick, you will
+have absolutely no difficulty whatsoever.
+
+Next on the agenda are blue swirly things that bounce around, trying to hit
+you. Any attack should be fine against them, they're not too hard to handle.
+You'll also find skeletons, like in Sector 1, only they're a bit tougher.
+Not so tough a Knee Drop won't take them out, but you'll need more than one
+standard kick.
+
+You'll reach a long, straight deck with Skeletons and Fighters. Knee Drop
+them for easy awards, and continue on. When the deck stops bobbing up and
+down, you're near the boss.
+
+A rain of acid bubbles constantly falls in this battle, so you have to
+constantly dodge them. A giant Octopus will rise up, sticking tentacles over
+the prow of the ship. He'll spit acid at you while you're trying to flail at
+his limbs. This is hard to dodge, because it's the same color as the bubbles
+that are falling, and the bubbles have a falling pattern, whereas the shots
+are fired directly at you. Expect to get hurt here.
+
+TACTICS: First, attack his limbs. If you have the Butterfly kick, use that.
+If not, use the Roundhouse kick. Try your best to dodge incoming acid, but
+don't fret too much if you take a little damage here. Four shots of a
+Butterfly kick will destroy a limb. I do not reccomend Knee Drops, as the
+less you are in the air, the better. When all four are destroyed, you can go
+after his head. Unfortunately, this means you have to jump to get at him.
+You will end up taking a lot of damage here, so be prepared to heal.
+(I had a full compliment of 11 life bars, and when I was finished, I had 6.)
+Be careful when you beat him! Bubbles will still fall for a short while!
+You can be killed while he's in his death throes and have to do it all over
+again!
+
+When you defeat him, you recieve the Whip Lightning spell. Don't fret over
+the fact that this is the only spell on this level. There's nothing hidden.
+
+
+Sector 6 - Across the Swamps
+
+Hope your boots are muckproof. The first enemy you'll run into is a Green
+Mage. Not at all difficult to defeat, any kick will do. They will fire a
+shot directly at you if you let them. Next are some bluish colored winged
+...thingies. They don't fly too well, and aren't difficult to defeat. Just
+Knee Drop them. Sometimes they'll drop down right on top of you. Use either
+the Vertical Press Kick or Blazing Flip Kick in that case. It's best if you
+lure them one at a time and pick them off at leisure so you don't get over-
+whelmed.
+
+Try to avoid the marshy areas at the bottom of the screen, as they will slow
+you down. Near the end of the first marsh, Zombies will rise from the
+ground. Knee Drop them, but be careful, as they shoot chunky bits at you.
+Soon after, you'll run into some Blue Mages. Also easy to defeat, their
+spells cause rocks to drop on you from above.
+
+In this area with the first Blue Mages, you'll see an area with very tall
+grass and a bridge of rocks above it. Stand on the first small rocks, and
+it'll break, dropping you inside. You'll find the Force Shield spell.
+
+Once you've got this useful little spell, you may want to blow 20 MP and
+turn it on for a little while. It'll protect you from those annoying mages
+when you can't get to all of them at once. The decision's yours.
+
+Continuing onward, you'll find a pack of those poorly flying giant blue
+thingies (what are they, mutant chickens or something?), then some Red
+Mages. You've encountered them in earlier levels. They drop a shot that
+travels along the ground. As you reach an area with floating platforms, you
+will find a small, blue flying helmet-like creature. It circles around, and
+is pretty easy to avoid and defeat by itself, but if you've not defeated the
+Red Mages yet, they can get in the way.
+
+If you drop down in this floating platform section, you can find a Heart,
+a Large MP Bottle, and a Large Award.
+
+Continue on, and you'll find some Blue Mages. These'll fire Lightning
+straight down on you. If you've enabled your Shield, it won't last long, so
+stay out of the line of fire!! You'll then find some pillars and pits, some
+of which have Zombies on them. Make sure all the Mages are gone, then
+Knee Drop the Zombies. After that, it's time to fight the Boss of this area.
+
+Two Great Harpies will attack, flying about, swooping, and pausing to scream
+at you. Expanding sound waves will shoot forward. 
+
+TACTICS: Force Shield helps out a great deal, as it absorbs the effects of
+the Sound Waves. One way to fight them is to wait on one side or the other
+and attack when they're there screaming. Another way is to forgo shields and
+use Whip Lightning. I would suggest using Shields and duking it out with
+your feet, as that uses less MP in the long run, even if you have to re-cast
+the spell once or twice.
+
+When you defeat them both, you will receive the Harpy Wings spell.
+
+
+Sector 7 - A Long Way From Home
+
+The layout of this level is very simple. There's no obstacles or pits, just
+one long walk. What this level sacrifices in complexity, it makes up for
+in sheer numbers of enemies. You will be constantly hounded by enemies,
+broken up by the occasional mini-boss. It's important to take this sector
+slow and easy, or you will rapidly get overwhelmed by a screen full of
+beasties!
+
+No sooner you get here than you are immediately attacked by two enemies.
+A blue swirly thing, like you saw in Sector 5, and a new enemy, which I
+assume to be a rolling armored golem. Quickly get rid of the swirling ball
+so you can focus on the rolling golem. Wait for it to come to you, and Knee
+Drop it a couple of times (you'll want to leap away immediately so you don't
+get hurt). Like the Armadillos, you'll want to wait until they're not
+rolling before you attack. Alternatively, you can try three Double Butterfly
+or Blazing Flip kicks.
+
+Proceed forward a bit and another Rolling Golem will roll in from the left.
+Dispose of it and continue on.  Another Golem from the right, then another
+Golem will drop from above.  If you scroll forward too fast, you'll trigger
+another Golem, as well as another Swirling Ball, so stop when you see the
+first fall from the sky, defeat it, and continue on.
+
+You'll notice your EN meter pop up with a health bar, so you know what that
+means... yup! A mini boss! So soon?
+
+It's another Chimerae type creature! Only this one attacks with an ice-spike
+charge. It essentially follows the same pattern as the boss of Sector 4,
+except that it will fire shots upwards at an angle to catch you while you
+jump to evade shots. My advice to evade that little sneaky attack is to
+jump a bit away from the Chimerae, enough so that shot won't strike, but
+not so much that you accidentally land on one of the first two shots. You
+could also try a smaller jump, leaping between the level shots and the
+angled shots. Other than that, just Knee Drop it when it's not charging.
+Six Knee Drops or Eight Double Butterfly Kicks will defeat it.
+
+Immediately, a little blue ninja will dash up and attempt to kick you, then
+run off to the left. If you're on the right side of the screen, he can
+easilly surprise you, so while the mini boss is busy exploding, walk to the
+left. Then just Knee Drop him, and he's gone.
+
+You'll also notice that now there are various goodies waiting for you at the
+top of the screen. You might be tempted to use your Harpy Wings magic to fly
+up and get them all, but you should reconsider. For starters, flying costs
+10 MP per second, flying is not exactly graceful, and each "second" is about
+as long as a "second" on the timer of Super Mario Bros. It's very easy to
+burn up all your MP to get at the goodies. Even by jumping as high as you
+can first, you can burn 20-30 MP just grabbing one item! If you go for a
+heart, it can be slightly more efficient than using Life Up 1 magic, but
+you're still better off saving your MP for Life Up 2. If you've been
+snagging as many Awards and Bottles as possible, chances are you don't even
+need the awards.
+
+Up top you'll see a Large Bottle, Large Award, another Large Bottle, and
+a Heart.  Get the Heart if you need it, and continue on.  You won't get far
+before you see three ninjas drop from the ceiling: Two blue stupid ones
+(like the one that just appeared), and a green one that you should be
+familiar with from Sector 3. Use the same tactics to defeat it.
+
+Continue on, and you will assaulted by four of the stupid blue ninjas! One
+will run from the left, and three from the right. It's easy to get hurt here
+so just leap as high as you can, and knee drop. Don't worry if some of them
+get away. Staying healed is probably more important than Experience anyway.
+Alternatively, you can try a Sliding Kick on the group of three, then Knee
+Drop the last.
+
+Continue on, and you will be assaulted AGAIN! This time, three blue ninjas
+dash in from the left, and a green one walks in from the right. Quickly
+Slide Kick to the left, then Knee Drop the green ninja until it's defeated.
+
+Continue on, and you will find a new enemy, yellow Barbarians. I'm not sure,
+but their heads are sort of avian... maybe they're Barbarian Chickens?
+Anyway, as soon as you see the first one walking, stop scrolling forward.
+You may or may not have triggered two more, which run much faster and will
+leap at you. You can Knee Drop them, or if you want to make them look stupid
+just duck and they'll leap right over you and keep going. Also, it may look
+as if there's only one, but there's really two of them. The slower Barbarian
+is a lot hardier, and takes three Knee Drops to destroy. It attacks with a
+sort of long claw, and may try to evade your Knee Drops, so take your time.
+They're also STRONG, and can take half a bar to OVER a bar of life away
+if you're struck. The slower one also jumps, so be careful.
+
+Don't scroll too forward too fast, or you'll run into the next group of
+enemies, two blue ninjas from the right, and one from the left. Slide or
+Knee Drop, and continue on.
+
+You'll come across the second Mini-Boss in this game. It resembles a sort of
+small dragon... or maybe a large insect with claws. Either way, it follows
+the exact same movement and attack patterns as the Harpy boss of Sector 6,
+but since there's only one of them, you shouldn't even need to cast your
+Shield spell. If you have the Blazing Flip Kick, just stick to the center
+of the screen and use it whenever it swoops toward you. Otherwise, use
+whatever tactics you used against the Harpy boss.
+
+Once defeated, you'll see more goodies appear at the top of the screen.
+Like before, don't bother unless you're desperate.
+
+Continue on, and you'll be assaulted by four green ninjas. The problem with
+this batch is that some of them seem to be smart, and others aren't. Three
+of them will run off to the left if you let them, while one will stick it
+out and use normal tactics: kicks, evades, and throwing stars. Sliding is
+a bit dangerous, as that can trigger even more enemies off to the right, so
+try to Knee Drop them without taking too much damage.  If you scroll just a
+bit to the right, a fifth green ninja will appear (the stupid kind).
+
+Continue on, and two more green ninjas will attack from the left, one smart,
+and one stupid. Immediately walk to the LEFT to attack them so you don't
+accidentally scroll the next enemies into triggering. If you scroll slow
+enough, you can trigger them one at a time (the smart one comes first).
+
+Not long after, you'll run into five, yes FIVE Red Rolling Golems that fall
+from the sky!! Try to position yourself between them and do a Blazing Flip
+Kick (or Vertical Press Kick if you don't have it) to protect yourself.
+This skirmish is a pain in the arse, and it's likely you'll get hurt no
+matter what tactic you use. I suggest a short jump, Knee Drop, and quickly
+repeat it before they all start rolling. While they're rolling, do a high
+jump and try to land where it's safe.
+
+With that mess out of the way, continue and you'll come across another
+green ninja and another Red Rolling Golem from the right. After that, the
+same group will attack from the left. Then two more green ninjas (one smart
+and one dumb)... as a side note, you can tell which ones are "smart" because
+they take more than one hit to kill.
+
+Continue on and you'll find a Heart within jumping distance. Nab it, and
+continue towards this stage's boss. This is going to be a VERY HARD battle.
+
+Approaching a coffin at the end, it's struck by lightning revealing... a
+vampiric cross-dresser!! Er, no, it's just a vampire. :)
+
+This boss follows the exact same pattern as the Gargoyle boss of Sector 3...
+and we ALL remember how much fun THAT guy was, right? The only difference is
+that he fires three orbs instead of one, causing three lightning spreads.
+
+TACTICS: Use the same tactics as you did versus the Gargoyle to send this
+creep back to the shadows. Once again, you WILL get hurt, so hopefully you
+have been hoarding all your MP! Try your best not to take too much damage,
+because this is NOT the last level or the last boss, and you WILL need MP
+later!!
+
+I suggest you use Sweep Kicks. They're quicker to execute safely, letting
+you get out of the way of necessary. Be careful while attacking, since each
+time you kick him, he moves a bit away, which means the lighting spread he's
+firing might hit you! If he keeps flitting out of your range and won't come
+down so you can attack, a Sliding Kick will close the distance. You might
+also try using your Blazing Flip Kick while he swoops down, but you'll
+definately take damage if you do this.
+
+19 or 20 Sweep Kicks will take this guy out (I had trouble counting, sorry).
+
+Once he's defeated...oh boy, another boss! It's that green dragon-bug thing
+again! It's the exact same thing that you saw earlier in the level, so
+follow the same tactics.
+
+Continue to the right. You'll be taken to the last area of this sector to
+fight two more bosses!
+
+The first is a mage... or is it? It flashes, then... Oh no! It's a Clone of
+Thonolan!! He has many of the same techniques as you do (and some that you
+don't!), including invulnerability during certain kicks, but his AI isn't
+very smart. It's pretty simple to take him out using 7 quick Knee Drops.
+Try to corner him if you can.
+
+Finally, you'll find the last boss of this stage... a giant ugly spider!
+A heart will appear in the center, just out of jumping range.
+
+This spider crawls along the ceiling, dropping down on a web when you're
+under it, and releasing small spiders.  The baby spiders can be easilly
+defeated with a single Sweep Kick. The webbing, however, can get to be
+annoying, since it blocks movement.  Kicking it destroys a piece of the web,
+and you can actually use this to your advantage to get to the Heart at the
+top of the screen.
+
+TACTICS: Try to position yourself so the spider only comes down in one or
+two areas (preferably around the Heart in case you need healed). That way,
+your entire air space isn't blocked by webbing. Properly timed, the
+Lightning spell (NOT Whip Lightning!) can do over a bar of damage, but you
+may want to save your MP for the final sector. If you think you can spare
+the MP, stand right underneath one of the webs that the spider crawls down.
+JUST as the spider is about to start its descent, activate Lightning. If
+you timed it right, all three bolts should smack the spider, and it'll
+remain at the top of the screen. When the spell ends, beware the baby
+spiders that will come dropping down.
+
+If you plan to use kicks, then try the following: Stand right below the web
+where the spider descends, like you would for the Lightning tactic, only
+use your Blazing Flip Kick (or Vertical Press Kick) when the spider is close
+enough. You will only get one hit in! IMMEDIATELY move to the left or right
+to evade the baby spider that will be released, Sweep Kick it, move back to
+the web, and repeat. If you time this properly, you can get through this
+boss without taking ANY damage, so don't be intimidated by its size!
+
+This boss takes 20 Blazing Flip Kicks to defeat. Thanks Mom! She helped me
+count because it's kind of a pain trying to time these hits (it takes
+practice) and count how many hits... I kept losing count when I messed up!
+Mmuwa! Using this method, it'll probably take about 4 minutes. :P
+
+Once this boss is defeated, you will recieve the final spell, Earthquake!
+
+
+Sector 8 - Belzed's Haunted Tower
+
+This is it! The final sector! Belzed and Silphee await to see who is the
+true master!
+
+You start in a vertically scrolling area, so like in Sector 2, be careful
+not to fall down into a "pit".  Your first foes are three yellow Barbarians
+and a blue swirling thing. Unfortunately, you do not have any real head
+room, so you can't defeat them with Knee Drops. Try a standard kick (normal,
+Roundhouse, or Double Butterfly, whichever you have), then retreat slightly
+and repeat...it takes three hits this way, but you can evade taking damage.
+For the enemies above you, try Blazing Flip Kicks. Standing below the
+opening will keep them from dropping down to your level.
+
+Kicking the bricks to the left will reveal a Large Award in case you need
+it. The bricks in the upper right hide a Small Bottle.
+
+Continue upwards and two more blue swirling balls will appear and bounce
+around. Be sure and take them out before proceeding so they don't interfere
+later. Continue upwards to fight another Barbarian (you can jump through
+the tiles that don't look like solid brick. If you're careful, you can
+trigger a second Barbarian and defeat both with Blazing Flip Kicks from
+below, then continue.
+
+As soon as you jump up, two more blue swirlies will attack. Take them out.
+A third waits to harm you the instant you leap toward the pile of kickable
+bricks, so trigger it by leaping straight up first. These bricks hide
+nothing, so don't bother destroying them. Another blue swirly waits to
+catch you mid-jump just after those bricks, so again, trigger it by jumping
+straight up.
+
+Next, you'll find two golden fishmen waiting for you, along with more blue
+swirlies. Those swirlies are placed in such a way to strike you where you
+are most likely to jump. Keep that in mind while you proceed.
+
+There are some goodies under a ledge that you can Slide Kick to acquire:
+a Large Experience Award, a Small Bottle, and a Heart. It's quicker than
+standing on top of the ledge and waiting for it to crumble.
+
+Proceed by using the crumbling ledges so you don't get struck by yet more
+blue swirlies.
+
+Continue on, and you'll find a stair-step area with more bricks, more
+annoying swirlies, and a couple of green soldiers. They're not hard to
+defeat with a couple of kicks.  You'll find a Large Award, Large Bottle,
+and a Heart here. Careful of the swirlies on the stairs.
+
+Jump upwards to find this area's Mini Boss, a Winged Demon. This looks like
+one of the creatures that kidnapped Silphee, doesn't it? This creature flies
+in one of the corners, shoots a barrage of crescent shots at you, then
+rushes along the ground, flailing its hand axe. It will then flit around a
+bit, firing occasional crescent shots before it repeats the process.
+
+Dodge the crescent shots, and time a high jump when it rushes you, to
+evade damage.  Around 12 or 13 Blazing Flip Kicks should do it in. Kicking
+while leaping toward it during its "flit around" pattern seems to have the
+best effect, and you can destroy its crescent shots with a kick, too.
+
+Once defeated, the game will let you continue to the left.  Scroll SLOWLY!!
+The first thing you'll come across is a slow-moving guard with a sword.
+They aren't hard to defeat with normal kicks. A bird will swoop in next (use
+a Blazing Flip Kick) and another guard. DO NOT SCROLL FURTHER YET! There's
+trouble if you do. Once you've triggered the bird, and you can see the
+second guard walking toward you, go back to the right and let the guard
+come to you! Defeat it, and continue.
+
+You'll see some platforms. IMMEDIATELY jump onto one so you're at the top
+platform! Ignore the birds that fly by, the main concern here is an annoying
+and INVINCIBLE enemy that follows you around and weaves in a snake-like
+motion. There's a Large MP Bottle hidden in the bricks on the top
+platform, but when you move to get it, another guard will drop down on top
+of you. Blazing Flip Kick it to death.
+
+Now comes the hard part. That weaving tower thing will follow you while you
+try to continue to the left... and unfortunately, the corridor narrows so
+you can't jump! Worse, there's a Guard in your way!
+
+Trigger the guard by moving to the edge of the top platform, then move right
+until you can make a mad dash for the corridor without the guard getting in
+the way. If you move fast enough, you'll scroll the weaving tower thing off
+and won't be bothered by it again. Three birds will fly down to impede you,
+so use a Sliding Kick to get past them.
+
+Leap up a level, and you'll see a Large Award and Large Bottle waiting for
+you. There's also a couple of those Mutant Chickens flying around. Defeat
+them and continue on. The screen scrolls up now, and you'll see another
+Large Bottle in a niche to the right. Be careful not to scroll up too far if
+you want it.
+
+Hop up the platforms, Blazing Flip Kick as you go to get rid of the enemy
+that drops from above...if you miss, he'll come back upwards in the same
+area, so don't assume you're safe.
+
+If you cast the Magic Boots spell, you can get to another Heart, Large
+Award, and Large Bottle without taking damage from the spiked floor.
+It's essentially 1 bar for 10 MP, so if you're injured, feel free to nab it.
+You'll have to stand on the crumbling platforms to get to the items.
+
+There's another Heart and Large Award hidden in the platform when you
+continue upwards, just walk over them to get them. Another Heart and Large
+Award is just past them under a crumbling walkway with a couple of ninjas
+on them. They can be easilly taken out with Blazing Flip Kicks.
+
+Jump a bit on the platform next to the crumbling walkway to scroll some
+more Reapers will fly around to harry you. Defeat them before proceeding.
+
+Further up, after more Reapers, Soldiers, and such, you'll find even more
+goodies above a spiked floor: A Large Award, Large Bottle, and a Heart.
+
+Continue upwards towards another mini-boss. This time it's a Centaur!
+
+He jumps around from platform to platform firing arrows into the air, which
+then come raining down in groups of 5. It's not a complex pattern, but it's
+an annoying one, as the arrows can keep you from getting to the Centaur.
+These shots can't be destroyed with a kick, unlike the last mini-boss.
+
+There is a very simple way to defeat this boss... wait in the left corner
+until it reaches the ground and cast Earthquake. Then just flail at it with
+your standard kick until it's defeated. Be sure and grab a row of Magic
+Bottles, if possible, when you kill it to make up for the 20 or 40 MP you
+spent.
+
+Now you can continue to the right. You'll find a couple more of those
+Mutant Burgers that we all loved in Sector 2, this time in a pretty red
+color! They're just as easy to defeat, too. A Drop Kick will do it.
+
+Scroll right a bit, but don't enter the next room yet. Let the Mutant
+Burgers come after you, and take them out. The next room's floor crumbles,
+so you'll want to get to the platforms above it without having to worry
+about your lunch attacking you.
+
+As soon as you enter the room, a Mutant Burger will drop down from the
+ceiling. It splits into four more when you hit it! Be careful while taking
+it on that you don't tarry on a single tile for too long, or you'll fall
+through and be done for.
+
+Two Large Bottles, a Large Award, and a Heart await you, just be quick about
+getting them. Green soldiers (the stupid kind that kick and run) will come
+at you from both sides while you get the items, so be wary. You may want to
+destroy the blocks on the top platform first so you can just jump straight
+up out of harm's way.
+
+After more enemies, including more splitting Burgers, you'll reach the end
+of this right-scrolling area and have to scroll up again. Bubbles, like the
+ones the Octopus boss spit, will rain down, and you will have to dodge
+those, dodge Red Mages and their shots (which go down and follow the
+ground), and be watchful for large spikes that thrust in and out of the
+ground! Joy.
+
+There's a heart in a niche on the left side of this area, but it's hard to
+get to without a well-executed Flying Kick. Don't bother unless you're
+desperate, as you may lose a life trying to get it.
+
+Continue up and you'll find more Red Mages, and the falling bubbles will
+stop. Take your time and defeat all of the Red Mages do they don't harass
+you later.
+
+You'll find another stone spike that appears, and you'll need to jump on
+that platform when the spike is down so you can proceed. Be careful about
+the Red Mages that appear here. Try to take them out, but don't jump over
+any "pits" you've created by scrolling out of reach of platforms.
+
+Continue upwards, after defeating the mages, and you'll find another stone
+spike on a platform and some orbs that fire sparks at you, like in Sector 2.
+The sparks make it difficult to continue without getting hurt. You'll have
+to jump quick in between shots, using the edge of the platform.
+
+Continue upwards, destroy the Orb that is in reach, and further up, more
+Red Mages. If you use Harpy Wings to get to the area with breakable blocks,
+you can find some hidden Bottles, but don't bother. Further up you'll find
+more Red Mages and another rain of bubbles! The two threats make getting up
+the next set of platforms difficult without getting hit and falling down
+into a "pit", so you may want to consider blowing the MP on Harpy Wings and
+taking the hidden area mentioned above.
+
+There IS a way to prevent the rain of bubbles, but it doesn't always work.
+On the platform (the one you can jump through) that is even with the
+breakable blocks... stand below it and jump on top of it... but jump so that
+you just BARELY make it. The screen may scroll up slightly, and you'll
+probably trigger a Red Mage or two. Defeat them, continue on, and hopefully
+the rain won't come.
+
+Jump back and forth from platform to platform, but be careful, as stone
+spikes appear on two of them! Continue to the solid area on the left part
+of the screen, and be careful, as that rain of bubbles may trigger now.
+
+WHAM! Just when you least expect it, a mini-boss! ARGH! It's the boss from
+Sector 3 (the one after you obtain the ? spell), but with the rain of
+bubbles, you can't Drop Kick it. And with nothing but a big "pit" below, it
+isn't exactly safe to get hit, either.
+
+Get onto the stone platform with the breakable bricks, FACE RIGHT (so that
+if you do get hit, you fly backwards to the left) and try to kick it to
+death with standard kicks. You WILL get hurt here, so try and finish this
+fight up as quickly as possible and move on. Jump up using the platforms
+you can jump through, break the blocks, and move to the left to exit this
+nightmare...and begin a new one!
+
+FINAL CONFRONTATION
+
+Belzed awaits! First thing Belzed does is cast a spell upon the whole room.
+Bars of light will zoom around, but don't worry, they do no damage. What
+that flashy display WILL do, however, is activate the four guardians on
+the sides of the screen! One at a time, you will have to destroy four
+Dopplegangers. Their shape changes after they take so much damage, just
+like the creatures in Sector 3. Make sure you change your tactics depending
+on what form they take. If you can corner them, you can quickly take them
+down by repeated Sweep Kicks, though the Armadillo form may escape you.
+
+Once you have defeated the four guardians, it is time to fight Belzed!
+
+She will drop down from the top, raise her hand, summon a bolt of energy
+that drops down from the sky to wherever you're standing, and fly back up.
+She repeats this process over and over, and she doesn't pause for very long.
+Her attacks are fast, and they HURT, capable of taking at LEAST one bar away
+from your life meter.
+
+As we've learned, there is a very simple way to take care of such speedy
+foes. EARTHQUAKE!! It will take a few shots of Earthquake and constant hits
+before she goes down. For best results, Earthquake her when she's in one of
+the lower corners of the screen, then Double Butterfly Kick her to death.
+
+This is the final battle, so spare nothing!  If you can time it just right,
+you can position Belzed so she is in range of your Blazing Flip Kick. When
+this happens, just Blaze like mad and Earthquake every 5 seconds.
+
+Pulse Wave Spirit also works quite well, especially in conjunction with
+Earthquake. Twin Power will keep Belzed's energy bolts distracted, but if
+you switch to any other spells, the Twin will vanish.
+
+When she is finally defeated, get the Awards (if you feel like it, heh heh)
+and watch the ending!
+
+There's more, though... when you're finished, you can play again on a
+harder difficulty! Enemies are more difficult to defeat. Unfortunately, your
+Level, Experience, HP, MP, and Magic is reset. The only thing you get to
+keep is your number of lives. So here's a password that starts you out with
+nine of them!
+
+- 5(Heart)2DKQ  ZGD?R6
+Area 1, Level 0, 0 MP, 9 Lives. No Magic. Difficulty: HARD
+
+============================================================================
+Finishing notes
+
+Well, it's finally finished. This is my first actual Walkthrough for a game.
+I've made other documents to help players, but they've been for things like
+item hacking or lists or things like that. Nothing as comprehensive as this.
+
+I hope you all enjoy it.  By the way, here's a secret uber "password" for
+people who know how to use it: 06B9 06BA. I'm not gonna tell you what it
+means, so don't e-mail me asking. Can you figure it out?
+
+Be sure to check out my other FAQs! :)
+
+Remember, in order to contact me, you'll need to visit my website and click
+"Feedback" to see what my current e-mail address is.
+
+Wyrenth
+============================================================================
+Version History
+
+04/09/2017 v1.1b  67.2 KB - Removed homepage. Cleaned up document.
+04/17/2003 v1.1   67.2 KB - Removed e-mail contact information--use website.
+10/27/2002 v1.0   66.8 KB - Initial relase.
+============================================================================
