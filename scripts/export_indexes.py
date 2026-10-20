@@ -38,15 +38,15 @@ def main():
     assert sum(x['size'] for x in classification)==262160
     assert all(a['file_end_exclusive']==b['file_start'] for a,b in zip(classification,classification[1:]))
     write_csv(ROOT/'maps/rom/classification.csv',classification)
-    def owner(pc):
-        return next((x['symbol'] for x in ranges if x['classification']=='code' and int(x['cpu'],16)<=pc<int(x['end_cpu_exclusive'],16)),f'Unresolved_{pc:04X}')
+    def owner(bank,pc):
+        return next((x['symbol'] for x in ranges if x['classification']=='code' and x['bank']==bank and int(x['cpu'],16)<=pc<int(x['end_cpu_exclusive'],16)),f'Unresolved_{bank}_{pc:04X}')
     edges=set()
     for x in read('analysis/cross_references.csv'):
         pc=int(x['from_cpu'],16)
         if x['status']=='STATIC_REVIEWED_SOURCE' and x['kind'] in ('call','jump'):
-            edges.add((owner(pc),owner(int(x['to_cpu'],16)),x['kind']))
+            edges.add((owner(x['from_bank'],pc),owner(x['to_bank'],int(x['to_cpu'],16)),x['kind']))
     for x in read('analysis/ppu_task_table.csv'):
-        edges.add(('DispatchPpuTask',owner(int(x['target_cpu'],16)),'table'))
+        edges.add(('DispatchPpuTask',owner(x['target_bank'],int(x['target_cpu'],16)),'table'))
     lines=['digraph ReviewedCalls {','  rankdir=TB;','  node [shape=box];']
     for a,b,k in sorted(edges):lines.append(f'  "{a}" -> "{b}" [label="{k}"];')
     lines.append('}');(ROOT/'analysis/reviewed_call_graph.dot').write_text('\n'.join(lines)+'\n')

@@ -1,7 +1,49 @@
 name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
+Bank07ServiceJumpTable,code,07,0xA078,0x0078,0x00E078,0x00E088,MMC3 PRG mode 0; R7=07 at A000,99,33 absolute JMP entry points in R7 bank 07; callee gameplay semantics mostly unresolved.,STATIC_REVIEWED,B43
+Bank08ServiceJumpTable,code,08,0xA000,0x0000,0x010000,0x010010,MMC3 PRG mode 0; R7=08 at A000,18,Six absolute JMP entry points in R7 bank 08.,STATIC_REVIEWED,B44
+Bank09ServiceJumpTable,code,09,0xA000,0x0000,0x012000,0x012010,MMC3 PRG mode 0; R7=09 at A000,21,Seven absolute JMP entry points in R7 bank 09; A009 reaches front-end sequence A499.,STATIC_REVIEWED,B45
+FrontEndSequence,code,09,0xA499,0x0499,0x012499,0x0124A9,MMC3 PRG mode 0; R7=09 at A000,188,"Initialize display and animation, wait on split index 67, then poll two-choice input; preserve outcome carry across cleanup.",STATIC_REVIEWED,B46
+FrontEndObjectXPair,data,09,0xA555,0x0555,0x012555,0x012565,MMC3 PRG mode 0; R7=09 at A000,2,Two X bytes 1C/E4 copied to 051B/051C by A4B9.,STATIC_REVIEWED,B47
+InitializeFrontEndLayout,code,09,0xA557,0x0557,0x012557,0x012567,MMC3 PRG mode 0; R7=09 at A000,215,"Map R6=05, far-call bank07 A0BD, set tile transfer arguments, PPU split fields and IRQ source FA59.",STATIC_REVIEWED,B48
+FrontEndTilePair,data,09,0xA62E,0x062E,0x01262E,0x01263E,MMC3 PRG mode 0; R7=09 at A000,2,Two bytes 21/00 used as a PPU transfer source at A585..A599.,STATIC_REVIEWED,B49
+PollFrontEndChoice,code,09,0xA630,0x0630,0x012630,0x012640,MMC3 PRG mode 0; R7=09 at A000,39,"A/Start return carry set; otherwise Select/Left/Right toggle 2C, draw cursor and return carry clear.",STATIC_REVIEWED,B50
+DrawFrontEndCursor,code,09,0xA672,0x0672,0x012672,0x012682,MMC3 PRG mode 0; R7=09 at A000,35,Write one four-byte OAM sprite at index 99; choose X through 2C; increment 99.,STATIC_REVIEWED,B51
+FrontEndCursorXPair,data,09,0xA695,0x0695,0x012695,0x0126A5,MMC3 PRG mode 0; R7=09 at A000,2,Two cursor X bytes 38/88 for selections 00/01.,STATIC_REVIEWED,B52
+FixedServiceJumpTable,code,0E,0xC749,0x0749,0x01C749,0x01C759,MMC3 PRG mode 0,126,"42 absolute JMP service entries; this identifies destinations, not all destination semantics.",STATIC_REVIEWED,B01
 ApuInitialize,code,0E,0xCC84,0x0C84,0x01CC84,0x01CC94,MMC3 PRG mode 0,39,Initialize APU registers and call two five-entry index initializers.,STATIC_REVIEWED,A01
 InitializeAudioIndicesA,code,0E,0xCCAB,0x0CAB,0x01CCAB,0x01CCBB,MMC3 PRG mode 0,15,"Fill 0015..0019 with 05,0B,11,17,1D; audio role from A01 caller.",STATIC_REVIEWED,A02
 InitializeAudioIndicesB,code,0E,0xCCBA,0x0CBA,0x01CCBA,0x01CCCA,MMC3 PRG mode 0,15,"Fill 001A..001E with 23,29,2F,35,3B.",STATIC_REVIEWED,A03
+BootFrontEndLoop,code,0E,0xCF50,0x0F50,0x01CF50,0x01CF60,MMC3 PRG mode 0,29,"Map bank 09 at A000, initialize audio and call front end; carry clear loops via A00C.",STATIC_REVIEWED,B02
+SelectInitialRoute,code,0E,0xCF6D,0x0F6D,0x01CF6D,0x01CF7D,MMC3 PRG mode 0,53,Clear 00/2D; nonzero 2C calls bank 07 A0D8 and chooses resume path using 43.,STATIC_REVIEWED,B03
+InitializeRunContext,code,0E,0xCFA2,0x0FA2,0x01CFA2,0x01CFB2,MMC3 PRG mode 0,67,Mask 2C to five-bit index 9A and 2D to two-bit 030C; save SP at 016F and invoke initialization.,STATIC_REVIEWED,B04
+PrepareMainLoop,code,0E,0xCFE5,0x0FE5,0x01CFE5,0x01CFF5,MMC3 PRG mode 0,97,"Restore saved SP; initialize PPU shadows, IRQ source F83D, loop flags and per-index audio byte.",STATIC_REVIEWED,B05
+FourPhaseMainLoop,code,0E,0xD046,0x1046,0x01D046,0x01D056,MMC3 PRG mode 0,113,Four D90C-synchronized phases; phase-specific call order and two D9CB mixer calls per cycle.,STATIC_REVIEWED,B06
+RunControlGate,code,0E,0xD0B7,0x10B7,0x01D0B7,0x01D0C7,MMC3 PRG mode 0,3,Tail jump to CE/D3/Start control gate D39F.,STATIC_REVIEWED,B07
+CallBank08FrameGroup,code,0E,0xD0BA,0x10BA,0x01D0BA,0x01D0CA,MMC3 PRG mode 0,24,"Map 03B9 through R6 and 08 through R7; call A006,A000 then tail A009; later targets need callee bank-preservation contract.",STATIC_REVIEWED,B08
+TailBank09Frame,code,0E,0xD0D2,0x10D2,0x01D0D2,0x01D0E2,MMC3 PRG mode 0,10,Map R7=09 and tail jump to A000.,STATIC_REVIEWED,B09
+CallBank07EvenGroup,code,0E,0xD0DC,0x10DC,0x01D0DC,0x01D0EC,MMC3 PRG mode 0,23,"Map R6 from 03B9 and R7=07; call A078,A07E then tail A0B1.",STATIC_REVIEWED,B10
+CallBank07OddGroup,code,0E,0xD0F3,0x10F3,0x01D0F3,0x01D103,MMC3 PRG mode 0,20,Map R6 from 03B9 and R7=07; call A07B then tail A0B1.,STATIC_REVIEWED,B11
+CallBank0CAndFixedGroup,code,0E,0xD107,0x1107,0x01D107,0x01D117,MMC3 PRG mode 0,9,"Call bank-0C trampoline D6D2, fixed D805, then tail D6F0; gameplay meanings unresolved.",STATIC_REVIEWED,B12
+FinalizeFrameGroup,code,0E,0xD110,0x1110,0x01D110,0x01D120,MMC3 PRG mode 0,22,"Service palette effect, map R6=06/R7=08, call A00C, then tail E2E2 scroll adjustment.",STATIC_REVIEWED,B13
+RestartThroughIndexTable,code,0E,0xD178,0x1178,0x01D178,0x01D188,MMC3 PRG mode 0,34,"Entry D178 pushes zero; D17A can accept one from CE route; remap 9A with D25F, initialize, restore block and choose D21C/D225.",STATIC_REVIEWED,B14
+ContinueThroughIndexTable,code,0E,0xD19A,0x119A,0x01D19A,0x01D1AA,MMC3 PRG mode 0,16,"Remap 9A through D27F, reset fields, restore saved eleven-byte block, then jump D21C.",STATIC_REVIEWED,B15
+AdvanceThroughIndexTable,code,0E,0xD1AA,0x11AA,0x01D1AA,0x01D1BA,MMC3 PRG mode 0,102,Load next index from D23F; FF invokes bank-09 A012 and increments 030C unless equal 03; restart at index 00.,STATIC_REVIEWED,B16
+ReenterSceneClearFlag,code,0E,0xD210,0x1210,0x01D210,0x01D220,MMC3 PRG mode 0,21,"Clear bit 20 of F8, call EEA7 and reenter CFE2, or fall through to restore path at D225.",STATIC_REVIEWED,B17
+RestoreTripletAndReenter,code,0E,0xD225,0x1225,0x01D225,0x01D235,MMC3 PRG mode 0,26,Index FDE0 with D3&07; copy byte to 06B9/06BA/06BB; jump CFE2. Gameplay meaning is not assigned here.,STATIC_REVIEWED,B18
+NextSceneIndexTable,data,0E,0xD23F,0x123F,0x01D23F,0x01D24F,MMC3 PRG mode 0,32,32-byte successor table; index 1B contains FF end-of-cycle marker.,STATIC_REVIEWED,B19
+RestartSceneIndexTable,data,0E,0xD25F,0x125F,0x01D25F,0x01D26F,MMC3 PRG mode 0,32,32-byte table used by D178 and D363; physical-stage correspondence unresolved.,STATIC_REVIEWED,B20
+ContinueSceneIndexTable,data,0E,0xD27F,0x127F,0x01D27F,0x01D28F,MMC3 PRG mode 0,32,32-byte table used by D19A; physical-stage correspondence unresolved.,STATIC_REVIEWED,B21
+ResetRunFields,code,0E,0xD2F7,0x12F7,0x01D2F7,0x01D307,MMC3 PRG mode 0,108,Reset selected fields; if 030E is zero set it to 03 and initialize 0306..030B; set digit-like buffers and call F65F.,STATIC_REVIEWED,B22
+SaveElevenByteBlock,code,0E,0xD37F,0x137F,0x01D37F,0x01D38F,MMC3 PRG mode 0,12,"Copy 06C2..06CC to 06CD..06D7, high index first.",STATIC_REVIEWED,B23
+RestoreElevenByteBlock,code,0E,0xD38B,0x138B,0x01D38B,0x01D39B,MMC3 PRG mode 0,11,"Copy 06CD..06D7 to 06C2..06CC, high index first; fall through D396.",STATIC_REVIEWED,B24
+TailBank07Restore,code,0E,0xD396,0x1396,0x01D396,0x01D3A6,MMC3 PRG mode 0,9,Map R7=07 and tail A0C9.,STATIC_REVIEWED,B25
+CheckRunControl,code,0E,0xD39F,0x139F,0x01D39F,0x01D3AF,MMC3 PRG mode 0,37,"Negative CE decrements 030E and selects D17A/D487; otherwise negative D3 blocks Start, and pressed Start enters D3C4.",STATIC_REVIEWED,B26
+StartOverlayFlow,code,0E,0xD3C4,0x13C4,0x01D3C4,0x01D3D4,MMC3 PRG mode 0,149,"Save palette and CHR 47/48; invoke bank-07 overlay entries; restore palette/CHR, discard return word and jump D046.",STATIC_REVIEWED,B27
+OverlayPalette16,data,0E,0xD459,0x1459,0x01D459,0x01D469,MMC3 PRG mode 0,16,16 palette bytes copied to 0133..0142 and 0153..0162 during Start overlay.,STATIC_REVIEWED,B28
+InitializeCounterZeroMenu,code,0E,0xD487,0x1487,0x01D487,0x01D497,MMC3 PRG mode 0,174,"Initialize PPU layout, retained-field displays and two-choice selection after 030E reaches zero.",STATIC_REVIEWED,B29
+CounterZeroMenuLoop,code,0E,0xD535,0x1535,0x01D535,0x01D545,MMC3 PRG mode 0,83,"Wait/poll; A/B/Start confirm, Up/Down/Select change 2C, draw cursor and repeat.",STATIC_REVIEWED,B30
+CounterZeroMenuConfirm,code,0E,0xD588,0x1588,0x01D588,0x01D598,MMC3 PRG mode 0,38,Choice 00 jumps D19A; nonzero restores block and ED80 then JMP through RESET vector.,STATIC_REVIEWED,B31
+CounterZeroCursorPointers,data,0E,0xD5AE,0x15AE,0x01D5AE,0x01D5BE,MMC3 PRG mode 0,4,Two little-endian cursor pointers selected with 2C*2; pointed data not interpreted.,STATIC_REVIEWED,B32
 ResetRetentionCheck,code,0E,0xD60C,0x160C,0x01D60C,0x01D61C,MMC3 PRG mode 0,27,Check retained 0100 marker 68; otherwise load six bytes at 0300; call D2F7.,STATIC_REVIEWED,A04
 ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
 HideAllSprites,code,0E,0xD62D,0x162D,0x01D62D,0x01D63D,MMC3 PRG mode 0,14,Write F1 to every OAM Y byte in page 02.,STATIC_REVIEWED,A06
@@ -10,6 +52,12 @@ MapperWriteRetry,code,0E,0xD6C3,0x16C3,0x01D6C3,0x01D6D3,MMC3 PRG mode 0,15,Writ
 Bank0CEntry0,code,0E,0xD6D2,0x16D2,0x01D6D2,0x01D6E2,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8000.",STATIC_REVIEWED,A09
 Bank0CEntry3,code,0E,0xD6DC,0x16DC,0x01D6DC,0x01D6EC,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8003.",STATIC_REVIEWED,A10
 Bank0CEntry6,code,0E,0xD6E6,0x16E6,0x01D6E6,0x01D6F6,MMC3 PRG mode 0,10,"Map PRG0C at 8000, then tail-jump to 8006.",STATIC_REVIEWED,A11
+WaitNmiAndServiceAudio,code,0E,0xD90C,0x190C,0x01D90C,0x01D91C,MMC3 PRG mode 0,61,"Save X/Y, evolve 97 while 95 is nonzero, set 95=1; temporarily map 00/01 for C7C7 then restore bank tags.",STATIC_REVIEWED,B33
+UpdateControllerState,code,0E,0xD949,0x1949,0x01D949,0x01D959,MMC3 PRG mode 0,46,"Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.",STATIC_REVIEWED,B34
+ReadControllerSerial,code,0E,0xD977,0x1977,0x01D977,0x01D987,MMC3 PRG mode 0,84,"Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.",STATIC_REVIEWED,B35
+MixTimingStateWithX,code,0E,0xD9CB,0x19CB,0x01D9CB,0x01D9DB,MMC3 PRG mode 0,12,97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.,STATIC_REVIEWED,B36
+ServicePaletteEffect,code,0F,0xE2A3,0x02A3,0x01E2A3,0x01E2B3,last bank fixed at E000,63,Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.,STATIC_REVIEWED,B37
+AdjustScrollOnOddEffect,code,0F,0xE2E2,0x02E2,0x01E2E2,0x01E2F2,last bank fixed at E000,23,If 03D6 is odd add 04 to 58; add 10 again when the wrapped first sum is at least F0.,STATIC_REVIEWED,B38
 ResetEntry,code,0F,0xF010,0x1010,0x01F010,0x01F020,last bank fixed at E000,171,"Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.",STATIC_REVIEWED,A12
 NmiEntry,code,0F,0xF0BB,0x10BB,0x01F0BB,0x01F0CB,last bank fixed at E000,155,"Save A/X/Y, OAM DMA, PPU task, scrolling, optional IRQ setup, CHR writes, epoch increment and RTI.",STATIC_REVIEWED,A13
 DispatchPpuTask,code,0F,0xF156,0x1156,0x01F156,0x01F166,last bank fixed at E000,20,Clear A0 using Y; select one of sixteen little-endian pointers with old A0 & 1E.,STATIC_REVIEWED,A14
@@ -20,12 +68,22 @@ UploadPalette32ViaStack,code,0F,0xF24B,0x124B,0x01F24B,0x01F25B,last bank fixed 
 DisableRendering,code,0F,0xF4BA,0x14BA,0x01F4BA,0x01F4CA,last bank fixed at E000,16,Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.,STATIC_REVIEWED,A19
 FarCallViaA000,code,0F,0xF4CA,0x14CA,0x01F4CA,0x01F4DA,last bank fixed at E000,64,"Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.",STATIC_REVIEWED,A20
 FarCallIndirect,code,0F,0xF50A,0x150A,0x01F50A,0x01F51A,last bank fixed at E000,3,Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.,STATIC_REVIEWED,A21
+WaitCountedUpdates,code,0F,0xF6CC,0x16CC,0x01F6CC,0x01F6DC,last bank fixed at E000,7,Call D90C and decrement X until zero; initial X=00 means 256 updates.,STATIC_REVIEWED,B39
+WaitCountedOrAStart,code,0F,0xF6D3,0x16D3,0x01F6D3,0x01F6E3,last bank fixed at E000,13,Counted wait with early exit on newly pressed A or Start; returns masked input in A.,STATIC_REVIEWED,B40
+WaitForAStart,code,0F,0xF6E0,0x16E0,0x01F6E0,0x01F6F0,last bank fixed at E000,10,Repeat D90C until newly pressed A or Start.,STATIC_REVIEWED,B41
+EnterInitialRunContext,code,0F,0xF6EA,0x16EA,0x01F6EA,0x01F6FA,last bank fixed at E000,3,Tail jump to fixed CFA2.,STATIC_REVIEWED,B42
 IrqEntry,code,0F,0xF7B1,0x17B1,0x01F7B1,0x01F7C1,last bank fixed at E000,17,"Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.",STATIC_REVIEWED,A22
 IrqSplitPpuAddress,code,0F,0xF7C2,0x17C2,0x01F7C2,0x01F7D2,last bank fixed at E000,65,Timed PPU address/scroll writes indexed by 67; choose terminal split at F0 sentinel; share IRQ return.,STATIC_REVIEWED,A23
 IrqSplitScroll,code,0F,0xF803,0x1803,0x01F803,0x01F813,last bank fixed at E000,49,Timed indexed scroll/control writes; select F83D on F0 sentinel.,STATIC_REVIEWED,A24
 IrqRestoreRegisters,code,0F,0xF834,0x1834,0x01F834,0x01F844,last bank fixed at E000,9,"Increment A6, restore Y/X/A from E4/E3/E2, RTI.",STATIC_REVIEWED,A25
 IrqSplitSwitchChr01,code,0F,0xF83D,0x183D,0x01F83D,0x01F84D,last bank fixed at E000,69,"Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.",STATIC_REVIEWED,A26
 InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
+ButtonsPressed,ram,,0x001F,,,,internal RAM; state-specific role,1,Newly pressed A/B/Select/Start/Up/Down/Left/Right bits; scratch during serial poll.,STATIC_REVIEWED_LOCAL_ROLE,B34;B35
+ButtonsHeld,ram,,0x0020,,,,internal RAM; state-specific role,1,Held input after AND of two polls; temporarily stores first sample.,STATIC_REVIEWED_LOCAL_ROLE,B34
+AButtonHistory,ram,,0x0021,,,,internal RAM; state-specific role,1,Shift register of held A over eight completed input updates.,STATIC_REVIEWED_LOCAL_ROLE,B34
+MenuChoiceOrInitialScene,ram,,0x002C,,,,internal RAM; state-specific role,1,Front-end/counter-zero menu choice; later masked to initialize 9A. State-dependent scratch.,STATIC_REVIEWED_LOCAL_ROLE,B50;B30;B04
+InitialCycleScratch,ram,,0x002D,,,,internal RAM; state-specific role,1,Masked with 03 into 030C; cleared on front-end return and high-cycle path.,STATIC_REVIEWED_LOCAL_ROLE,B03;B04;B16
+InitialRouteFlag,ram,,0x0043,,,,internal RAM; state-specific role,1,Checked after initial nonzero-2C path; gameplay meaning unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B03
 ChrBankRegisters,ram,,0x0044,,,,internal RAM; state-specific role,6,MMC3 R0..R5 shadow values; each byte is a bank number,STATIC_REVIEWED_LOCAL_ROLE,A13
 PpuCtrlShadowBase,ram,,0x004A,,,,internal RAM; state-specific role,1,First PPUCTRL shadow; indexed usage has unresolved array bounds,STATIC_REVIEWED_LOCAL_ROLE,A12;A13;A16
 ScrollXShadowBase,ram,,0x0051,,,,internal RAM; state-specific role,1,First horizontal scroll shadow; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A23;A24
@@ -36,12 +94,17 @@ IrqSplitIndex,ram,,0x0067,,,,internal RAM; state-specific role,1,Index advanced 
 NmiSplitSelector,ram,,0x0068,,,,internal RAM; state-specific role,1,Selects NMI scroll/control indexing path,STATIC_REVIEWED_LOCAL_ROLE,A13
 SplitControlIndexBase,ram,,0x006A,,,,internal RAM; state-specific role,1,Index source; table extent unresolved,STATIC_REVIEWED_LOCAL_ROLE,A13;A24
 IrqLatchBase,ram,,0x007F,,,,internal RAM; state-specific role,1,First IRQ count/latch byte; indexed bounds unresolved,STATIC_REVIEWED_LOCAL_ROLE,A12;A13;A24
-NmiChrStartIndexShadow,ram,,0x0095,,,,internal RAM; state-specific role,1,Receives X before NMI CHR writes; broader role unresolved,STATIC_REVIEWED_LOCAL_ROLE,A12;A13
+FrameNmiHandshake,ram,,0x0095,,,,internal RAM; state-specific role,1,D90C waits for zero then increments to one; NMI F116 writes CHR-loop X (zero under documented 96=0/1).,STATIC_REVIEWED_LOCAL_ROLE,A12;A13;B33
 NmiIrqSetupFlag,ram,,0x0096,,,,internal RAM; state-specific role,1,Controls NMI IRQ setup; tested values 0 and 1 only,STATIC_REVIEWED_LOCAL_ROLE,A13
+FrameTimingMixerState,ram,,0x0097,,,,internal RAM; state-specific role,1,Mutated in NMI wait loop and by X-dependent mixer; RNG consumer relationships unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B33;B36
 OamUsedSpriteIndex,ram,,0x0099,,,,internal RAM; state-specific role,1,Index used to hide remaining sprites; valid count below 64,STATIC_REVIEWED_LOCAL_ROLE,A07
+SceneIndex,ram,,0x009A,,,,internal RAM; state-specific role,1,Indexes 32-entry next/restart/continue and other setup tables; stage-name mapping unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B04;B16;B14;B15
 PpuUploadAddress,ram,,0x009B,,,,internal RAM; state-specific role,2,Little-endian upload destination used by 27-byte stack transfer,STATIC_REVIEWED_LOCAL_ROLE,A16
 NmiPpuTaskCommand,ram,,0x00A0,,,,internal RAM; state-specific role,1,Command masked with 1E for pointer-table index; consumed by NMI,STATIC_REVIEWED_LOCAL_ROLE,A14
+RunUpdateFlags,ram,,0x00A1,,,,internal RAM; state-specific role,1,"Written 41 during setup, 00 during overlay and 01 on return; full bit semantics unresolved.",STATIC_REVIEWED_LOCAL_ROLE,B05;B27
 MapperInterruptEpoch,ram,,0x00A6,,,,internal RAM; state-specific role,1,Incremented by NMI/IRQ; cleared and compared by mapper writer,STATIC_REVIEWED_LOCAL_ROLE,A08;A13;A25;A26
+RunTerminalStatus,ram,,0x00CE,,,,internal RAM; state-specific role,1,Bit 7 selects counter-decrement/restart path in control gate; producer not traced.,STATIC_REVIEWED_LOCAL_ROLE,B26
+RunControlAndTripletIndex,ram,,0x00D3,,,,internal RAM; state-specific role,1,Bit 7 blocks Start overlay; low three bits index FDE0 on restore; progression meaning not assigned here.,STATIC_REVIEWED_LOCAL_ROLE,B26;B18;B22
 IrqHandlerSource,ram,,0x00DC,,,,internal RAM; state-specific role,2,Little-endian source copied to E5/E6 during NMI IRQ setup,STATIC_REVIEWED_LOCAL_ROLE,A13
 IrqSavedA,ram,,0x00E2,,,,internal RAM; state-specific role,1,IRQ A save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
 IrqSavedX,ram,,0x00E3,,,,internal RAM; state-specific role,1,IRQ X save slot,STATIC_REVIEWED_LOCAL_ROLE,A22;A25
@@ -53,11 +116,21 @@ NmiSavedY,ram,,0x00E9,,,,internal RAM; state-specific role,1,NMI Y save slot,STA
 ResetRetainedMarker,ram,,0x0100,,,,internal RAM; state-specific role,1,Value 68 suppresses retained default copy; not cleared by RESET,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
 PpuUpload27Buffer,ram,,0x0101,,,,internal RAM; state-specific role,27,27 bytes streamed using temporary SP=00; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A16
 PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes streamed using temporary SP=42; page is also CPU stack,STATIC_REVIEWED_LOCAL_ROLE,A12;A18
+RunEntryStackPointer,ram,,0x016F,,,,internal RAM; state-specific role,1,Saved before run setup and restored at CFE8 to abandon intermediate call frames.,STATIC_REVIEWED_LOCAL_ROLE,B04;B05
 TransferSavedStackPointer,ram,,0x0170,,,,internal RAM; state-specific role,1,Real SP saved during PPU stack-based transfers,STATIC_REVIEWED_LOCAL_ROLE,A16;A18
 OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
 ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
+ProgressionCycleIndex,ram,,0x030C,,,,internal RAM; state-specific role,1,Initialized from 2D&03; incremented on FF route unless already 03; semantic difficulty effects unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B04;B16
+RemainingAttemptsCandidate,ram,,0x030E,,,,internal RAM; state-specific role,1,Set to 03 if zero during reset; decremented on negative CE; zero selects two-choice menu. Lives interpretation awaits producer/gameplay validation.,STATIC_REVIEWED_LOCAL_ROLE,B22;B26
+FrameBank8000,ram,,0x03B9,,,,internal RAM; state-specific role,1,Bank number mapped through R6 by frame wrappers; producer not yet traced.,STATIC_REVIEWED_LOCAL_ROLE,B08;B10;B11
+PaletteEffectCountdown,ram,,0x03D5,,,,internal RAM; state-specific role,1,Nonzero value is decremented in E2A3 and may select color 30 with D9 bit 10.,STATIC_REVIEWED_LOCAL_ROLE,B37
+ScrollEffectPhase,ram,,0x03D6,,,,internal RAM; state-specific role,1,Odd values trigger four-pixel scroll adjustment; cleared on loop setup and overlay return.,STATIC_REVIEWED_LOCAL_ROLE,B38;B05;B27
 FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
 FarCallTargetBankA000,ram,,0x04EC,,,,internal RAM; state-specific role,1,MMC3 R7 bank value for far call,STATIC_REVIEWED_LOCAL_ROLE,A20
 FarCallSavedBankA000,ram,,0x04ED,,,,internal RAM; state-specific role,1,Bank identity read from BFFF,STATIC_REVIEWED_LOCAL_ROLE,A20
 FarCallSavedBank8000,ram,,0x04EE,,,,internal RAM; state-specific role,1,Bank identity read from 9FFF,STATIC_REVIEWED_LOCAL_ROLE,A20
+LiveSavedBlock,ram,,0x06C2,,,,internal RAM; state-specific role,11,Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
+SavedRunBlock,ram,,0x06CD,,,,internal RAM; state-specific role,11,Saved copy of 06C2..06CC; restored during restart/continue.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
 PaletteUploadPostFlag,ram,,0x06EE,,,,internal RAM; state-specific role,1,"If initially nonzero, palette upload replaces with FF; wider meaning unresolved",STATIC_REVIEWED_LOCAL_ROLE,A18
+PreviousButtonsHeld,ram,,0x0713,,,,internal RAM; state-specific role,1,Previous completed input state; seeded FF on boot front-end entry.,STATIC_REVIEWED_LOCAL_ROLE,B34;B02
+SecondPreviousButtonsHeld,ram,,0x0714,,,,internal RAM; state-specific role,1,Older completed input state copied from 0713 before polling.,STATIC_REVIEWED_LOCAL_ROLE,B34

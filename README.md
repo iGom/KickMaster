@@ -5,12 +5,12 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/MAIN_LOOP_INPUT_STATE.md`.
 
 Current snapshot: Stage 00 complete; Stage 00A reference baseline established (map images blocked);
-Stage 01A bounded architecture work complete. Comprehensive reverse engineering is **not** complete.
-24 reviewed code entries, 3 data regions, 35 RAM entries, 57 passing isolated CPU cases.
-The input-dependent ca65 scaffold matches every original byte; only 969 PRG bytes have reviewed local semantics.
+Stages 01A/01B bounded architecture work complete. Comprehensive reverse engineering is **not** complete.
+68 reviewed code ranges, 11 data regions, 56 RAM entries; 57 earlier CPU cases plus 18 new groups / 2295 vectors.
+The input-dependent ca65 scaffold matches every original byte; 3444 PRG bytes have reviewed local semantics.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),
@@ -25,7 +25,7 @@ Address intervals are half-open unless a table explicitly states inclusive limit
 ```sh
 python3 scripts/baseline.py "/path/to/KickMaster (USA)(1).nes"
 python3 -m unittest discover -s tests -v
-python3 scripts/cpu_experiments.py "/path/to/KickMaster (USA)(1).nes"
+python3 scripts/cpu_stage01b.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/build.py "/path/to/KickMaster (USA)(1).nes"
 python3 scripts/checkpoint.py --verify /path/to/checkpoint.zip
 ```

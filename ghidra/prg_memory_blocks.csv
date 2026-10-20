@@ -6,9 +6,9 @@ PRG03,0x006010,0x2000,0x8000,convention; actual windows need per-call mapping,Tr
 PRG04,0x008010,0x2000,0x8000,convention; actual windows need per-call mapping,True
 PRG05,0x00A010,0x2000,0x8000,convention; actual windows need per-call mapping,True
 PRG06,0x00C010,0x2000,0x8000,convention; actual windows need per-call mapping,True
-PRG07,0x00E010,0x2000,0x8000,convention; actual windows need per-call mapping,True
-PRG08,0x010010,0x2000,0x8000,convention; actual windows need per-call mapping,True
-PRG09,0x012010,0x2000,0x8000,convention; actual windows need per-call mapping,True
+PRG07,0x00E010,0x2000,0xA000,reviewed R7 entry context; other aliases not excluded,True
+PRG08,0x010010,0x2000,0xA000,reviewed R7 entry context; other aliases not excluded,True
+PRG09,0x012010,0x2000,0xA000,reviewed R7 entry context; other aliases not excluded,True
 PRG0A,0x014010,0x2000,0x8000,convention; actual windows need per-call mapping,True
 PRG0B,0x016010,0x2000,0x8000,convention; actual windows need per-call mapping,True
 PRG0C,0x018010,0x2000,0x8000,convention; actual windows need per-call mapping,True

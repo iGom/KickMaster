@@ -1,16 +1,19 @@
 {
   "prg_total_bytes": 131072,
   "chr_total_bytes": 131072,
-  "reviewed_code_bytes": 925,
-  "reviewed_data_bytes": 44,
-  "reviewed_code_plus_data_bytes": 969,
-  "reviewed_prg_fraction": 0.00739288330078125,
+  "reviewed_code_bytes": 3278,
+  "reviewed_data_bytes": 166,
+  "reviewed_code_plus_data_bytes": 3444,
+  "reviewed_prg_fraction": 0.026275634765625,
   "candidate_instruction_count": 2924,
   "candidate_decode_bytes": 6248,
   "candidate_note": "Reachability candidates are not semantic coverage; indirect flow and bank state incomplete.",
   "semantic_metric_definition": "Union of manually reviewed code/data ranges in reviewed_ranges.csv; bounded local semantics only.",
-  "rebuild_status": "PASS: input-dependent ca65/ld65 scaffold; see rebuild_verification.json",
+  "rebuild_status": "see analysis/rebuild_verification.json; matching does not establish full semantics",
   "binary_reconstruction_bytes": 262160,
-  "explicit_source_bytes": 985,
-  "input_incbin_bytes": 261175
+  "explicit_source_bytes": 3460,
+  "input_incbin_bytes": 258700,
+  "reviewed_code_range_count": 68,
+  "reviewed_data_range_count": 11,
+  "stage01B_added_bytes": 2475
 }

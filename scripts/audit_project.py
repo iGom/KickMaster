@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+"""Check address domains, complete range coverage and evidence/artifact consistency."""
+import argparse,csv,hashlib,json,re
+from baseline import ROOT,verified_rom,write_json
+def rows(rel):
+    with (ROOT/rel).open() as f:return list(csv.DictReader(f))
+def main():
+    ap=argparse.ArgumentParser();ap.add_argument('rom');a=ap.parse_args();rom,_=verified_rom(a.rom)
+    ranges=rows('analysis/reviewed_ranges.csv');instructions=rows('analysis/reviewed_instructions.csv')
+    cov=json.loads((ROOT/'analysis/coverage.json').read_text());checks=[];all_bytes=set();code=set();data=set();regions={}
+    for r in ranges:
+        po=int(r['prg_offset'],16);fo=int(r['file_offset'],16);bo=int(r['bank_offset'],16);bank=int(r['bank'],16);size=int(r['size'])
+        assert po==8192*bank+bo and fo==po+16 and bo+size<=8192
+        assert int(r['end_cpu_exclusive'],16)-int(r['cpu'],16)==size
+        span=set(range(po,po+size));assert not all_bytes&span;all_bytes|=span
+        (code if r['classification']=='code' else data).update(span);regions[r['id']]=r
+    checks+=['reviewed ranges non-overlapping and physical/CPU offsets consistent']
+    decoded=set();keys=set()
+    for r in instructions:
+        fo=int(r['file_offset'],16);po=fo-16;size=int(r['size']);region=regions[r['region_id']]
+        assert region['classification']=='code'
+        assert rom[fo:fo+size]==bytes.fromhex(r['bytes'])
+        assert int(region['prg_offset'],16)<=po and po+size<=int(region['prg_offset'],16)+int(region['size'])
+        span=set(range(po,po+size));assert not decoded&span;decoded|=span;keys.add((r['bank'],r['cpu']))
+    assert decoded==code
+    checks+=['every reviewed instruction matches original bytes and exactly covers reviewed code']
+    assert len(code)==cov['reviewed_code_bytes'] and len(data)==cov['reviewed_data_bytes']
+    assert len(all_bytes)==cov['reviewed_code_plus_data_bytes']
+    assert cov['explicit_source_bytes']==16+len(all_bytes) and cov['input_incbin_bytes']==len(rom)-16-len(all_bytes)
+    sizes=[]
+    for p in (ROOT/'disassembly').rglob('*.asm'):
+        if p.name.endswith('_reviewed.asm'):continue
+        sizes.extend(int(x,16) for x in re.findall(r'\.incbin "inputs/original\.nes", \$[0-9A-F]+, \$([0-9A-F]+)',p.read_text()))
+    assert sum(sizes)==cov['input_incbin_bytes']
+    checks+=['coverage totals agree with emitted assembly and incbin byte counts']
+    for r in rows('analysis/fixed_window_candidates.csv'):
+        if r['status']=='REVIEWED':assert (r['bank'],r['cpu']) in keys
+    for r in rows('analysis/cross_references.csv'):
+        if r['status']=='STATIC_REVIEWED_SOURCE':assert (r['from_bank'],r['from_cpu']) in keys
+    checks+=['candidate/source status does not promote reviewed data to code']
+    symbols=rows('analysis/symbols.csv');assert len({r['name'] for r in symbols})==len(symbols)
+    mlb=(ROOT/'MesenCE/kickmaster.mlb').read_text().splitlines();assert len(mlb)==len(symbols)
+    blocks={r['name']:int(r['cpu_base'],16) for r in rows('ghidra/prg_memory_blocks.csv')}
+    for r in ranges:assert int(r['cpu'],16)-int(r['bank_offset'],16)==blocks['PRG'+r['bank']]
+    checks+=['symbol names unique; MLB count and Ghidra bank bases match current indexes']
+    classes=rows('maps/rom/classification.csv');cursor=0
+    for r in classes:
+        assert int(r['file_start'])==cursor and int(r['size'])==int(r['file_end_exclusive'])-cursor
+        cursor=int(r['file_end_exclusive'])
+    assert cursor==len(rom)
+    checks+=['complete file classification without gaps or overlaps']
+    build=json.loads((ROOT/'analysis/rebuild_verification.json').read_text());assert build['status']=='PASS' and build['original']==build['rebuilt']
+    old=json.loads((ROOT/'analysis/cpu_experiments.json').read_text());new=json.loads((ROOT/'analysis/cpu_stage01B.json').read_text())
+    assert old['passed']==57 and new['groups']==new['passed_groups']==18 and new['vectors']==2295
+    checks+=['saved stage01A and stage01B CPU results pass; complete rebuilt image matches']
+    prior={
+      '00':'6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f',
+      '00A':'88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf',
+      '01A':'d4cf1e4e2e0f80f30e88545d574d5f57107498eb8654037f21e16e160a6d2c3a'}
+    preserved=[]
+    for stage,h in prior.items():
+        p=ROOT/f'checkpoints/kickmaster-ntscu-checkpoint-stage{stage}.zip'
+        if p.exists():assert hashlib.sha256(p.read_bytes()).hexdigest()==h;preserved.append(stage)
+    result={'result':'PASS','checks':checks,'reviewed_bytes':len(all_bytes),'reviewed_instructions':len(instructions),'symbols':len(symbols),'ram_entries':len(rows('maps/ram/ram_map.csv')),'classification_ranges':len(classes),'previous_local_archives_unchanged':preserved,'full_Ghidra_Mesen_import':'NOT_TESTED'}
+    write_json(ROOT/'analysis/dataset_audit.json',result);print(json.dumps(result,indent=2))
+if __name__=='__main__':main()

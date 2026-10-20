@@ -1,4 +1,12 @@
 name,type,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,size,description,status,evidence
+FrontEndObjectXPair,data,09,0xA555,0x0555,0x012555,0x012565,MMC3 PRG mode 0; R7=09 at A000,2,Two X bytes 1C/E4 copied to 051B/051C by A4B9.,STATIC_REVIEWED,B47
+FrontEndTilePair,data,09,0xA62E,0x062E,0x01262E,0x01263E,MMC3 PRG mode 0; R7=09 at A000,2,Two bytes 21/00 used as a PPU transfer source at A585..A599.,STATIC_REVIEWED,B49
+FrontEndCursorXPair,data,09,0xA695,0x0695,0x012695,0x0126A5,MMC3 PRG mode 0; R7=09 at A000,2,Two cursor X bytes 38/88 for selections 00/01.,STATIC_REVIEWED,B52
+NextSceneIndexTable,data,0E,0xD23F,0x123F,0x01D23F,0x01D24F,MMC3 PRG mode 0,32,32-byte successor table; index 1B contains FF end-of-cycle marker.,STATIC_REVIEWED,B19
+RestartSceneIndexTable,data,0E,0xD25F,0x125F,0x01D25F,0x01D26F,MMC3 PRG mode 0,32,32-byte table used by D178 and D363; physical-stage correspondence unresolved.,STATIC_REVIEWED,B20
+ContinueSceneIndexTable,data,0E,0xD27F,0x127F,0x01D27F,0x01D28F,MMC3 PRG mode 0,32,32-byte table used by D19A; physical-stage correspondence unresolved.,STATIC_REVIEWED,B21
+OverlayPalette16,data,0E,0xD459,0x1459,0x01D459,0x01D469,MMC3 PRG mode 0,16,16 palette bytes copied to 0133..0142 and 0153..0162 during Start overlay.,STATIC_REVIEWED,B28
+CounterZeroCursorPointers,data,0E,0xD5AE,0x15AE,0x01D5AE,0x01D5BE,MMC3 PRG mode 0,4,Two little-endian cursor pointers selected with 2C*2; pointed data not interpreted.,STATIC_REVIEWED,B32
 ResetRetainedDefaults,data,0E,0xD627,0x1627,0x01D627,0x01D637,MMC3 PRG mode 0,6,Six default bytes copied to 0300..0305; purpose unresolved.,STATIC_REVIEWED,A05
 PpuTaskPointers,data,0F,0xF16A,0x116A,0x01F16A,0x01F17A,last bank fixed at E000,32,16 little-endian pointers; indices are command&1E divided by 2.,STATIC_REVIEWED,A15
 InterruptVectors,data,0F,0xFFFA,0x1FFA,0x01FFFA,0x02000A,last bank fixed at E000,6,"Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.",STATIC_REVIEWED,A27
@@ -11,3 +19,5 @@ PaletteUploadBuffer,ram,,0x0143,,,,internal RAM; state-specific role,32,32 bytes
 OamDmaBuffer,ram,,0x0200,,,,internal RAM; state-specific role,256,"CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4",STATIC_REVIEWED_LOCAL_ROLE,A06;A07;A13
 ResetRetainedBlock,ram,,0x0300,,,,internal RAM; state-specific role,8,Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved,STATIC_REVIEWED_LOCAL_ROLE,A04;A12
 FarCallTarget,ram,,0x04EA,,,,internal RAM; state-specific role,2,Little-endian target CPU address,STATIC_REVIEWED_LOCAL_ROLE,A21
+LiveSavedBlock,ram,,0x06C2,,,,internal RAM; state-specific role,11,Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24
+SavedRunBlock,ram,,0x06CD,,,,internal RAM; state-specific role,11,Saved copy of 06C2..06CC; restored during restart/continue.,STATIC_REVIEWED_LOCAL_ROLE,B23;B24

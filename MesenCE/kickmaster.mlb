@@ -1,6 +1,48 @@
+NesPrgRom:E078:Bank07ServiceJumpTable:B43; 33 absolute JMP entry points in R7 bank 07; callee gameplay semantics mostly unresolved.
+NesPrgRom:10000:Bank08ServiceJumpTable:B44; Six absolute JMP entry points in R7 bank 08.
+NesPrgRom:12000:Bank09ServiceJumpTable:B45; Seven absolute JMP entry points in R7 bank 09; A009 reaches front-end sequence A499.
+NesPrgRom:12499:FrontEndSequence:B46; Initialize display and animation, wait on split index 67, then poll two-choice input; preserve outcome carry across cleanup.
+NesPrgRom:12555:FrontEndObjectXPair:B47; Two X bytes 1C/E4 copied to 051B/051C by A4B9.
+NesPrgRom:12557:InitializeFrontEndLayout:B48; Map R6=05, far-call bank07 A0BD, set tile transfer arguments, PPU split fields and IRQ source FA59.
+NesPrgRom:1262E:FrontEndTilePair:B49; Two bytes 21/00 used as a PPU transfer source at A585..A599.
+NesPrgRom:12630:PollFrontEndChoice:B50; A/Start return carry set; otherwise Select/Left/Right toggle 2C, draw cursor and return carry clear.
+NesPrgRom:12672:DrawFrontEndCursor:B51; Write one four-byte OAM sprite at index 99; choose X through 2C; increment 99.
+NesPrgRom:12695:FrontEndCursorXPair:B52; Two cursor X bytes 38/88 for selections 00/01.
+NesPrgRom:1C749:FixedServiceJumpTable:B01; 42 absolute JMP service entries; this identifies destinations, not all destination semantics.
 NesPrgRom:1CC84:ApuInitialize:A01; Initialize APU registers and call two five-entry index initializers.
 NesPrgRom:1CCAB:InitializeAudioIndicesA:A02; Fill 0015..0019 with 05,0B,11,17,1D; audio role from A01 caller.
 NesPrgRom:1CCBA:InitializeAudioIndicesB:A03; Fill 001A..001E with 23,29,2F,35,3B.
+NesPrgRom:1CF50:BootFrontEndLoop:B02; Map bank 09 at A000, initialize audio and call front end; carry clear loops via A00C.
+NesPrgRom:1CF6D:SelectInitialRoute:B03; Clear 00/2D; nonzero 2C calls bank 07 A0D8 and chooses resume path using 43.
+NesPrgRom:1CFA2:InitializeRunContext:B04; Mask 2C to five-bit index 9A and 2D to two-bit 030C; save SP at 016F and invoke initialization.
+NesPrgRom:1CFE5:PrepareMainLoop:B05; Restore saved SP; initialize PPU shadows, IRQ source F83D, loop flags and per-index audio byte.
+NesPrgRom:1D046:FourPhaseMainLoop:B06; Four D90C-synchronized phases; phase-specific call order and two D9CB mixer calls per cycle.
+NesPrgRom:1D0B7:RunControlGate:B07; Tail jump to CE/D3/Start control gate D39F.
+NesPrgRom:1D0BA:CallBank08FrameGroup:B08; Map 03B9 through R6 and 08 through R7; call A006,A000 then tail A009; later targets need callee bank-preservation contract.
+NesPrgRom:1D0D2:TailBank09Frame:B09; Map R7=09 and tail jump to A000.
+NesPrgRom:1D0DC:CallBank07EvenGroup:B10; Map R6 from 03B9 and R7=07; call A078,A07E then tail A0B1.
+NesPrgRom:1D0F3:CallBank07OddGroup:B11; Map R6 from 03B9 and R7=07; call A07B then tail A0B1.
+NesPrgRom:1D107:CallBank0CAndFixedGroup:B12; Call bank-0C trampoline D6D2, fixed D805, then tail D6F0; gameplay meanings unresolved.
+NesPrgRom:1D110:FinalizeFrameGroup:B13; Service palette effect, map R6=06/R7=08, call A00C, then tail E2E2 scroll adjustment.
+NesPrgRom:1D178:RestartThroughIndexTable:B14; Entry D178 pushes zero; D17A can accept one from CE route; remap 9A with D25F, initialize, restore block and choose D21C/D225.
+NesPrgRom:1D19A:ContinueThroughIndexTable:B15; Remap 9A through D27F, reset fields, restore saved eleven-byte block, then jump D21C.
+NesPrgRom:1D1AA:AdvanceThroughIndexTable:B16; Load next index from D23F; FF invokes bank-09 A012 and increments 030C unless equal 03; restart at index 00.
+NesPrgRom:1D210:ReenterSceneClearFlag:B17; Clear bit 20 of F8, call EEA7 and reenter CFE2, or fall through to restore path at D225.
+NesPrgRom:1D225:RestoreTripletAndReenter:B18; Index FDE0 with D3&07; copy byte to 06B9/06BA/06BB; jump CFE2. Gameplay meaning is not assigned here.
+NesPrgRom:1D23F:NextSceneIndexTable:B19; 32-byte successor table; index 1B contains FF end-of-cycle marker.
+NesPrgRom:1D25F:RestartSceneIndexTable:B20; 32-byte table used by D178 and D363; physical-stage correspondence unresolved.
+NesPrgRom:1D27F:ContinueSceneIndexTable:B21; 32-byte table used by D19A; physical-stage correspondence unresolved.
+NesPrgRom:1D2F7:ResetRunFields:B22; Reset selected fields; if 030E is zero set it to 03 and initialize 0306..030B; set digit-like buffers and call F65F.
+NesPrgRom:1D37F:SaveElevenByteBlock:B23; Copy 06C2..06CC to 06CD..06D7, high index first.
+NesPrgRom:1D38B:RestoreElevenByteBlock:B24; Copy 06CD..06D7 to 06C2..06CC, high index first; fall through D396.
+NesPrgRom:1D396:TailBank07Restore:B25; Map R7=07 and tail A0C9.
+NesPrgRom:1D39F:CheckRunControl:B26; Negative CE decrements 030E and selects D17A/D487; otherwise negative D3 blocks Start, and pressed Start enters D3C4.
+NesPrgRom:1D3C4:StartOverlayFlow:B27; Save palette and CHR 47/48; invoke bank-07 overlay entries; restore palette/CHR, discard return word and jump D046.
+NesPrgRom:1D459:OverlayPalette16:B28; 16 palette bytes copied to 0133..0142 and 0153..0162 during Start overlay.
+NesPrgRom:1D487:InitializeCounterZeroMenu:B29; Initialize PPU layout, retained-field displays and two-choice selection after 030E reaches zero.
+NesPrgRom:1D535:CounterZeroMenuLoop:B30; Wait/poll; A/B/Start confirm, Up/Down/Select change 2C, draw cursor and repeat.
+NesPrgRom:1D588:CounterZeroMenuConfirm:B31; Choice 00 jumps D19A; nonzero restores block and ED80 then JMP through RESET vector.
+NesPrgRom:1D5AE:CounterZeroCursorPointers:B32; Two little-endian cursor pointers selected with 2C*2; pointed data not interpreted.
 NesPrgRom:1D60C:ResetRetentionCheck:A04; Check retained 0100 marker 68; otherwise load six bytes at 0300; call D2F7.
 NesPrgRom:1D627:ResetRetainedDefaults:A05; Six default bytes copied to 0300..0305; purpose unresolved.
 NesPrgRom:1D62D:HideAllSprites:A06; Write F1 to every OAM Y byte in page 02.
@@ -9,6 +51,12 @@ NesPrgRom:1D6C3:MapperWriteRetry:A08; Write X to 8000 and A to 8001; retry if in
 NesPrgRom:1D6D2:Bank0CEntry0:A09; Map PRG0C at 8000, then tail-jump to 8000.
 NesPrgRom:1D6DC:Bank0CEntry3:A10; Map PRG0C at 8000, then tail-jump to 8003.
 NesPrgRom:1D6E6:Bank0CEntry6:A11; Map PRG0C at 8000, then tail-jump to 8006.
+NesPrgRom:1D90C:WaitNmiAndServiceAudio:B33; Save X/Y, evolve 97 while 95 is nonzero, set 95=1; temporarily map 00/01 for C7C7 then restore bank tags.
+NesPrgRom:1D949:UpdateControllerState:B34; Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.
+NesPrgRom:1D977:ReadControllerSerial:B35; Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.
+NesPrgRom:1D9CB:MixTimingStateWithX:B36; 97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.
+NesPrgRom:1E2A3:ServicePaletteEffect:B37; Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.
+NesPrgRom:1E2E2:AdjustScrollOnOddEffect:B38; If 03D6 is odd add 04 to 58; add 10 again when the wrapped first sum is at least F0.
 NesPrgRom:1F010:ResetEntry:A12; Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
 NesPrgRom:1F0BB:NmiEntry:A13; Save A/X/Y, OAM DMA, PPU task, scrolling, optional IRQ setup, CHR writes, epoch increment and RTI.
 NesPrgRom:1F156:DispatchPpuTask:A14; Clear A0 using Y; select one of sixteen little-endian pointers with old A0 & 1E.
@@ -19,12 +67,22 @@ NesPrgRom:1F24B:UploadPalette32ViaStack:A18; Read 0143..0162 through PLA; write 
 NesPrgRom:1F4BA:DisableRendering:A19; Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.
 NesPrgRom:1F4CA:FarCallViaA000:A20; Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.
 NesPrgRom:1F50A:FarCallIndirect:A21; Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
+NesPrgRom:1F6CC:WaitCountedUpdates:B39; Call D90C and decrement X until zero; initial X=00 means 256 updates.
+NesPrgRom:1F6D3:WaitCountedOrAStart:B40; Counted wait with early exit on newly pressed A or Start; returns masked input in A.
+NesPrgRom:1F6E0:WaitForAStart:B41; Repeat D90C until newly pressed A or Start.
+NesPrgRom:1F6EA:EnterInitialRunContext:B42; Tail jump to fixed CFA2.
 NesPrgRom:1F7B1:IrqEntry:A22; Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.
 NesPrgRom:1F7C2:IrqSplitPpuAddress:A23; Timed PPU address/scroll writes indexed by 67; choose terminal split at F0 sentinel; share IRQ return.
 NesPrgRom:1F803:IrqSplitScroll:A24; Timed indexed scroll/control writes; select F83D on F0 sentinel.
 NesPrgRom:1F834:IrqRestoreRegisters:A25; Increment A6, restore Y/X/A from E4/E3/E2, RTI.
 NesPrgRom:1F83D:IrqSplitSwitchChr01:A26; Timed split setting control, mask, address and CHR registers 0/1 to 0/2; set next IRQ low pointer 82.
 NesPrgRom:1FFFA:InterruptVectors:A27; Little-endian NMI, RESET and IRQ/BRK vectors in the fixed final bank.
+NesInternalRam:1F:ButtonsPressed:B34;B35; Newly pressed A/B/Select/Start/Up/Down/Left/Right bits; scratch during serial poll.
+NesInternalRam:20:ButtonsHeld:B34; Held input after AND of two polls; temporarily stores first sample.
+NesInternalRam:21:AButtonHistory:B34; Shift register of held A over eight completed input updates.
+NesInternalRam:2C:MenuChoiceOrInitialScene:B50;B30;B04; Front-end/counter-zero menu choice; later masked to initialize 9A. State-dependent scratch.
+NesInternalRam:2D:InitialCycleScratch:B03;B04;B16; Masked with 03 into 030C; cleared on front-end return and high-cycle path.
+NesInternalRam:43:InitialRouteFlag:B03; Checked after initial nonzero-2C path; gameplay meaning unresolved.
 NesInternalRam:44:ChrBankRegisters:A13; MMC3 R0..R5 shadow values; each byte is a bank number
 NesInternalRam:4A:PpuCtrlShadowBase:A12;A13;A16; First PPUCTRL shadow; indexed usage has unresolved array bounds
 NesInternalRam:51:ScrollXShadowBase:A13;A23;A24; First horizontal scroll shadow; indexed bounds unresolved
@@ -35,12 +93,17 @@ NesInternalRam:67:IrqSplitIndex:A13;A23;A24; Index advanced by IRQ split handler
 NesInternalRam:68:NmiSplitSelector:A13; Selects NMI scroll/control indexing path
 NesInternalRam:6A:SplitControlIndexBase:A13;A24; Index source; table extent unresolved
 NesInternalRam:7F:IrqLatchBase:A12;A13;A24; First IRQ count/latch byte; indexed bounds unresolved
-NesInternalRam:95:NmiChrStartIndexShadow:A12;A13; Receives X before NMI CHR writes; broader role unresolved
+NesInternalRam:95:FrameNmiHandshake:A12;A13;B33; D90C waits for zero then increments to one; NMI F116 writes CHR-loop X (zero under documented 96=0/1).
 NesInternalRam:96:NmiIrqSetupFlag:A13; Controls NMI IRQ setup; tested values 0 and 1 only
+NesInternalRam:97:FrameTimingMixerState:B33;B36; Mutated in NMI wait loop and by X-dependent mixer; RNG consumer relationships unresolved.
 NesInternalRam:99:OamUsedSpriteIndex:A07; Index used to hide remaining sprites; valid count below 64
+NesInternalRam:9A:SceneIndex:B04;B16;B14;B15; Indexes 32-entry next/restart/continue and other setup tables; stage-name mapping unresolved.
 NesInternalRam:9B:PpuUploadAddress:A16; Little-endian upload destination used by 27-byte stack transfer
 NesInternalRam:A0:NmiPpuTaskCommand:A14; Command masked with 1E for pointer-table index; consumed by NMI
+NesInternalRam:A1:RunUpdateFlags:B05;B27; Written 41 during setup, 00 during overlay and 01 on return; full bit semantics unresolved.
 NesInternalRam:A6:MapperInterruptEpoch:A08;A13;A25;A26; Incremented by NMI/IRQ; cleared and compared by mapper writer
+NesInternalRam:CE:RunTerminalStatus:B26; Bit 7 selects counter-decrement/restart path in control gate; producer not traced.
+NesInternalRam:D3:RunControlAndTripletIndex:B26;B18;B22; Bit 7 blocks Start overlay; low three bits index FDE0 on restore; progression meaning not assigned here.
 NesInternalRam:DC:IrqHandlerSource:A13; Little-endian source copied to E5/E6 during NMI IRQ setup
 NesInternalRam:E2:IrqSavedA:A22;A25; IRQ A save slot
 NesInternalRam:E3:IrqSavedX:A22;A25; IRQ X save slot
@@ -52,11 +115,21 @@ NesInternalRam:E9:NmiSavedY:A13; NMI Y save slot
 NesInternalRam:100:ResetRetainedMarker:A04;A12; Value 68 suppresses retained default copy; not cleared by RESET
 NesInternalRam:101:PpuUpload27Buffer:A16; 27 bytes streamed using temporary SP=00; page is also CPU stack
 NesInternalRam:143:PaletteUploadBuffer:A12;A18; 32 bytes streamed using temporary SP=42; page is also CPU stack
+NesInternalRam:16F:RunEntryStackPointer:B04;B05; Saved before run setup and restored at CFE8 to abandon intermediate call frames.
 NesInternalRam:170:TransferSavedStackPointer:A16;A18; Real SP saved during PPU stack-based transfers
 NesInternalRam:200:OamDmaBuffer:A06;A07;A13; CPU-side OAM buffer; one sprite per four bytes, Y at multiples of 4
 NesInternalRam:300:ResetRetainedBlock:A04;A12; Not cleared on reset; first six bytes defaulted when 0100 differs from 68; purpose unresolved
+NesInternalRam:30C:ProgressionCycleIndex:B04;B16; Initialized from 2D&03; incremented on FF route unless already 03; semantic difficulty effects unresolved.
+NesInternalRam:30E:RemainingAttemptsCandidate:B22;B26; Set to 03 if zero during reset; decremented on negative CE; zero selects two-choice menu. Lives interpretation awaits producer/gameplay validation.
+NesInternalRam:3B9:FrameBank8000:B08;B10;B11; Bank number mapped through R6 by frame wrappers; producer not yet traced.
+NesInternalRam:3D5:PaletteEffectCountdown:B37; Nonzero value is decremented in E2A3 and may select color 30 with D9 bit 10.
+NesInternalRam:3D6:ScrollEffectPhase:B38;B05;B27; Odd values trigger four-pixel scroll adjustment; cleared on loop setup and overlay return.
 NesInternalRam:4EA:FarCallTarget:A21; Little-endian target CPU address
 NesInternalRam:4EC:FarCallTargetBankA000:A20; MMC3 R7 bank value for far call
 NesInternalRam:4ED:FarCallSavedBankA000:A20; Bank identity read from BFFF
 NesInternalRam:4EE:FarCallSavedBank8000:A20; Bank identity read from 9FFF
+NesInternalRam:6C2:LiveSavedBlock:B23;B24; Eleven bytes copied to 06CD..06D7 by D37F; field meanings unresolved.
+NesInternalRam:6CD:SavedRunBlock:B23;B24; Saved copy of 06C2..06CC; restored during restart/continue.
 NesInternalRam:6EE:PaletteUploadPostFlag:A18; If initially nonzero, palette upload replaces with FF; wider meaning unresolved
+NesInternalRam:713:PreviousButtonsHeld:B34;B02; Previous completed input state; seeded FF on boot front-end entry.
+NesInternalRam:714:SecondPreviousButtonsHeld:B34; Older completed input state copied from 0713 before polling.

@@ -10,4 +10,6 @@ S08,NESdev MMC3,https://www.nesdev.org/wiki/MMC3,technical hardware documentatio
 S09,NESdev Programming MMC3,https://www.nesdev.org/wiki/Programming_MMC3,technical programming documentation,search-backed content read; direct HTTP 403,banking modes,2026-10-19
 S10,GhidraNes,https://github.com/kylewlacy/GhidraNes,official tool source,README read,Features; Installation; Bank switching,2026-10-19
 S11,MesenCE,https://github.com/nesdev-org/MesenCE,official tool source,README read,repository introduction,2026-10-19
-S12,cc65,https://github.com/cc65/cc65,official assembler source,cloned; build started,Makefile; commit 8d86ca7e7ed15300cc4bfaba61a40a3d00f3114d,2026-10-19
+S12,cc65,https://github.com/cc65/cc65,official assembler source,cloned; ca65/ld65/da65 built and matching rebuild verified,Makefile; commit 8d86ca7e7ed15300cc4bfaba61a40a3d00f3114d,2026-10-19
+S13,NESdev Nestech.txt controller protocol,https://www.nesdev.org/wiki/Nestech.txt,technical documentation,search-backed relevant section read,Joypads: strobe; serial order A B Select Start Up Down Left Right,2026-10-20
+S14,NESdev Standard controller,https://www.nesdev.org/wiki/Standard_controller,technical hardware documentation,direct fetch blocked HTTP 403; not used as sole evidence,fallback S13 used,2026-10-20

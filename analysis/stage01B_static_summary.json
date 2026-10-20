@@ -1,0 +1,90 @@
+{
+  "new_ranges": 52,
+  "new_instructions": 1032,
+  "new_bytes": 2475,
+  "service_jump_entries": 88,
+  "main_loop_phase_calls": 34,
+  "unresolved_targets_from_new_code": [
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xCF62",
+      "from_prg_offset": "0x01CF62",
+      "to_cpu": "0xA00C",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD0CC",
+      "from_prg_offset": "0x01D0CC",
+      "to_cpu": "0xA000",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD0CF",
+      "from_prg_offset": "0x01D0CF",
+      "to_cpu": "0xA009",
+      "to_bank": "UNRESOLVED",
+      "kind": "jump",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD0ED",
+      "from_prg_offset": "0x01D0ED",
+      "to_cpu": "0xA07E",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD0F0",
+      "from_prg_offset": "0x01D0F0",
+      "to_cpu": "0xA0B1",
+      "to_bank": "UNRESOLVED",
+      "kind": "jump",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD104",
+      "from_prg_offset": "0x01D104",
+      "to_cpu": "0xA0B1",
+      "to_bank": "UNRESOLVED",
+      "kind": "jump",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD403",
+      "from_prg_offset": "0x01D403",
+      "to_cpu": "0xA0B7",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    },
+    {
+      "from_bank": "0E",
+      "from_cpu": "0xD40F",
+      "from_prg_offset": "0x01D40F",
+      "to_cpu": "0xA0B4",
+      "to_bank": "UNRESOLVED",
+      "kind": "call",
+      "status": "STATIC_REVIEWED_SOURCE",
+      "mapping_condition": "MMC3 PRG mode 0; target bank unresolved across unknown callees"
+    }
+  ],
+  "candidate_unresolved_file": "analysis/unresolved.csv is the preserved stage01A candidate traversal, not a current global unresolved count"
+}

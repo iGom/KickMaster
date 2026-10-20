@@ -2,7 +2,54 @@
 ; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
 .segment "PRG0F"
 .org $E000
-    .incbin "inputs/original.nes", $01E010, $1010 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01E010, $02A3 ; UNINTERPRETED preserved bytes
+
+; B37: Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.
+ServicePaletteEffect:
+    LDA a:$06ee              ; E2A3 
+    BEQ $e2be                ; E2A6 
+    CMP #$ff                 ; E2A8 
+    BNE $e2be                ; E2AA 
+    LDY #$20                 ; E2AC 
+    LDA a:$01a5,Y            ; E2AE 
+    STA a:$0142,Y            ; E2B1 
+    DEY                      ; E2B4 
+    BNE $e2ae                ; E2B5 
+    STY a:$06ee              ; E2B7 
+    LDA #$0e                 ; E2BA 
+    STA $a0                  ; E2BC 
+    LDA a:$03d5              ; E2BE 
+    BEQ $e2d0                ; E2C1 
+    DEC a:$03d5              ; E2C3 
+    LDA $d9                  ; E2C6 
+    AND #$10                 ; E2C8 
+    BEQ $e2d0                ; E2CA 
+    LDA #$30                 ; E2CC 
+    BNE $e2db                ; E2CE 
+    LDA a:$ffb3              ; E2D0 
+    STA a:$0155              ; E2D3 
+    LDA a:$ffb6              ; E2D6 
+    BNE $e2de                ; E2D9 
+    STA a:$0155              ; E2DB 
+    STA a:$0159              ; E2DE 
+    RTS                      ; E2E1 
+
+; B38: If 03D6 is odd add 04 to 58; add 10 again when the wrapped first sum is at least F0.
+AdjustScrollOnOddEffect:
+    LDA a:$03d6              ; E2E2 
+    BEQ $e2f8                ; E2E5 
+    LSR A                    ; E2E7 
+    BCC $e2f8                ; E2E8 
+    LDA $58                  ; E2EA 
+    CLC                      ; E2EC 
+    ADC #$04                 ; E2ED 
+    CMP #$f0                 ; E2EF 
+    BCC $e2f6                ; E2F1 
+    CLC                      ; E2F3 Second addition intentionally skips the F0..FF interval for relevant scroll values.
+    ADC #$10                 ; E2F4 
+    STA $58                  ; E2F6 
+    RTS                      ; E2F8 
+    .incbin "inputs/original.nes", $01E309, $0D17 ; UNINTERPRETED preserved bytes
 
 ; A12: Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
 ResetEntry:
@@ -291,7 +338,37 @@ FarCallViaA000:
 ; A21: Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
 FarCallIndirect:
     JMP ($04ea)              ; F50A 
-    .incbin "inputs/original.nes", $01F51D, $02A4 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01F51D, $01BF ; UNINTERPRETED preserved bytes
+
+; B39: Call D90C and decrement X until zero; initial X=00 means 256 updates.
+WaitCountedUpdates:
+    JSR a:$d90c              ; F6CC 
+    DEX                      ; F6CF Initial zero wraps to FF and takes 256 calls to reach zero.
+    BNE $f6cc                ; F6D0 
+    RTS                      ; F6D2 
+
+; B40: Counted wait with early exit on newly pressed A or Start; returns masked input in A.
+WaitCountedOrAStart:
+    JSR a:$d90c              ; F6D3 
+    LDA $1f                  ; F6D6 
+    AND #$90                 ; F6D8 
+    BNE $f6df                ; F6DA 
+    DEX                      ; F6DC 
+    BNE $f6d3                ; F6DD 
+    RTS                      ; F6DF 
+
+; B41: Repeat D90C until newly pressed A or Start.
+WaitForAStart:
+    JSR a:$d90c              ; F6E0 
+    LDA $1f                  ; F6E3 
+    AND #$90                 ; F6E5 
+    BEQ $f6e0                ; F6E7 
+    RTS                      ; F6E9 
+
+; B42: Tail jump to fixed CFA2.
+EnterInitialRunContext:
+    JMP a:$cfa2              ; F6EA 
+    .incbin "inputs/original.nes", $01F6FD, $00C4 ; UNINTERPRETED preserved bytes
 
 ; A22: Save A/X/Y in E2..E4; acknowledge/disable IRQ, enable again, dispatch through E5/E6.
 IrqEntry:

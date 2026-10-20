@@ -2,7 +2,53 @@
 ; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
 .segment "PRG0E"
 .org $C000
-    .incbin "inputs/original.nes", $01C010, $0C84 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01C010, $0749 ; UNINTERPRETED preserved bytes
+
+; B01: 42 absolute JMP service entries; this identifies destinations, not all destination semantics.
+FixedServiceJumpTable:
+    JMP a:$d62d              ; C749 
+    JMP a:$d90c              ; C74C 
+    JMP a:$d63b              ; C74F 
+    JMP a:$d65d              ; C752 
+    JMP a:$d677              ; C755 
+    JMP a:$d6a0              ; C758 
+    JMP a:$d9e8              ; C75B 
+    JMP a:$da07              ; C75E 
+    JMP a:$dab3              ; C761 
+    JMP a:$dac2              ; C764 
+    JMP a:$db02              ; C767 
+    JMP a:$d6c3              ; C76A 
+    JMP a:$ddd9              ; C76D 
+    JMP a:$ddeb              ; C770 
+    JMP a:$dbb7              ; C773 
+    JMP a:$dc1c              ; C776 
+    JMP a:$d9d7              ; C779 
+    JMP a:$d481              ; C77C 
+    JMP a:$cfe2              ; C77F 
+    JMP a:$e0ff              ; C782 
+    JMP a:$e105              ; C785 
+    JMP a:$e154              ; C788 
+    JMP a:$e15e              ; C78B 
+    JMP a:$dfcb              ; C78E 
+    JMP a:$df37              ; C791 
+    JMP a:$e08d              ; C794 
+    JMP a:$e1a0              ; C797 
+    JMP a:$e0ed              ; C79A 
+    JMP a:$d1aa              ; C79D 
+    JMP a:$e2f9              ; C7A0 
+    JMP a:$e35b              ; C7A3 
+    JMP a:$e393              ; C7A6 
+    JMP a:$e44e              ; C7A9 
+    JMP a:$e764              ; C7AC 
+    JMP a:$e860              ; C7AF 
+    JMP a:$e8c3              ; C7B2 
+    JMP a:$e925              ; C7B5 
+    JMP a:$eb1e              ; C7B8 
+    JMP a:$eb63              ; C7BB 
+    JMP a:$d7e7              ; C7BE 
+    JMP a:$e3fe              ; C7C1 
+    JMP a:$e279              ; C7C4 
+    .incbin "inputs/original.nes", $01C7D7, $04BD ; UNINTERPRETED preserved bytes
 
 ; A01: Initialize APU registers and call two five-entry index initializers.
 ApuInitialize:
@@ -47,7 +93,673 @@ InitializeAudioIndicesB:
     CPX #$05                 ; CCC4 
     BCC $ccbe                ; CCC6 
     RTS                      ; CCC8 
-    .incbin "inputs/original.nes", $01CCD9, $0943 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01CCD9, $0287 ; UNINTERPRETED preserved bytes
+
+; B02: Map bank 09 at A000, initialize audio and call front end; carry clear loops via A00C.
+BootFrontEndLoop:
+    LDA #$ff                 ; CF50 
+    STA a:$0713              ; CF52 
+    JSR a:$f4ba              ; CF55 
+    LDX #$07                 ; CF58 
+    LDA #$09                 ; CF5A 
+    JSR a:$d6c3              ; CF5C 
+    JMP a:$cf65              ; CF5F First front-end iteration bypasses A00C. R7 has just been set to 09.
+    JSR a:$a00c              ; CF62 
+    JSR a:$cc84              ; CF65 
+    JSR a:$a009              ; CF68 
+    BCC $cf62                ; CF6B Carry is an interface result, not a global state ID.
+
+; B03: Clear 00/2D; nonzero 2C calls bank 07 A0D8 and chooses resume path using 43.
+SelectInitialRoute:
+    LDA #$00                 ; CF6D 
+    STA $00                  ; CF6F 
+    STA $2d                  ; CF71 
+    LDA $2c                  ; CF73 
+    BEQ $cfa2                ; CF75 
+    LDA #$07                 ; CF77 
+    TAX                      ; CF79 
+    JSR a:$d6c3              ; CF7A 
+    JSR a:$a0d8              ; CF7D 
+    JSR a:$ebc7              ; CF80 
+    LDA $43                  ; CF83 
+    BNE $cfa2                ; CF85 
+    LDA #$0c                 ; CF87 
+    STA a:$06bd              ; CF89 
+    STA a:$06c0              ; CF8C 
+    STA a:$06c1              ; CF8F 
+    JSR a:$d36d              ; CF92 
+    JSR a:$d37f              ; CF95 
+    LDX #$07                 ; CF98 
+    LDA #$09                 ; CF9A 
+    JSR a:$d6c3              ; CF9C 
+    JMP a:$d21c              ; CF9F 
+
+; B04: Mask 2C to five-bit index 9A and 2D to two-bit 030C; save SP at 016F and invoke initialization.
+InitializeRunContext:
+    LDA $2c                  ; CFA2 
+    AND #$1f                 ; CFA4 
+    STA $9a                  ; CFA6 
+    LDA $2d                  ; CFA8 
+    AND #$03                 ; CFAA 
+    STA a:$030c              ; CFAC 
+    JSR a:$d90c              ; CFAF 
+    JSR a:$d64e              ; CFB2 
+    TSX                      ; CFB5 
+    STX a:$016f              ; CFB6 A later TXS at CFE8 abandons intervening call frames.
+    JSR a:$e154              ; CFB9 
+    LDX #$07                 ; CFBC 
+    LDA #$09                 ; CFBE 
+    JSR a:$d6c3              ; CFC0 
+    JSR a:$a006              ; CFC3 
+    JSR a:$eea7              ; CFC6 
+    LDA #$00                 ; CFC9 
+    STA a:$030e              ; CFCB 
+    JSR a:$d2f7              ; CFCE 
+    LDA #$0c                 ; CFD1 
+    STA a:$06bd              ; CFD3 
+    STA a:$06c0              ; CFD6 
+    STA a:$06c1              ; CFD9 
+    JSR a:$d36d              ; CFDC 
+    JSR a:$d37f              ; CFDF 
+    JSR a:$d29f              ; CFE2 
+
+; B05: Restore saved SP; initialize PPU shadows, IRQ source F83D, loop flags and per-index audio byte.
+PrepareMainLoop:
+    LDX a:$016f              ; CFE5 
+    TXS                      ; CFE8 
+    LDA $4a                  ; CFE9 
+    AND #$fe                 ; CFEB 
+    ORA #$20                 ; CFED 
+    STA $4a                  ; CFEF 
+    LSR $4a                  ; CFF1 
+    LDA $a8                  ; CFF3 
+    LSR A                    ; CFF5 
+    ROL $4a                  ; CFF6 
+    LDA $a7                  ; CFF8 
+    STA $51                  ; CFFA 
+    LDY $a9                  ; CFFC 
+    LDA $aa                  ; CFFE 
+    JSR a:$f78b              ; D000 
+    STA $58                  ; D003 
+    LDA #$d0                 ; D005 
+    STA $7f                  ; D007 
+    LDA #$3d                 ; D009 
+    STA $dc                  ; D00B 
+    LDA #$f8                 ; D00D 
+    STA $dd                  ; D00F 
+    LDA #$41                 ; D011 
+    STA $a1                  ; D013 
+    LDX #$00                 ; D015 
+    STX $a0                  ; D017 
+    STX $68                  ; D019 
+    STX $d8                  ; D01B 
+    STX a:$03d6              ; D01D 
+    STX a:$03d5              ; D020 
+    INX                      ; D023 
+    STX $96                  ; D024 
+    LDA #$04                 ; D026 
+    STA a:$0047              ; D028 
+    JSR a:$e1c8              ; D02B 
+    JSR a:$e0ff              ; D02E 
+    LDX $9a                  ; D031 
+    LDA a:$fe4c,X            ; D033 
+    STA $00                  ; D036 
+    STA a:$04e1              ; D038 
+    LDA #$ff                 ; D03B 
+    STA $d9                  ; D03D 
+    LDA #$00                 ; D03F 
+    STA $da                  ; D041 
+    STA a:$06ee              ; D043 
+
+; B06: Four D90C-synchronized phases; phase-specific call order and two D9CB mixer calls per cycle.
+FourPhaseMainLoop:
+    LDX $9a                  ; D046 Four-phase cycle entry. 9A indexes data, not this control-flow phase.
+    LDA a:$fe2c,X            ; D048 
+    STA a:$04ef              ; D04B 
+    JSR a:$d90c              ; D04E 
+    JSR a:$d0b7              ; D051 
+    JSR a:$d0ba              ; D054 
+    JSR a:$d0dc              ; D057 
+    JSR a:$d0d2              ; D05A 
+    JSR a:$d107              ; D05D 
+    JSR a:$d63b              ; D060 
+    JSR a:$d110              ; D063 
+    JSR a:$d90c              ; D066 
+    JSR a:$d0b7              ; D069 
+    JSR a:$d0ba              ; D06C 
+    JSR a:$d0f3              ; D06F 
+    JSR a:$d0d2              ; D072 
+    JSR a:$d107              ; D075 
+    JSR a:$d63b              ; D078 
+    JSR a:$d9cb              ; D07B Mixer after phase 1; X is whatever preceding calls leave.
+    JSR a:$d110              ; D07E 
+    JSR a:$d90c              ; D081 
+    JSR a:$d0b7              ; D084 
+    JSR a:$d0ba              ; D087 
+    JSR a:$d0dc              ; D08A 
+    JSR a:$d107              ; D08D 
+    JSR a:$d0d2              ; D090 
+    JSR a:$d63b              ; D093 
+    JSR a:$d110              ; D096 
+    JSR a:$d90c              ; D099 
+    JSR a:$d0b7              ; D09C 
+    JSR a:$d0ba              ; D09F 
+    JSR a:$d0f3              ; D0A2 
+    JSR a:$d107              ; D0A5 
+    JSR a:$d0d2              ; D0A8 
+    JSR a:$d63b              ; D0AB 
+    JSR a:$d9cb              ; D0AE Second explicit mixer call after phase 3.
+    JSR a:$d110              ; D0B1 
+    JMP a:$d046              ; D0B4 
+
+; B07: Tail jump to CE/D3/Start control gate D39F.
+RunControlGate:
+    JMP a:$d39f              ; D0B7 
+
+; B08: Map 03B9 through R6 and 08 through R7; call A006,A000 then tail A009; later targets need callee bank-preservation contract.
+CallBank08FrameGroup:
+    LDX #$06                 ; D0BA 
+    LDA a:$03b9              ; D0BC 
+    JSR a:$d6c3              ; D0BF 
+    LDX #$07                 ; D0C2 
+    LDA #$08                 ; D0C4 
+    JSR a:$d6c3              ; D0C6 
+    JSR a:$a006              ; D0C9 
+    JSR a:$a000              ; D0CC 
+    JMP a:$a009              ; D0CF 
+
+; B09: Map R7=09 and tail jump to A000.
+TailBank09Frame:
+    LDX #$07                 ; D0D2 
+    LDA #$09                 ; D0D4 
+    JSR a:$d6c3              ; D0D6 
+    JMP a:$a000              ; D0D9 
+
+; B10: Map R6 from 03B9 and R7=07; call A078,A07E then tail A0B1.
+CallBank07EvenGroup:
+    LDX #$06                 ; D0DC 
+    LDA a:$03b9              ; D0DE 
+    JSR a:$d6c3              ; D0E1 
+    LDA #$07                 ; D0E4 
+    TAX                      ; D0E6 
+    JSR a:$d6c3              ; D0E7 
+    JSR a:$a078              ; D0EA 
+    JSR a:$a07e              ; D0ED 
+    JMP a:$a0b1              ; D0F0 
+
+; B11: Map R6 from 03B9 and R7=07; call A07B then tail A0B1.
+CallBank07OddGroup:
+    LDX #$06                 ; D0F3 
+    LDA a:$03b9              ; D0F5 
+    JSR a:$d6c3              ; D0F8 
+    LDA #$07                 ; D0FB 
+    TAX                      ; D0FD 
+    JSR a:$d6c3              ; D0FE 
+    JSR a:$a07b              ; D101 
+    JMP a:$a0b1              ; D104 
+
+; B12: Call bank-0C trampoline D6D2, fixed D805, then tail D6F0; gameplay meanings unresolved.
+CallBank0CAndFixedGroup:
+    JSR a:$d6d2              ; D107 
+    JSR a:$d805              ; D10A 
+    JMP a:$d6f0              ; D10D 
+
+; B13: Service palette effect, map R6=06/R7=08, call A00C, then tail E2E2 scroll adjustment.
+FinalizeFrameGroup:
+    JSR a:$e2a3              ; D110 
+    LDA #$06                 ; D113 
+    TAX                      ; D115 
+    JSR a:$d6c3              ; D116 
+    LDX #$07                 ; D119 
+    LDA #$08                 ; D11B 
+    JSR a:$d6c3              ; D11D 
+    JSR a:$a00c              ; D120 
+    JMP a:$e2e2              ; D123 
+    .incbin "inputs/original.nes", $01D136, $0052 ; UNINTERPRETED preserved bytes
+
+; B14: Entry D178 pushes zero; D17A can accept one from CE route; remap 9A with D25F, initialize, restore block and choose D21C/D225.
+RestartThroughIndexTable:
+    LDA #$00                 ; D178 
+    PHA                      ; D17A 
+    LDY $9a                  ; D17B 
+    LDA a:$d25f,Y            ; D17D 
+    STA $9a                  ; D180 
+    JSR a:$d2f7              ; D182 
+    JSR a:$d396              ; D185 
+    LDA #$07                 ; D188 
+    TAX                      ; D18A 
+    JSR a:$d6c3              ; D18B 
+    JSR a:$a0d2              ; D18E 
+    PLA                      ; D191 
+    BNE $d197                ; D192 
+    JMP a:$d21c              ; D194 
+    JMP a:$d225              ; D197 
+
+; B15: Remap 9A through D27F, reset fields, restore saved eleven-byte block, then jump D21C.
+ContinueThroughIndexTable:
+    LDY $9a                  ; D19A 
+    LDA a:$d27f,Y            ; D19C 
+    STA $9a                  ; D19F 
+    JSR a:$d2f7              ; D1A1 
+    JSR a:$d38b              ; D1A4 
+    JMP a:$d21c              ; D1A7 
+
+; B16: Load next index from D23F; FF invokes bank-09 A012 and increments 030C unless equal 03; restart at index 00.
+AdvanceThroughIndexTable:
+    JSR a:$e154              ; D1AA 
+    LDA #$00                 ; D1AD 
+    STA $00                  ; D1AF 
+    LDA #$c0                 ; D1B1 
+    STA $01                  ; D1B3 
+    JSR a:$d36d              ; D1B5 
+    JSR a:$d37f              ; D1B8 
+    LDY $9a                  ; D1BB 
+    LDA a:$d23f,Y            ; D1BD 
+    CMP #$ff                 ; D1C0 Only FF selects end-of-cycle path; no stage-name assignment.
+    BNE $d1fd                ; D1C2 
+    LDX #$07                 ; D1C4 
+    LDA #$09                 ; D1C6 
+    JSR a:$d6c3              ; D1C8 
+    JSR a:$a012              ; D1CB 
+    LDA a:$030c              ; D1CE 
+    CMP #$03                 ; D1D1 
+    BEQ $d1d8                ; D1D3 Equal-to-03 guard, not a general clamp of arbitrary corrupt values.
+    INC a:$030c              ; D1D5 
+    LDA a:$030c              ; D1D8 
+    CMP #$03                 ; D1DB 
+    BCC $d1ed                ; D1DD 
+    LDX #$07                 ; D1DF 
+    LDA #$08                 ; D1E1 
+    JSR a:$d6c3              ; D1E3 
+    LDA #$00                 ; D1E6 
+    STA $2d                  ; D1E8 
+    JSR a:$a00f              ; D1EA 
+    JSR a:$d2f7              ; D1ED 
+    JSR a:$d36d              ; D1F0 
+    JSR a:$d37f              ; D1F3 
+    LDA #$0c                 ; D1F6 
+    STA a:$06bd              ; D1F8 
+    LDA #$00                 ; D1FB 
+    STA $9a                  ; D1FD 
+    JSR a:$ed80              ; D1FF 
+    LDA $9a                  ; D202 
+    BNE $d210                ; D204 
+    LDX #$07                 ; D206 
+    LDA #$09                 ; D208 
+    JSR a:$d6c3              ; D20A 
+    JSR a:$a006              ; D20D 
+
+; B17: Clear bit 20 of F8, call EEA7 and reenter CFE2, or fall through to restore path at D225.
+ReenterSceneClearFlag:
+    LDA $f8                  ; D210 
+    AND #$df                 ; D212 
+    STA $f8                  ; D214 
+    JSR a:$eea7              ; D216 
+    JMP a:$cfe2              ; D219 
+    LDA $f8                  ; D21C 
+    AND #$df                 ; D21E 
+    STA $f8                  ; D220 
+    JSR a:$eea7              ; D222 
+
+; B18: Index FDE0 with D3&07; copy byte to 06B9/06BA/06BB; jump CFE2. Gameplay meaning is not assigned here.
+RestoreTripletAndReenter:
+    LDA $f8                  ; D225 
+    AND #$df                 ; D227 
+    STA $f8                  ; D229 
+    LDA $d3                  ; D22B 
+    AND #$07                 ; D22D 
+    TAY                      ; D22F 
+    LDA a:$fde0,Y            ; D230 Table bytes independently observed; HP semantics deliberately not imported from user notes.
+    STA a:$06b9              ; D233 
+    STA a:$06ba              ; D236 
+    STA a:$06bb              ; D239 
+    JMP a:$cfe2              ; D23C 
+
+; B19: 32-byte successor table; index 1B contains FF end-of-cycle marker.
+NextSceneIndexTable:
+    .byte $01,$0B,$03,$07,$05,$06,$07,$08,$09,$0A,$0C,$04,$0D,$0E,$10,$10
+    .byte $11,$12,$13,$14,$15,$16,$18,$1C,$19,$17,$1B,$FF,$1D,$1E,$1F,$1A
+
+; B20: 32-byte table used by D178 and D363; physical-stage correspondence unresolved.
+RestartSceneIndexTable:
+    .byte $00,$01,$02,$03,$04,$05,$06,$06,$08,$09,$0A,$0B,$0C,$0D,$0E,$0C
+    .byte $10,$11,$12,$12,$14,$15,$16,$17,$18,$19,$1F,$1B,$1C,$1D,$1D,$1F
+
+; B21: 32-byte table used by D19A; physical-stage correspondence unresolved.
+ContinueSceneIndexTable:
+    .byte $00,$00,$08,$08,$04,$04,$04,$04,$08,$08,$08,$00,$0C,$0C,$0C,$0C
+    .byte $10,$10,$10,$10,$14,$14,$14,$18,$18,$18,$1C,$1C,$1C,$1C,$1C,$1C
+    .incbin "inputs/original.nes", $01D2AF, $0058 ; UNINTERPRETED preserved bytes
+
+; B22: Reset selected fields; if 030E is zero set it to 03 and initialize 0306..030B; set digit-like buffers and call F65F.
+ResetRunFields:
+    LDA #$00                 ; D2F7 
+    STA $a1                  ; D2F9 
+    STA $d3                  ; D2FB 
+    STA $96                  ; D2FD 
+    STA a:$06be              ; D2FF 
+    STA a:$06bf              ; D302 
+    STA a:$057f              ; D305 
+    LDA #$ff                 ; D308 
+    STA $b8                  ; D30A 
+    LDA a:$fde0              ; D30C 
+    STA a:$06b9              ; D30F 
+    STA a:$06ba              ; D312 
+    STA a:$06bb              ; D315 
+    LDA a:$030e              ; D318 
+    BNE $d33a                ; D31B 
+    STA a:$030f              ; D31D 
+    LDA #$0c                 ; D320 
+    STA a:$06bd              ; D322 
+    STA a:$06c0              ; D325 
+    STA a:$06c1              ; D328 
+    LDA #$03                 ; D32B 
+    STA a:$030e              ; D32D 
+    LDA #$20                 ; D330 
+    LDX #$05                 ; D332 
+    STA a:$0306,X            ; D334 
+    DEX                      ; D337 
+    BPL $d334                ; D338 
+    LDA #$60                 ; D33A 
+    LDX #$04                 ; D33C 
+    STA $ec,X                ; D33E This loop initializes overlapping buffers; 60/61 alone does not prove complete numeric encoding.
+    STA $e9,X                ; D340 
+    DEX                      ; D342 
+    BNE $d33e                ; D343 
+    LDA #$61                 ; D345 
+    STA $f4                  ; D347 
+    LDA #$60                 ; D349 
+    LDX #$03                 ; D34B 
+    STA $f0,X                ; D34D 
+    DEX                      ; D34F 
+    BNE $d34d                ; D350 
+    LDA #$61                 ; D352 
+    STA $f7                  ; D354 
+    LDA #$60                 ; D356 
+    LDX #$02                 ; D358 
+    STA $f4,X                ; D35A 
+    DEX                      ; D35C 
+    BNE $d35a                ; D35D 
+    JSR a:$f65f              ; D35F 
+    RTS                      ; D362 
+    .incbin "inputs/original.nes", $01D373, $001C ; UNINTERPRETED preserved bytes
+
+; B23: Copy 06C2..06CC to 06CD..06D7, high index first.
+SaveElevenByteBlock:
+    LDX #$0a                 ; D37F 
+    LDA a:$06c2,X            ; D381 
+    STA a:$06cd,X            ; D384 
+    DEX                      ; D387 
+    BPL $d381                ; D388 
+    RTS                      ; D38A 
+
+; B24: Copy 06CD..06D7 to 06C2..06CC, high index first; fall through D396.
+RestoreElevenByteBlock:
+    LDX #$0a                 ; D38B 
+    LDA a:$06cd,X            ; D38D 
+    STA a:$06c2,X            ; D390 
+    DEX                      ; D393 
+    BPL $d38d                ; D394 
+
+; B25: Map R7=07 and tail A0C9.
+TailBank07Restore:
+    LDA #$07                 ; D396 
+    TAX                      ; D398 
+    JSR a:$d6c3              ; D399 
+    JMP a:$a0c9              ; D39C 
+
+; B26: Negative CE decrements 030E and selects D17A/D487; otherwise negative D3 blocks Start, and pressed Start enters D3C4.
+CheckRunControl:
+    LDA $ce                  ; D39F 
+    BMI $d3ae                ; D3A1 
+    LDA $d3                  ; D3A3 
+    BMI $d3ad                ; D3A5 
+    LDA $1f                  ; D3A7 1F contains newly pressed buttons after D90C.
+    AND #$10                 ; D3A9 
+    BNE $d3c4                ; D3AB 
+    RTS                      ; D3AD 
+    JSR a:$e154              ; D3AE 
+    LDA #$c0                 ; D3B1 
+    STA $01                  ; D3B3 
+    STA $00                  ; D3B5 
+    DEC a:$030e              ; D3B7 030E precondition is nonzero; zero would wrap to FF here.
+    BEQ $d3c1                ; D3BA 
+    LDA #$01                 ; D3BC 
+    JMP a:$d17a              ; D3BE 
+    JMP a:$d487              ; D3C1 
+
+; B27: Save palette and CHR 47/48; invoke bank-07 overlay entries; restore palette/CHR, discard return word and jump D046.
+StartOverlayFlow:
+    LDA #$00                 ; D3C4 
+    STA $a1                  ; D3C6 
+    LDA #$f7                 ; D3C8 
+    STA $01                  ; D3CA 
+    JSR a:$d62d              ; D3CC 
+    LDA #$07                 ; D3CF 
+    TAX                      ; D3D1 
+    JSR a:$d6c3              ; D3D2 
+    LDA $47                  ; D3D5 
+    PHA                      ; D3D7 
+    LDA $48                  ; D3D8 
+    PHA                      ; D3DA 
+    LDX #$1f                 ; D3DB 
+    LDA a:$0143,X            ; D3DD 
+    STA a:$0123,X            ; D3E0 
+    DEX                      ; D3E3 
+    BPL $d3dd                ; D3E4 
+    LDX #$0f                 ; D3E6 
+    LDA a:$0133,X            ; D3E8 
+    PHA                      ; D3EB 
+    LDA a:$0153,X            ; D3EC 
+    PHA                      ; D3EF 
+    LDA a:$d459,X            ; D3F0 
+    STA a:$0153,X            ; D3F3 
+    STA a:$0133,X            ; D3F6 
+    DEX                      ; D3F9 
+    BPL $d3e8                ; D3FA 
+    TXA                      ; D3FC 
+    JSR a:$e15e              ; D3FD 
+    JSR a:$d5f0              ; D400 
+    JSR a:$a0b7              ; D403 
+    LDA #$0f                 ; D406 
+    JSR a:$e105              ; D408 
+    LDA #$1e                 ; D40B 
+    STA $66                  ; D40D 
+    JSR a:$a0b4              ; D40F 
+    LDA #$0f                 ; D412 
+    JSR a:$e15e              ; D414 
+    JSR a:$d62d              ; D417 
+    LDX #$00                 ; D41A 
+    PLA                      ; D41C 
+    STA a:$0153,X            ; D41D 
+    PLA                      ; D420 
+    STA a:$0133,X            ; D421 
+    INX                      ; D424 
+    CPX #$10                 ; D425 
+    BNE $d41c                ; D427 
+    LDA a:$06bd              ; D429 
+    CMP #$08                 ; D42C 
+    BEQ $d439                ; D42E 
+    LDA a:$ffb5              ; D430 
+    STA a:$0158              ; D433 
+    STA a:$0138              ; D436 
+    LDA #$ff                 ; D439 
+    JSR a:$e105              ; D43B 
+    PLA                      ; D43E 
+    STA $48                  ; D43F 
+    PLA                      ; D441 
+    STA $47                  ; D442 
+    LDA #$00                 ; D444 
+    STA a:$03d6              ; D446 
+    INC $a1                  ; D449 
+    LDY $a9                  ; D44B 
+    LDA $aa                  ; D44D 
+    JSR a:$f78b              ; D44F 
+    STA $58                  ; D452 
+    PLA                      ; D454 Discard the D0B7 caller return word, then restart the four-phase cycle.
+    PLA                      ; D455 
+    JMP a:$d046              ; D456 
+
+; B28: 16 palette bytes copied to 0133..0142 and 0153..0162 during Start overlay.
+OverlayPalette16:
+    .byte $0F,$29,$19,$0F,$0F,$26,$16,$0F,$0F,$24,$04,$0F,$0F,$30,$18,$0F
+    .incbin "inputs/original.nes", $01D479, $001E ; UNINTERPRETED preserved bytes
+
+; B29: Initialize PPU layout, retained-field displays and two-choice selection after 030E reaches zero.
+InitializeCounterZeroMenu:
+    JSR a:$d62d              ; D487 
+    JSR a:$d5f0              ; D48A 
+    LDA #$00                 ; D48D 
+    LDY #$05                 ; D48F 
+    STA a:$0044,Y            ; D491 
+    DEY                      ; D494 
+    BPL $d491                ; D495 
+    STA $58                  ; D497 
+    STA $51                  ; D499 
+    STA $6a                  ; D49B 
+    LDA $4a                  ; D49D 
+    AND #$dc                 ; D49F 
+    STA $4a                  ; D4A1 
+    LDA #$ec                 ; D4A3 
+    STA $7f                  ; D4A5 
+    LDA #$82                 ; D4A7 
+    STA $dc                  ; D4A9 
+    LDA #$f8                 ; D4AB 
+    STA $dd                  ; D4AD 
+    LDA #$00                 ; D4AF 
+    STA $68                  ; D4B1 
+    JSR a:$f47c              ; D4B3 
+    LDX #$21                 ; D4B6 
+    LDY #$4d                 ; D4B8 
+    LDA #$b2                 ; D4BA 
+    STA $22                  ; D4BC 
+    LDA #$d5                 ; D4BE 
+    STA $23                  ; D4C0 
+    JSR a:$f3d0              ; D4C2 
+    LDX #$21                 ; D4C5 
+    LDY #$8d                 ; D4C7 
+    LDA #$bb                 ; D4C9 
+    STA $22                  ; D4CB 
+    LDA #$d5                 ; D4CD 
+    STA $23                  ; D4CF 
+    JSR a:$f3d0              ; D4D1 
+    LDX #$21                 ; D4D4 
+    LDY #$cd                 ; D4D6 
+    LDA #$c3                 ; D4D8 
+    STA $22                  ; D4DA 
+    LDA #$d5                 ; D4DC 
+    STA $23                  ; D4DE 
+    JSR a:$f3d0              ; D4E0 
+    LDX #$22                 ; D4E3 
+    LDY #$ab                 ; D4E5 
+    LDA #$c6                 ; D4E7 
+    STA $22                  ; D4E9 
+    LDA #$d5                 ; D4EB 
+    STA $23                  ; D4ED 
+    JSR a:$f3d0              ; D4EF 
+    LDA #$06                 ; D4F2 
+    STA $22                  ; D4F4 
+    LDA #$03                 ; D4F6 
+    STA $23                  ; D4F8 
+    LDX #$22                 ; D4FA 
+    LDY #$b1                 ; D4FC 
+    JSR a:$f3ef              ; D4FE 
+    LDX #$22                 ; D501 
+    LDY #$eb                 ; D503 
+    LDA #$cb                 ; D505 
+    STA $22                  ; D507 
+    LDA #$d5                 ; D509 
+    STA $23                  ; D50B 
+    JSR a:$f3d0              ; D50D 
+    LDA #$00                 ; D510 
+    STA $22                  ; D512 
+    LDA #$03                 ; D514 
+    STA $23                  ; D516 
+    LDX #$22                 ; D518 
+    LDY #$f1                 ; D51A 
+    JSR a:$f3ef              ; D51C 
+    LDA #$d0                 ; D51F 
+    STA $22                  ; D521 
+    LDA #$d5                 ; D523 
+    STA $23                  ; D525 
+    JSR a:$d6a0              ; D527 
+    LDA #$00                 ; D52A 
+    STA $2c                  ; D52C 
+    JSR a:$e0ff              ; D52E 
+    LDA #$03                 ; D531 
+    STA $00                  ; D533 
+
+; B30: Wait/poll; A/B/Start confirm, Up/Down/Select change 2C, draw cursor and repeat.
+CounterZeroMenuLoop:
+    JSR a:$d90c              ; D535 
+    LDA #$00                 ; D538 
+    STA $99                  ; D53A 
+    LDA $1f                  ; D53C 
+    TAY                      ; D53E 
+    AND #$d0                 ; D53F Mask D0 = A, B, Start under verified serial-to-bit mapping.
+    BNE $d588                ; D541 
+    LDX $2c                  ; D543 
+    TYA                      ; D545 
+    LSR A                    ; D546 
+    LSR A                    ; D547 
+    LSR A                    ; D548 
+    BCC $d554                ; D549 
+    CPX #$01                 ; D54B 
+    BEQ $d554                ; D54D 
+    LDY #$39                 ; D54F 
+    STY $01                  ; D551 
+    INX                      ; D553 
+    LSR A                    ; D554 
+    BCC $d560                ; D555 
+    CPX #$00                 ; D557 
+    BEQ $d560                ; D559 
+    DEX                      ; D55B 
+    LDY #$39                 ; D55C 
+    STY $01                  ; D55E 
+    LSR A                    ; D560 
+    LSR A                    ; D561 
+    BCC $d56c                ; D562 
+    TXA                      ; D564 
+    EOR #$01                 ; D565 
+    TAX                      ; D567 
+    LDY #$39                 ; D568 
+    STY $01                  ; D56A 
+    TXA                      ; D56C 
+    STA $2c                  ; D56D 
+    ASL A                    ; D56F 
+    TAY                      ; D570 
+    LDA a:$d5ae,Y            ; D571 
+    STA $22                  ; D574 
+    LDA a:$d5af,Y            ; D576 
+    STA $23                  ; D579 
+    LDA #$2d                 ; D57B 
+    LDX #$00                 ; D57D 
+    JSR a:$d677              ; D57F 
+    JSR a:$d63b              ; D582 
+    JMP a:$d535              ; D585 
+
+; B31: Choice 00 jumps D19A; nonzero restores block and ED80 then JMP through RESET vector.
+CounterZeroMenuConfirm:
+    LDA #$37                 ; D588 
+    STA $01                  ; D58A 
+    JSR a:$d62d              ; D58C 
+    JSR a:$e154              ; D58F 
+    LDA #$00                 ; D592 
+    STA $00                  ; D594 
+    STA $01                  ; D596 
+    JSR a:$d90c              ; D598 
+    LDA $2c                  ; D59B 
+    BNE $d5a2                ; D59D 
+    JMP a:$d19a              ; D59F 
+    JSR a:$d38b              ; D5A2 
+    JSR a:$ed80              ; D5A5 
+    JSR a:$d90c              ; D5A8 
+    JMP ($fffc)              ; D5AB Indirect JMP loads the supplied ROM reset vector F010.
+
+; B32: Two little-endian cursor pointers selected with 2C*2; pointed data not interpreted.
+CounterZeroCursorPointers:
+    .byte $5E,$5C,$6E,$5C
+    .incbin "inputs/original.nes", $01D5C2, $005A ; UNINTERPRETED preserved bytes
 
 ; A04: Check retained 0100 marker 68; otherwise load six bytes at 0300; call D2F7.
 ResetRetentionCheck:
@@ -127,4 +839,118 @@ Bank0CEntry6:
     LDA #$0c                 ; D6E8 
     JSR a:$d6c3              ; D6EA 
     JMP a:$8006              ; D6ED 
-    .incbin "inputs/original.nes", $01D700, $0910 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01D700, $021C ; UNINTERPRETED preserved bytes
+
+; B33: Save X/Y, evolve 97 while 95 is nonzero, set 95=1; temporarily map 00/01 for C7C7 then restore bank tags.
+WaitNmiAndServiceAudio:
+    TXA                      ; D90C 
+    PHA                      ; D90D 
+    TYA                      ; D90E 
+    PHA                      ; D90F 
+    INC $97                  ; D910 Always executes at least once, even if 95 was already zero.
+    LDA $97                  ; D912 
+    CMP #$80                 ; D914 CMP supplies carry equal to the incremented byte bit 7; ROL therefore rotates that byte.
+    ROL $97                  ; D916 
+    LDA $95                  ; D918 NMI writes 00 at F116 under the documented normal 96=0/1 condition.
+    BNE $d910                ; D91A 
+    INC $95                  ; D91C 
+    LDA #$00                 ; D91E 
+    STA a:$03d8              ; D920 
+    STA a:$03d9              ; D923 
+    LDA a:$9fff              ; D926 Read tags before mapping audio banks; shared-call restoration depends on correct bank tags.
+    PHA                      ; D929 
+    LDA #$00                 ; D92A 
+    LDX #$06                 ; D92C 
+    JSR a:$d6c3              ; D92E 
+    LDA a:$bfff              ; D931 
+    PHA                      ; D934 
+    INX                      ; D935 
+    LDA #$01                 ; D936 
+    JSR a:$d6c3              ; D938 
+    JSR a:$c7c7              ; D93B 
+    PLA                      ; D93E 
+    LDX #$07                 ; D93F 
+    JSR a:$d6c3              ; D941 
+    PLA                      ; D944 
+    DEX                      ; D945 
+    JSR a:$d6c3              ; D946 
+
+; B34: Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.
+UpdateControllerState:
+    LDA a:$0713              ; D949 0714 <- old 0713; 0713 <- previous held byte.
+    STA a:$0714              ; D94C 
+    LDA $20                  ; D94F 
+    STA a:$0713              ; D951 
+    LDY $20                  ; D954 
+    JSR a:$d977              ; D956 
+    STA $20                  ; D959 
+    JSR a:$d977              ; D95B 
+    AND $20                  ; D95E Held = sample1 AND sample2, not a retry-until-equal loop.
+    STA $1f                  ; D960 
+    TYA                      ; D962 Pressed = held AND NOT previous held.
+    EOR #$ff                 ; D963 
+    AND $1f                  ; D965 
+    LDX $1f                  ; D967 
+    STA $1f                  ; D969 
+    STX $20                  ; D96B 
+    LDA $20                  ; D96D 
+    ASL A                    ; D96F ASL places A-button bit 7 in carry; ROL 21 appends it to an eight-update history.
+    ROL $21                  ; D970 
+    PLA                      ; D972 
+    TAY                      ; D973 
+    PLA                      ; D974 
+    TAX                      ; D975 
+    RTS                      ; D976 
+
+; B35: Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.
+ReadControllerSerial:
+    LDX #$01                 ; D977 
+    STX a:$4016              ; D979 
+    DEX                      ; D97C 
+    STX a:$4016              ; D97D 
+    LDA a:$4016              ; D980 
+    AND #$03                 ; D983 AND 03 + CMP 01 accepts D0 OR D1; other six bus bits are ignored.
+    CMP #$01                 ; D985 
+    ROL $1f                  ; D987 
+    LDA a:$4016              ; D989 
+    AND #$03                 ; D98C 
+    CMP #$01                 ; D98E 
+    ROL $1f                  ; D990 
+    LDA a:$4016              ; D992 
+    AND #$03                 ; D995 
+    CMP #$01                 ; D997 
+    ROL $1f                  ; D999 
+    LDA a:$4016              ; D99B 
+    AND #$03                 ; D99E 
+    CMP #$01                 ; D9A0 
+    ROL $1f                  ; D9A2 
+    LDA a:$4016              ; D9A4 
+    AND #$03                 ; D9A7 
+    CMP #$01                 ; D9A9 
+    ROL $1f                  ; D9AB 
+    LDA a:$4016              ; D9AD 
+    AND #$03                 ; D9B0 
+    CMP #$01                 ; D9B2 
+    ROL $1f                  ; D9B4 
+    LDA a:$4016              ; D9B6 
+    AND #$03                 ; D9B9 
+    CMP #$01                 ; D9BB 
+    ROL $1f                  ; D9BD 
+    LDA a:$4016              ; D9BF 
+    AND #$03                 ; D9C2 
+    CMP #$01                 ; D9C4 
+    ROL $1f                  ; D9C6 
+    LDA $1f                  ; D9C8 
+    RTS                      ; D9CA 
+
+; B36: 97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.
+MixTimingStateWithX:
+    CLC                      ; D9CB Timing state consumer X is supplied implicitly by preceding code.
+    TXA                      ; D9CC 
+    ADC $97                  ; D9CD 
+    EOR #$aa                 ; D9CF 
+    CLC                      ; D9D1 
+    ADC #$bd                 ; D9D2 
+    STA $97                  ; D9D4 
+    RTS                      ; D9D6 
+    .incbin "inputs/original.nes", $01D9E7, $0629 ; UNINTERPRETED preserved bytes

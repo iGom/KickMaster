@@ -1,14 +1,23 @@
 {
-  "checks": [
-    "reviewed ranges non-overlapping",
-    "PRG/file address conversion",
-    "969 reviewed PRG bytes",
-    "62 unique symbol names",
-    "all gameplay claims retain rom_verified=false",
-    "57 CPU cases passed",
-    "full byte comparison passed",
-    "complete file classification has no gaps/overlap"
-  ],
   "result": "PASS",
+  "checks": [
+    "reviewed ranges non-overlapping and physical/CPU offsets consistent",
+    "every reviewed instruction matches original bytes and exactly covers reviewed code",
+    "coverage totals agree with emitted assembly and incbin byte counts",
+    "candidate/source status does not promote reviewed data to code",
+    "symbol names unique; MLB count and Ghidra bank bases match current indexes",
+    "complete file classification without gaps or overlaps",
+    "saved stage01A and stage01B CPU results pass; complete rebuilt image matches"
+  ],
+  "reviewed_bytes": 3444,
+  "reviewed_instructions": 1463,
+  "symbols": 135,
+  "ram_entries": 56,
+  "classification_ranges": 116,
+  "previous_local_archives_unchanged": [
+    "00",
+    "00A",
+    "01A"
+  ],
   "full_Ghidra_Mesen_import": "NOT_TESTED"
 }

@@ -1,0 +1,89 @@
+group,bank,cpu,bank_offset,prg_offset,file_offset,mapping_condition,target_cpu,target_bank,callee_semantics
+FixedServiceJumpTable,0E,0xC749,0x0749,0x01C749,0x01C759,MMC3 PRG mode 0,0xD62D,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC74C,0x074C,0x01C74C,0x01C75C,MMC3 PRG mode 0,0xD90C,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC74F,0x074F,0x01C74F,0x01C75F,MMC3 PRG mode 0,0xD63B,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC752,0x0752,0x01C752,0x01C762,MMC3 PRG mode 0,0xD65D,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC755,0x0755,0x01C755,0x01C765,MMC3 PRG mode 0,0xD677,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC758,0x0758,0x01C758,0x01C768,MMC3 PRG mode 0,0xD6A0,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC75B,0x075B,0x01C75B,0x01C76B,MMC3 PRG mode 0,0xD9E8,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC75E,0x075E,0x01C75E,0x01C76E,MMC3 PRG mode 0,0xDA07,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC761,0x0761,0x01C761,0x01C771,MMC3 PRG mode 0,0xDAB3,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC764,0x0764,0x01C764,0x01C774,MMC3 PRG mode 0,0xDAC2,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC767,0x0767,0x01C767,0x01C777,MMC3 PRG mode 0,0xDB02,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC76A,0x076A,0x01C76A,0x01C77A,MMC3 PRG mode 0,0xD6C3,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC76D,0x076D,0x01C76D,0x01C77D,MMC3 PRG mode 0,0xDDD9,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC770,0x0770,0x01C770,0x01C780,MMC3 PRG mode 0,0xDDEB,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC773,0x0773,0x01C773,0x01C783,MMC3 PRG mode 0,0xDBB7,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC776,0x0776,0x01C776,0x01C786,MMC3 PRG mode 0,0xDC1C,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC779,0x0779,0x01C779,0x01C789,MMC3 PRG mode 0,0xD9D7,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC77C,0x077C,0x01C77C,0x01C78C,MMC3 PRG mode 0,0xD481,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC77F,0x077F,0x01C77F,0x01C78F,MMC3 PRG mode 0,0xCFE2,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC782,0x0782,0x01C782,0x01C792,MMC3 PRG mode 0,0xE0FF,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC785,0x0785,0x01C785,0x01C795,MMC3 PRG mode 0,0xE105,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC788,0x0788,0x01C788,0x01C798,MMC3 PRG mode 0,0xE154,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC78B,0x078B,0x01C78B,0x01C79B,MMC3 PRG mode 0,0xE15E,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC78E,0x078E,0x01C78E,0x01C79E,MMC3 PRG mode 0,0xDFCB,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC791,0x0791,0x01C791,0x01C7A1,MMC3 PRG mode 0,0xDF37,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC794,0x0794,0x01C794,0x01C7A4,MMC3 PRG mode 0,0xE08D,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC797,0x0797,0x01C797,0x01C7A7,MMC3 PRG mode 0,0xE1A0,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC79A,0x079A,0x01C79A,0x01C7AA,MMC3 PRG mode 0,0xE0ED,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC79D,0x079D,0x01C79D,0x01C7AD,MMC3 PRG mode 0,0xD1AA,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7A0,0x07A0,0x01C7A0,0x01C7B0,MMC3 PRG mode 0,0xE2F9,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7A3,0x07A3,0x01C7A3,0x01C7B3,MMC3 PRG mode 0,0xE35B,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7A6,0x07A6,0x01C7A6,0x01C7B6,MMC3 PRG mode 0,0xE393,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7A9,0x07A9,0x01C7A9,0x01C7B9,MMC3 PRG mode 0,0xE44E,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7AC,0x07AC,0x01C7AC,0x01C7BC,MMC3 PRG mode 0,0xE764,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7AF,0x07AF,0x01C7AF,0x01C7BF,MMC3 PRG mode 0,0xE860,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7B2,0x07B2,0x01C7B2,0x01C7C2,MMC3 PRG mode 0,0xE8C3,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7B5,0x07B5,0x01C7B5,0x01C7C5,MMC3 PRG mode 0,0xE925,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7B8,0x07B8,0x01C7B8,0x01C7C8,MMC3 PRG mode 0,0xEB1E,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7BB,0x07BB,0x01C7BB,0x01C7CB,MMC3 PRG mode 0,0xEB63,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7BE,0x07BE,0x01C7BE,0x01C7CE,MMC3 PRG mode 0,0xD7E7,0E,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7C1,0x07C1,0x01C7C1,0x01C7D1,MMC3 PRG mode 0,0xE3FE,0F,see reviewed ranges; otherwise unresolved
+FixedServiceJumpTable,0E,0xC7C4,0x07C4,0x01C7C4,0x01C7D4,MMC3 PRG mode 0,0xE279,0F,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA078,0x0078,0x00E078,0x00E088,MMC3 PRG mode 0; R7=07 at A000,0xA0DB,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA07B,0x007B,0x00E07B,0x00E08B,MMC3 PRG mode 0; R7=07 at A000,0xA0FA,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA07E,0x007E,0x00E07E,0x00E08E,MMC3 PRG mode 0; R7=07 at A000,0xA119,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA081,0x0081,0x00E081,0x00E091,MMC3 PRG mode 0; R7=07 at A000,0xA4E9,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA084,0x0084,0x00E084,0x00E094,MMC3 PRG mode 0; R7=07 at A000,0xA537,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA087,0x0087,0x00E087,0x00E097,MMC3 PRG mode 0; R7=07 at A000,0xA63E,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA08A,0x008A,0x00E08A,0x00E09A,MMC3 PRG mode 0; R7=07 at A000,0xA6FE,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA08D,0x008D,0x00E08D,0x00E09D,MMC3 PRG mode 0; R7=07 at A000,0xA33E,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA090,0x0090,0x00E090,0x00E0A0,MMC3 PRG mode 0; R7=07 at A000,0xA3BC,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA093,0x0093,0x00E093,0x00E0A3,MMC3 PRG mode 0; R7=07 at A000,0xA315,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA096,0x0096,0x00E096,0x00E0A6,MMC3 PRG mode 0; R7=07 at A000,0xA37F,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA099,0x0099,0x00E099,0x00E0A9,MMC3 PRG mode 0; R7=07 at A000,0xA139,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA09C,0x009C,0x00E09C,0x00E0AC,MMC3 PRG mode 0; R7=07 at A000,0xA15C,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA09F,0x009F,0x00E09F,0x00E0AF,MMC3 PRG mode 0; R7=07 at A000,0xA190,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0A2,0x00A2,0x00E0A2,0x00E0B2,MMC3 PRG mode 0; R7=07 at A000,0xA1BC,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0A5,0x00A5,0x00E0A5,0x00E0B5,MMC3 PRG mode 0; R7=07 at A000,0xA374,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0A8,0x00A8,0x00E0A8,0x00E0B8,MMC3 PRG mode 0; R7=07 at A000,0xA362,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0AB,0x00AB,0x00E0AB,0x00E0BB,MMC3 PRG mode 0; R7=07 at A000,0xA182,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0AE,0x00AE,0x00E0AE,0x00E0BE,MMC3 PRG mode 0; R7=07 at A000,0xA1ED,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0B1,0x00B1,0x00E0B1,0x00E0C1,MMC3 PRG mode 0; R7=07 at A000,0xB022,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0B4,0x00B4,0x00E0B4,0x00E0C4,MMC3 PRG mode 0; R7=07 at A000,0xAC42,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0B7,0x00B7,0x00E0B7,0x00E0C7,MMC3 PRG mode 0; R7=07 at A000,0xAAFF,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0BA,0x00BA,0x00E0BA,0x00E0CA,MMC3 PRG mode 0; R7=07 at A000,0xAE3A,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0BD,0x00BD,0x00E0BD,0x00E0CD,MMC3 PRG mode 0; R7=07 at A000,0xA5AB,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0C0,0x00C0,0x00E0C0,0x00E0D0,MMC3 PRG mode 0; R7=07 at A000,0xA935,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0C3,0x00C3,0x00E0C3,0x00E0D3,MMC3 PRG mode 0; R7=07 at A000,0xA9B3,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0C6,0x00C6,0x00E0C6,0x00E0D6,MMC3 PRG mode 0; R7=07 at A000,0xAEC6,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0C9,0x00C9,0x00E0C9,0x00E0D9,MMC3 PRG mode 0; R7=07 at A000,0xAEF7,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0CC,0x00CC,0x00E0CC,0x00E0DC,MMC3 PRG mode 0; R7=07 at A000,0xB5D4,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0CF,0x00CF,0x00E0CF,0x00E0DF,MMC3 PRG mode 0; R7=07 at A000,0xB645,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0D2,0x00D2,0x00E0D2,0x00E0E2,MMC3 PRG mode 0; R7=07 at A000,0xAF28,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0D5,0x00D5,0x00E0D5,0x00E0E5,MMC3 PRG mode 0; R7=07 at A000,0xB991,07,see reviewed ranges; otherwise unresolved
+Bank07ServiceJumpTable,07,0xA0D8,0x00D8,0x00E0D8,0x00E0E8,MMC3 PRG mode 0; R7=07 at A000,0xB83C,07,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA000,0x0000,0x010000,0x010010,MMC3 PRG mode 0; R7=08 at A000,0xAB19,08,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA003,0x0003,0x010003,0x010013,MMC3 PRG mode 0; R7=08 at A000,0xB02A,08,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA006,0x0006,0x010006,0x010016,MMC3 PRG mode 0; R7=08 at A000,0xABC5,08,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA009,0x0009,0x010009,0x010019,MMC3 PRG mode 0; R7=08 at A000,0xB04C,08,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA00C,0x000C,0x01000C,0x01001C,MMC3 PRG mode 0; R7=08 at A000,0xA012,08,see reviewed ranges; otherwise unresolved
+Bank08ServiceJumpTable,08,0xA00F,0x000F,0x01000F,0x01001F,MMC3 PRG mode 0; R7=08 at A000,0xA960,08,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA000,0x0000,0x012000,0x012010,MMC3 PRG mode 0; R7=09 at A000,0xBE90,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA003,0x0003,0x012003,0x012013,MMC3 PRG mode 0; R7=09 at A000,0xBF0B,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA006,0x0006,0x012006,0x012016,MMC3 PRG mode 0; R7=09 at A000,0xA12A,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA009,0x0009,0x012009,0x012019,MMC3 PRG mode 0; R7=09 at A000,0xA499,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA00C,0x000C,0x01200C,0x01201C,MMC3 PRG mode 0; R7=09 at A000,0xA884,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA00F,0x000F,0x01200F,0x01201F,MMC3 PRG mode 0; R7=09 at A000,0xA015,09,see reviewed ranges; otherwise unresolved
+Bank09ServiceJumpTable,09,0xA012,0x0012,0x012012,0x012022,MMC3 PRG mode 0; R7=09 at A000,0xA6A8,09,see reviewed ranges; otherwise unresolved
