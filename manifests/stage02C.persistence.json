@@ -1,0 +1,72 @@
+{
+  "schema": "kickmaster-checkpoint-persistence/v1",
+  "stage": "02C",
+  "status": "PASS",
+  "scope": "Existing02C archive durable presence and complete verified readback; three previously saved accompanying files readable and structurally consistent.",
+  "checked_utc": "2026-10-21T06:23:55.589834+00:00",
+  "archive": {
+    "name": "kickmaster-ntscu-checkpoint-stage02C.zip",
+    "library_file_id": "libfile_b0d3c38af9cc8191a1fa9757fe6b850e",
+    "file_id": "file_00000000352481f48670795ed00523e4",
+    "version": 0,
+    "size_bytes": 2597797,
+    "sha256": "9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d",
+    "readback": "PASS",
+    "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02C-20261021/kickmaster-ntscu-checkpoint-stage02C.zip"
+  },
+  "expected_archive_sha256": "9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d",
+  "archive_sha256_match": "PASS",
+  "zip_crc": "PASS",
+  "complete_manifest": "PASS",
+  "manifest_file_count": 206,
+  "full_extraction_hash_verification": "PASS",
+  "latest_resume_present": true,
+  "external_resume_matches_archived_resume_prefix": true,
+  "archive_reuploaded": false,
+  "earlier_checkpoints_modified": false,
+  "readback_files": [
+    {
+      "name": "stage02C.verification.json",
+      "library_file_id": "libfile_61270f7f6bf48191bfccdcead08b8640",
+      "file_id": "file_00000000a30c81f4941ee4a4a706d3cf",
+      "version": 0,
+      "size_bytes": 723,
+      "sha256": "054d8facc9c206ba812428f2d95bc92e8251204d8edcaa2065d20896755d2b21",
+      "readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02C-20261021/stage02C.verification.json"
+    },
+    {
+      "name": "stage02C.reproducibility.json",
+      "library_file_id": "libfile_fac270ccdb6c81919b7830966c222784",
+      "file_id": "file_000000004bfc81f4935bc2f7d5bbd5e0",
+      "version": 0,
+      "size_bytes": 3259,
+      "sha256": "6abb2296af475ebd947f16abca24774f9b1dd6732b28fbe3d37d57b2fce03ea3",
+      "readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02C-20261021/stage02C.reproducibility.json"
+    },
+    {
+      "name": "KickMaster_STAGE02C_RESUME.md",
+      "library_file_id": "libfile_3c2d033d8d308191b52994a046a1a3d6",
+      "file_id": "file_0000000002d882469b100d8551c3aead",
+      "version": 0,
+      "size_bytes": 19348,
+      "sha256": "e488449ca86f0bf0f79fff09377dcb12c3fad3a4be1417143b8cb71fa5f6223a",
+      "readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02C-20261021/KickMaster_STAGE02C_RESUME.md"
+    }
+  ],
+  "reproducibility": {
+    "status": "PASS_REUSED_PRIOR_EXECUTION",
+    "evidence": "stage02C.reproducibility.json",
+    "original_build_utc": "2026-10-20T13:03:29.626335+00:00",
+    "clean_build_rerun_now": false,
+    "cpu_tests_rerun_now": false
+  },
+  "not_performed": [
+    "Native NES emulator validation",
+    "Ghidra/MesenCE native import",
+    "Fresh02C CPU experiments or clean compilation in closure session"
+  ],
+  "self_record_note": "This file records completed archive readback. Its own later save/readback and the final report are recorded in stage02C_closure_readback.json, included in the next checkpoint."
+}

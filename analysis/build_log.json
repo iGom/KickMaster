@@ -1,7 +1,7 @@
 [
   {
     "argv": [
-      "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/tools/bin/ca65",
+      "/workspace/scratch/073d0612ec00/continuation-02D/kickmaster-ntscu-re/tools/bin/ca65",
       "-g",
       "-I",
       "disassembly",
@@ -19,7 +19,7 @@
   },
   {
     "argv": [
-      "/workspace/scratch/073d0612ec00/kickmaster-ntscu-re/tools/bin/ld65",
+      "/workspace/scratch/073d0612ec00/continuation-02D/kickmaster-ntscu-re/tools/bin/ld65",
       "-C",
       "disassembly/linker.cfg",
       "builds/main.o",

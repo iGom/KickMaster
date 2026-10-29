@@ -1,0 +1,22 @@
+{
+  "archive": "kickmaster-ntscu-checkpoint-stage02C.zip",
+  "sha256": "9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d",
+  "size_bytes": 2597797,
+  "zip_crc_test": "PASS",
+  "manifest_verification": "PASS",
+  "manifest_file_count": 206,
+  "sample_extraction": "PASS",
+  "sample_paths": [
+    "README.md",
+    "RESUME.md",
+    "manifests/rom_identity.json",
+    "scripts/baseline.py"
+  ],
+  "latest_resume_present": true,
+  "schema": "kickmaster-checkpoint-verification/v1",
+  "stage": "02C",
+  "full_extracted_manifest": "PASS",
+  "original_guide_and_8_PNGs_and_maps_zip_included": true,
+  "input_and_rebuilt_ROM_excluded": true,
+  "library_readback": "RECORDED_SEPARATELY_IN_stage02C.persistence.json"
+}

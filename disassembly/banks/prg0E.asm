@@ -882,7 +882,85 @@ Bank0CEntry6:
     LDA #$0c                 ; D6E8 
     JSR a:$d6c3              ; D6EA 
     JMP a:$8006              ; D6ED 
-    .incbin "inputs/original.nes", $01D700, $00F7 ; UNINTERPRETED preserved bytes
+
+; F25: Map R7=0D; clear0440; odd D8 ticks quake counter; walk one of two ten-entry cycles from D8 low3; copy0440 to06BC. D759 and accumulator producer remain unreviewed;0440 aliases indexed HP slot9.
+ScheduleEnemyUpdatePass:
+    LDX #$07                 ; D6F0 
+    LDA #$0d                 ; D6F2 
+    JSR a:$d6c3              ; D6F4 
+    LDA #$00                 ; D6F7 
+    STA a:$0440              ; D6F9 
+    LDA $d8                  ; D6FC 
+    AND #$01                 ; D6FE 
+    STA a:$06f9              ; D700 
+    BEQ $d708                ; D703 
+    JSR a:$d7ad              ; D705 
+    LDA $d8                  ; D708 
+    AND #$0f                 ; D70A 
+    CMP #$08                 ; D70C 
+    BCC $d713                ; D70E 
+    SEC                      ; D710 
+    SBC #$08                 ; D711 
+    STA $2c                  ; D713 
+    STA $3b                  ; D715 
+    TAX                      ; D717 
+    LDA $d8                  ; D718 
+    AND #$01                 ; D71A 
+    BNE $d72f                ; D71C 
+    JSR a:$d759              ; D71E 
+    LDY $2c                  ; D721 
+    LDA a:$d745,Y            ; D723 
+    STA $2c                  ; D726 
+    TAX                      ; D728 
+    CPX $3b                  ; D729 
+    BNE $d71e                ; D72B 
+    BEQ $d73e                ; D72D 
+    JSR a:$d759              ; D72F 
+    LDY $2c                  ; D732 
+    LDA a:$d74f,Y            ; D734 
+    STA $2c                  ; D737 
+    TAX                      ; D739 
+    CPX $3b                  ; D73A 
+    BNE $d72f                ; D73C 
+    LDA a:$0440              ; D73E 
+    STA a:$06bc              ; D741 
+    RTS                      ; D744 
+
+; F26: Two10-byte successor permutations for ascending/descending enemy passes.
+EnemyUpdateOrderCycles:
+    .byte $01,$02,$03,$04,$05,$06,$07,$08,$09,$00,$09,$00,$01,$02,$03,$04
+    .byte $05,$06,$07,$08
+    .incbin "inputs/original.nes", $01D769, $0054 ; UNINTERPRETED preserved bytes
+
+; F27: Nonzero03DC increments; beforeincrementD2 addsflag40 tofirst8 flagged10 entries; F0 clears03DC andbits10/40 inallfirst8. Counter1expires after240calls.
+TickQuakeLifetime:
+    LDA a:$03dc              ; D7AD 
+    BEQ $d7d3                ; D7B0 
+    CMP #$f0                 ; D7B2 
+    BEQ $d7d4                ; D7B4 
+    CMP #$d2                 ; D7B6 Warning flag40 is added onentryD2, before counter becomesD3.
+    BNE $d7d0                ; D7B8 
+    LDY #$00                 ; D7BA 
+    LDA a:$0473,Y            ; D7BC 
+    AND #$10                 ; D7BF 
+    BEQ $d7cb                ; D7C1 
+    LDA a:$0473,Y            ; D7C3 
+    ORA #$40                 ; D7C6 
+    STA a:$0473,Y            ; D7C8 
+    INY                      ; D7CB 
+    CPY #$08                 ; D7CC 
+    BNE $d7bc                ; D7CE 
+    INC a:$03dc              ; D7D0 
+    RTS                      ; D7D3 
+    LDY #$00                 ; D7D4 Expiry clearsbits10/40 even on entries excluded by the originalquake producer.
+    STY a:$03dc              ; D7D6 
+    LDA a:$0473,Y            ; D7D9 
+    AND #$af                 ; D7DC 
+    STA a:$0473,Y            ; D7DE 
+    INY                      ; D7E1 
+    CPY #$08                 ; D7E2 
+    BNE $d7d9                ; D7E4 
+    RTS                      ; D7E6 
 
 ; E50: For8 entries0473..047A,bit20 excludes; elseclearbits40/10 then set10. Set03DC=1. Freeze timer consumption not reconstructed.
 MarkEnemiesForQuake:

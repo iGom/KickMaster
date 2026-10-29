@@ -1,0 +1,43 @@
+{
+  "stage": "02D",
+  "prior_stage_cpu_suites_rerun": false,
+  "final_groups": 16,
+  "final_vectors": 26832,
+  "final_trace_rows": 117943,
+  "development_corrections": [
+    {
+      "group": "F_CPU14",
+      "initial_assertion": "Assumed every object-loop call invokes the pulse handler and movement.",
+      "observed": "Flags90 with initialD9=1 execute on odd-numbered loop calls only.",
+      "correction": "Expected handler_calls=(loop_calls+1)//2; 48 loop calls per facing.",
+      "reason_for_retry": "The new test oracle ignored the already reviewed parity gate in09:BE90. Previously passed groups reused."
+    },
+    {
+      "group": "F_CPU16",
+      "initial_assertion": "Assumed side lifetime12*N-5 also applies to synthetic N=1.",
+      "observed": "At call4 counter becomes0 but signed step remains+2; call6 decrements0 toFF.",
+      "correction": "Synthetic N=1 expires at3069 local dispatch calls; actual seed8 expires at91.",
+      "reason_for_retry": "Concrete newly observed boundary exception; N=1 not claimed reachable from reviewed spawner."
+    }
+  ],
+  "evidence_recovery": {
+    "groups": [
+      "F_CPU11",
+      "F_CPU12",
+      "F_CPU13"
+    ],
+    "reason": "Earlier tool stdout recorded PASS, but the partial JSON observed during resume lacked these three groups. Only these groups were re-executed to recover complete vectors and traces.",
+    "command": "python3 scripts/cpu_stage02d.py inputs/original.nes --from-group 11 --through-group 13"
+  },
+  "final_serialization": {
+    "partial_groups_match_final_json": "PASS",
+    "all_vector_rows_match_saved_observations": "PASS",
+    "all_trace_rows_match_saved_partial_traces": "PASS",
+    "partial_file_removed_after_comparison": true
+  },
+  "limitations": [
+    "py65 CPU harness with MMC3/PPU test doubles, not a native NES run",
+    "Synthetic domains and bounded stop points are stated per group",
+    "No ROM bytes patched and no callee stubs in these sixteen groups"
+  ]
+}

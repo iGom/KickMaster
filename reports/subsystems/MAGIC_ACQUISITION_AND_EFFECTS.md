@@ -1,5 +1,9 @@
 # Zdobywanie, wybór i sterowanie magią — etap 02C
 
+Historical scope: Stage02C. Consumers of queued hits, quake lifetime, shield budget and projectile
+collision/movement were subsequently examined in Stage02D; see PROJECTILE_COLLISION_AND_ENEMY_HITS.md.
+The remaining-open list below records the state at02C, not the current project backlog.
+
 Badany obraz: KickMaster NTSC-U, SHA-256
 `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
 Ustalenia wyprowadzono z oryginalnych bajtów ROM-u i ich wykonania w modelu CPU.

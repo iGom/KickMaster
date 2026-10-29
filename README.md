@@ -5,16 +5,17 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/MAGIC_ACQUISITION_AND_EFFECTS.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/PROJECTILE_COLLISION_AND_ENEMY_HITS.md`.
 
-Current snapshot: Stage 02C acquisition/menu/magic-effect control complete as a bounded milestone.
-Stages 00/00A/01A/01B/02A/02B remain preserved. The original guide and eight maps supplied by the user
+Current snapshot: Stage 02D projectile/collision and enemy-hit consumers complete as a bounded milestone.
+Stages 00/00A/01A/01B/02A/02B/02C remain preserved;02C durability is now closed. The original guide and eight maps supplied by the user
 are now available unchanged in `research/originals/`; the earlier map-access block is historical.
-Comprehensive reverse engineering is **not** complete. 168 reviewed code ranges, 71 data ranges, 112 RAM entries.
-Stage02C adds 18 CPU groups/16460 vectors with no callee stubs; earlier CPU results remain preserved without rerun.
-The input-dependent ca65 scaffold matches every original byte; 10818 PRG bytes have reviewed local semantics.
+Comprehensive reverse engineering is **not** complete. 190 reviewed code ranges, 84 data ranges, 131 RAM entries.
+Stage02D adds 16 CPU groups/26832 vectors with no callee stubs; earlier-stage CPU results remain preserved without rerun.
+The input-dependent ca65 scaffold matches every original byte; 12945 PRG bytes have reviewed local semantics.
 Tables cover 32 scene configurations, 192 scene pointers, 116 player-state pairs, eight progression levels,
-24 collectible pairs, 13 selected effects, 12 unlock/menu mappings, 32 acquisition routes and six score thresholds.
+24 collectible pairs, 13 selected effects, 12 unlock/menu mappings, 32 acquisition routes, six score thresholds,32 projectile collision profiles
+and101 player collision profiles.
 Unknown downstream handlers remain explicitly unreviewed. Map geometry has not yet been compared to ROM data.
 `PROJECT_UPDATES.md` records the user's later source-preservation and checkpoint instructions.
 
@@ -37,7 +38,7 @@ The checkpoint excludes input ROMs, local rebuilds and previous checkpoint ZIPs.
 covered by `manifests/SHA256SUMS`, except that manifest itself (to avoid self-reference).
 Archive hashes and post-upload readback receipts live alongside the ZIP, not inside the file being hashed.
 
-Reuse saved CSV/JSON reports instead of rerunning completed analysis. Run `cpu_stage02c.py` only for a
+Reuse saved CSV/JSON reports instead of rerunning completed analysis. Run `cpu_stage02d.py` only for a
 concrete validation need; its recorded results are already included. `prepare_sources.py` intentionally
 regenerates the assembly scaffold; do not use it as a build command after edits.
 MLB syntax was checked against source, but actual MesenCE/Ghidra imports are untested.

@@ -63,7 +63,195 @@ AdjustScrollOnOddEffect:
     ADC #$10                 ; E2F4 
     STA $58                  ; E2F6 
     RTS                      ; E2F8 
-    .incbin "inputs/original.nes", $01E309, $0D17 ; UNINTERPRETED preserved bytes
+
+; F28: Store A to2E; HP zero with Y nonzero selectsY; pending20 selects Y+1 and applies hit; quake10 selects Y+2; otherwise increment0423 and select040F. 2F stores selector; Y=selector*2. Increment-wrap branches require separate interpretation; tested bases0/2/5.
+SelectEnemyHitOrQuakeState:
+    STA $2e                  ; E2F9 
+    LDA a:$0437,X            ; E2FB 
+    BNE $e303                ; E2FE 
+    TYA                      ; E300 
+    BNE $e325                ; E301 
+    LDA a:$0469,X            ; E303 
+    AND #$20                 ; E306 
+    BEQ $e313                ; E308 
+    INY                      ; E30A 
+    TYA                      ; E30B 
+    PHA                      ; E30C 
+    JSR a:$e32a              ; E30D 
+    PLA                      ; E310 
+    BNE $e325                ; E311 
+    LDA a:$0473,X            ; E313 
+    AND #$10                 ; E316 
+    BEQ $e31f                ; E318 
+    INY                      ; E31A 
+    INY                      ; E31B 
+    TYA                      ; E31C 
+    BNE $e325                ; E31D 
+    INC a:$0423,X            ; E31F 
+    LDA a:$040f,X            ; E322 
+    STA $2f                  ; E325 
+    ASL A                    ; E327 
+    TAY                      ; E328 
+    RTS                      ; E329 
+
+; F29: Onlywhen0469bit40:0437=max(HP-0441,0),clear0455,clearflag40,set047Dbit80,sound55,restoreXfrom2C. Pendingbit20/queuedvalue remain; caller providespendinggate.
+ApplyQueuedEnemyDamage:
+    LDA a:$0469,X            ; E32A 
+    AND #$40                 ; E32D 
+    BEQ $e35a                ; E32F 
+    LDA a:$0437,X            ; E331 
+    SEC                      ; E334 
+    SBC a:$0441,X            ; E335 Unsigned raw HP subtraction with saturation tozero; equality also giveszero.
+    BCS $e33c                ; E338 
+    LDA #$00                 ; E33A 
+    STA a:$0437,X            ; E33C 
+    LDA #$00                 ; E33F 
+    STA a:$0455,X            ; E341 
+    LDA a:$0469,X            ; E344 
+    AND #$bf                 ; E347 
+    STA a:$0469,X            ; E349 
+    LDA a:$047d,X            ; E34C Consumption clearsaccept40 but preservespending20; recovery later restoresacceptance.
+    ORA #$80                 ; E34F 
+    STA a:$047d,X            ; E351 
+    LDA #$55                 ; E354 
+    STA $01                  ; E356 
+    LDX $2c                  ; E358 
+    RTS                      ; E35A 
+
+; F30: Increment0423; onodd result increment0455. At0455=0A clearpending20,setaccept40,clearreaction80,reset0455; otherwise originalknockback. Reset0423 afteroddwork.
+TickEnemyHitRecovery:
+    INC a:$0423,X            ; E35B 
+    LDA a:$0423,X            ; E35E 
+    AND #$01                 ; E361 
+    CMP #$01                 ; E363 
+    BNE $e392                ; E365 
+    INC a:$0455,X            ; E367 
+    LDA a:$0455,X            ; E36A 
+    CMP #$0a                 ; E36D 
+    BNE $e38a                ; E36F 
+    LDA a:$0469,X            ; E371 
+    AND #$df                 ; E374 
+    ORA #$40                 ; E376 
+    STA a:$0469,X            ; E378 
+    LDA a:$047d,X            ; E37B 
+    AND #$7f                 ; E37E 
+    STA a:$047d,X            ; E380 
+    LDA #$00                 ; E383 
+    STA a:$0455,X            ; E385 
+    BEQ $e38f                ; E388 
+    JSR a:$e3fe              ; E38A 
+    LDA #$00                 ; E38D 
+    STA a:$0423,X            ; E38F 
+    RTS                      ; E392 
+    .incbin "inputs/original.nes", $01E3A3, $006B ; UNINTERPRETED preserved bytes
+
+; F31: Direction047Dlow3 selects3 eight-byte tables; compute targetY/X, optionally terrain-adjust when0473negative, thencommit. Terrainadjustment notfullyreviewed.
+StepEnemyHitKnockback:
+    LDA a:$047d,X            ; E3FE 
+    AND #$07                 ; E401 
+    TAY                      ; E403 
+    LDA a:$e436,Y            ; E404 
+    STA $30                  ; E407 
+    LDA a:$e43e,Y            ; E409 
+    STA $3e                  ; E40C 
+    LDA a:$e446,Y            ; E40E 
+    STA $3d                  ; E411 
+    JSR a:$e478              ; E413 
+    LDA $22                  ; E416 
+    STA $32                  ; E418 
+    LDA $23                  ; E41A 
+    STA $33                  ; E41C 
+    JSR a:$e492              ; E41E 
+    LDA $22                  ; E421 
+    STA $34                  ; E423 
+    LDA $23                  ; E425 
+    STA $35                  ; E427 
+    LDX $2c                  ; E429 
+    LDA a:$0473,X            ; E42B 
+    BPL $e433                ; E42E 
+    JSR a:$e4c7              ; E430 
+    JMP a:$e72d              ; E433 
+
+; F32: Eight directionflags, eightY magnitudes(all0), eightX magnitudes(0or2).
+EnemyHitKnockbackTables:
+    .byte $02,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    .byte $00,$02,$02,$02,$00,$02,$02,$02
+    .incbin "inputs/original.nes", $01E45E, $002A ; UNINTERPRETED preserved bytes
+
+; F33: Twoentrypoints derive16-bitY/X target usingunsigned magnitudes3E/3D anddirectionbits30; originaladd/sub helpers.
+CalculateEnemyPositionStep:
+    LDX $3e                  ; E478 
+    LDY $2c                  ; E47A 
+    LDA a:$03e7,Y            ; E47C 
+    STA $22                  ; E47F 
+    LDA a:$03f1,Y            ; E481 
+    STA $23                  ; E484 
+    LDA $30                  ; E486 
+    AND #$02                 ; E488 
+    BEQ $e48f                ; E48A 
+    JMP a:$e917              ; E48C 
+    JMP a:$e90c              ; E48F 
+    LDX $3d                  ; E492 
+    LDY $2c                  ; E494 
+    LDA a:$03fb,Y            ; E496 
+    STA $22                  ; E499 
+    LDA a:$0405,Y            ; E49B 
+    STA $23                  ; E49E 
+    LDA $30                  ; E4A0 
+    AND #$01                 ; E4A2 
+    BNE $e4a9                ; E4A4 
+    JMP a:$e917              ; E4A6 
+    JMP a:$e90c              ; E4A9 
+    .incbin "inputs/original.nes", $01E4BC, $0281 ; UNINTERPRETED preserved bytes
+
+; F34: If36negative snaplowY bynibble threshold0C, includingcarry; store32/33 and34/35 to currentenemyX indexedcoordinatearrays.
+CommitEnemyTargetPosition:
+    LDA $36                  ; E72D 
+    BPL $e74f                ; E72F 
+    LDA $32                  ; E731 
+    AND #$0f                 ; E733 
+    CMP #$0c                 ; E735 
+    BCS $e742                ; E737 
+    LDA $32                  ; E739 
+    AND #$f0                 ; E73B 
+    STA $32                  ; E73D 
+    JMP a:$e74f              ; E73F 
+    LDA $32                  ; E742 
+    AND #$f8                 ; E744 
+    CLC                      ; E746 
+    ADC #$08                 ; E747 
+    STA $32                  ; E749 
+    BCC $e74f                ; E74B 
+    INC $33                  ; E74D 
+    LDA $32                  ; E74F 
+    STA a:$03e7,X            ; E751 
+    LDA $33                  ; E754 
+    STA a:$03f1,X            ; E756 
+    LDA $34                  ; E759 
+    STA a:$03fb,X            ; E75B 
+    LDA $35                  ; E75E 
+    STA a:$0405,X            ; E760 
+    RTS                      ; E763 
+    .incbin "inputs/original.nes", $01E774, $01A8 ; UNINTERPRETED preserved bytes
+
+; F35: E90C addsunsignedX to22/23; E917 subtractsunsignedX withcarry/borrow. Doesnot interpretXassignedsigned.
+OffsetUnsigned16ByX:
+    CLC                      ; E90C 
+    TXA                      ; E90D 
+    ADC $22                  ; E90E 
+    STA $22                  ; E910 
+    BCC $e916                ; E912 
+    INC $23                  ; E914 
+    RTS                      ; E916 
+    SEC                      ; E917 
+    LDA $22                  ; E918 
+    STX $22                  ; E91A 
+    SBC $22                  ; E91C 
+    STA $22                  ; E91E 
+    BCS $e924                ; E920 
+    DEC $23                  ; E922 
+    RTS                      ; E924 
+    .incbin "inputs/original.nes", $01E935, $06EB ; UNINTERPRETED preserved bytes
 
 ; A12: Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
 ResetEntry:

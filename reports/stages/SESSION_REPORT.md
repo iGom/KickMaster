@@ -1,102 +1,120 @@
-# KickMaster NTSC-U — raport sesji 02C
+# KickMaster NTSC-U — Stage 02D
 
-Data: 2026-10-20. Uporządkowano trwałość 02B, przyjęto oryginalne źródła użytkownika
-oraz przeanalizowano zdobywanie, wybór i sterowanie efektami magicznymi.
-Całościowa rekonstrukcja gry pozostaje nieukończona.
+Raport z 2026-10-21. Zakres: domknięcie trwałości 02C oraz następny odcinek programu/RAM,
+obejmujący pociski, lokalne kolizje, rozliczanie HP przeciwników i konsumentów tarczy/trzęsienia.
+Pełny reverse engineering gry pozostaje w toku.
 
-## Checkpoint 02B i brakujące raporty
+## Najważniejsze wyniki
 
-Odczytano istniejące archiwum z Library:
-`libfile_2de6444368d08191ad09d2e9fde8dec5`, wersja 0.
-Jego SHA-256 wynosi dokładnie
-`397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b`.
-Rozmiar: 1762502 bajty. CRC ZIP, wszystkie 177 plików manifestu, próbne rozpakowanie,
-porównanie z lokalnym ZIP-em i stanem projektu: PASS. Archiwum nie było ponownie przesyłane.
-Nie ustalamy, która wcześniejsza operacja doprowadziła do pojawienia się tej kopii;
-potwierdzamy jej aktualną obecność i właściwe bajty.
+- Kolejkowane obrażenia trafiają do rzeczywistego HP przez PRG0F:$E32A z nasyceniem do zera.
+  Flaga akceptacji zapobiega powtórnemu odejmowaniu; zwykła lokalna reakcja wraca do akceptacji
+  po10 wywołaniach przy licznikach początkowych0.
+- Force Shield pochłania10 kwalifikujących się przecięć z pociskami wroga; jedenaste przechodzi
+  do procedury obrażeń gracza. To wynik konkretnej ścieżki, nie dowód ochrony przed wszystkim.
+- Licznik Earthquake od seedu1 wygasa po240 wywołaniach konsumenta, z dodatkową flagą przy
+  wywołaniu210. Nie przypisano mu czasu w sekundach ani kompletnej semantyki AI wszystkich wrogów.
+- Odtworzono32 profile magicznych pocisków,101 par profili kolizji gracza,13 ograniczeń skanu slotów
+  i32 wpisy dispatchu pocisków. W badanej ścieżce Lightning sprawdza sloty1/0 mimo trzech obiektów.
+- Potwierdzono wzrost Pulse Wave, odbijanie osi Bouncing Bulb przez oryginalne samplery terenu
+  oraz cykle segmentów Lightning. Osobno oznaczono syntetyczne wartości liczników i flag.
+- Rozpoznano alias `$0440`: indeks9 tablicy HP nakłada się na pole zerowane/kopiowane przez
+  przebieg przeciwników. Jego pełna rola i liczba niezależnych żywych wrogów pozostają otwarte.
 
-Utworzono brakujące, osobne pliki `stage02B.verification.json`,
-`stage02B.reproducibility.json` i `stage02B.persistence.json`.
-Standardowy zapis nadal zwracał 403; zgodnie z wyraźną zgodą użytkownika zastosowano
-zapis bezpośredni. Wszystkie trzy pliki pobrano ponownie i porównano bajt po bajcie: PASS.
-Ich identyfikatory i hashe znajdują się w `manifests/stage02B_sidecars_readback.json`.
+Pełny opis, adresy, granice i tabela prób:
+`reports/subsystems/PROJECTILE_COLLISION_AND_ENEMY_HITS.md`.
 
-Odtwarzalność 02B oparto na faktycznie wykonanej wcześniej kompilacji po czystym
-rozpakowaniu. Teraz sprawdzono zachowane źródła kompilowane względem zweryfikowanego
-archiwum oraz ponownie porównano zachowany wynik z oryginalnym ROM-em. Kompilacji
-02B i jego 52382 przypadków CPU nie uruchamiano ponownie. Raport JSON odróżnia
-te nowe porównania od zachowanego wyniku wcześniejszego wykonania.
-Stare raporty 02B opisujące nieudany zapis są historyczne; nowe potwierdzenia je uzupełniają.
+## Trwałość Stage 02C
 
-## Źródła użytkownika
+Istniejący `kickmaster-ntscu-checkpoint-stage02C.zip` został ponownie pobrany i zweryfikowany.
+Rozmiar:2597797 bajtów. SHA-256:
+`9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d`.
+CRC ZIP, komplet manifestu i ekstrakcja wszystkich206 plików z porównaniem SHA-256:PASS.
+Nie przesłano ZIP-u ponownie i nie zmieniono wcześniejszych checkpointów.
 
-W `research/originals/` zachowano pełny poradnik Wyrentha, niezmienione `maps.zip`
-i osiem oryginalnych PNG sprays. Każdy plik ma SHA-256 w `originals_manifest.csv`.
-Integralność PNG i wymiary sprawdzono bez zmiany rozdzielczości. Indeks źródeł,
-indeks map i osiem kart etapów wskazują teraz dostępność lokalnych oryginałów.
+Brakujące `stage02C.persistence.json` i `KickMaster_STAGE02C_REPORT.md` zapisano, ponownie
+pobrano i porównano bajt po bajcie. Dowód wraz z tożsamościami plików:
+`manifests/stage02C_closure_readback.json`. Same zweryfikowane kopie są w
+`manifests/stage02C.persistence.json` i `reports/stages/SESSION_REPORT_stage02C.md`.
+Odczytano też istniejące02C verification/reproducibility/RESUME. Wcześniejszą udaną kompilację
+z czystej ekstrakcji z2026-10-20 wykorzystano jako zachowany wynik; nie uruchamiano jej ponownie.
 
-Nie powtarzano Stage00A. Z poradnika odczytano celowo sekcję magii; nie deklarujemy
-nowego przeczytania całości. Szczegółowa wizualna analiza map i porównanie z ROM-em
-pozostają częścią przyszłych prac nad geometrią. Nie przypisano sektorów do indeksów
-scen na podstawie samych nazw plików.
+## Nowe artefakty i pokrycie
 
-## Nowe ustalenia
-
-- $06BE/$06BF to bitset dwunastu odblokowanych efektów. Typy przedmiotów 50–67
-  ustawiają odpowiedni bit; numer komórki menu przekładany jest osobną permutacją.
-- Zdobycie nie wybiera automatycznie czaru. Uruchamia animację i prezentację;
-  od $CF=0 przejście do prezentacji następuje po 96 wywołaniach jej kontrolera.
-- Odnaleziono 32 trasy scen po prezentacji magii oraz 12 wskaźników opisów w R6=03.
-  Pełne renderowanie prezentacji nie zostało wykonane.
-- Potwierdzono koszty i warunki aktywacji pozostałych dziesięciu efektów.
-  Pełna pula trzech pocisków nie zużywa MP; lot ponawia koszt 10 MP co 30 aktywnych
-  wywołań; kilka efektów ignoruje ponowną aktywację do wygaśnięcia.
-- Wyznaczono liczniki oraz fazy błyskawic, ochrony terenu, maski atrybutów i sobowtóra.
-  Liczby wywołań nie są przedstawiane jako sekundy bez weryfikacji harmonogramu gry.
-- Odróżniono kolejkę żądań trafienia od rzeczywistego odejmowania HP wrogów.
-  Tarcza, odporności, końcowe obrażenia, czas ogłuszenia i AI wymagają dalszych badań.
-
-Pełne adresy, warunki wejściowe i ograniczenia: `MAGIC_ACQUISITION_AND_EFFECTS.md`.
-Korelacje oficjalnych nazw opierają się na opisach/kosztach źródeł; nie oznaczają
-potwierdzenia wszystkich zachowań deklarowanych w poradniku.
-
-## Miary i weryfikacja
-
-| Miara | Po 02B | Po 02C |
+| Miara | Stage02C | Stage02D |
 |---|---:|---:|
-| Zakresy kodu | 134 | 168 |
-| Zakresy danych | 54 | 71 |
-| Przejrzane instrukcje | 3055 | 3930 |
-| Bajty kodu PRG | 6484 | 8376 |
-| Bajty danych PRG | 2074 | 2442 |
-| Bajty PRG z lokalną interpretacją | 8558 | 10818 |
-| Pokrycie PRG | 6,5292% | 8,2535% |
-| Wpisy RAM | 101 | 112 |
-| Symbole | 289 | 351 |
-| Krawędzie tabel pośrednich | 180 | 192 |
-| Krawędzie grafu call/jump/table | 386 | 442 |
+| Przejrzane zakresy kodu | 168 | 190 |
+| Przejrzane zakresy danych | 71 | 84 |
+| Instrukcje w przejrzanych zakresach | 3930 | 4611 |
+| Bajty PRG z udokumentowaną lokalną semantyką | 10818 | 12945 |
+| Udział w128KiB PRG | 8,253479% | 9,876251% |
+| Lokalne role RAM | 112 | 131 |
+| Symbole/etykiety MLB | 351 | 405 |
+| Wpisy tablic pośredniego dispatchu | 192 | 224 |
+| Krawędzie deduplikowanego grafu call/table | 442 | 465 |
 
-Nowe testy: 18 grup / 16460 przypadków / 5906 wierszy śladu: PASS.
-Starsze zestawy CPU zachowano bez ponownego wykonania. Jawne zatrzymania testów
-prefiksu wyboru i prezentacji opisano w danych; nie użyto atrap podprogramów.
-To izolowane wykonanie CPU z modelem magistrali, nie test pełnego NES-a.
+Nowy przyrost F01–F35:22 zakresy kodu,13 danych,681 instrukcji i2127 bajtów.
+Nie ma nakładających się zakresów ROM. Każdy rekord podaje bank, adres CPU, offset bankowy,
+PRG i plikowy oraz warunek mapowania. Indeksy symboli, struktur danych, odwołań, dostępu do RAM,
+klasyfikacja całego pliku i źródła assemblera zostały uaktualnione.
 
-Aktualna kompilacja ca65/ld65 odtwarza cały obraz 262160 bajtów identycznie:
-SHA-256 `00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
-10834 bajty jawnego źródła obejmują nagłówek; 251326 bajtów nadal pochodzi z `.incbin`.
-Audyt PASS obejmuje bajty, zakresy, tabele, symbole, dowody CPU, źródła użytkownika
-oraz potwierdzenia 02B. Import natywny MesenCE/Ghidra nadal NIEPRZETESTOWANY.
+Nowe pliki analityczne: `projectile_collision_profiles.csv`, `projectile_object_dispatch.csv`,
+`player_hurtbox_profiles.csv`, `magic_collision_slot_limits.csv`, `stage02D_static_summary.json`
+oraz komplet wyników `cpu_stage02D*`. Skrypty `architecture_stage02d.py`,
+`annotate_stage02d.py` i `cpu_stage02d.py` zachowują procedury odtwarzania.
 
-## Zamknięcie i następne prace
+## Wykonane kontrole
 
-Nowy checkpoint: `kickmaster-ntscu-checkpoint-stage02C.zip`.
-Nie zawiera ROM-u wejściowego ani odbudowanego; zawiera źródła, narzędzia, dane,
-raporty, poprawione potwierdzenia 02B oraz oryginalne materiały dostarczone przez użytkownika.
-Jego końcowy hash, wynik odbudowy po czystym rozpakowaniu i odczyt po zapisie są
-zapisywane w osobnych raportach 02C, po utworzeniu archiwum.
+| Kontrola | Wynik i zakres |
+|---|---|
+| Nowe próby CPU02D | PASS:16 grup,26832 wektory,117943 wiersze śladu |
+| Patchowanie ROM / zastępowanie callees | nie stosowano; zakresy zatrzymania opisane w wynikach |
+| Zgodność instrukcji i tabel z bajtami oryginału | PASS, bieżący audyt zbioru danych |
+| Nowa kompilacja02D | PASS, wszystkie262160 bajtów identyczne |
+| Symbole, klasyfikacja, format generowanego podzbioru MLB | PASS, kontrole lokalne |
+| Oryginały źródeł użytkownika | PASS, dziesięć hashy i wymiary ośmiu PNG |
+| Próby CPU wcześniejszych etapów | wykorzystano zapisane wyniki; nie wykonywano ponownie |
+| Natywny NES / MesenCE / Ghidra | NOT_TESTED |
+| Geometria map sprays względem ROM-u | NOT_TESTED w tym podetapie |
 
-Następny konkretny zakres: ruch i kolizje pocisków, konsument kolejki trafień
-$0441/$0469, tarcza i ogłuszenie, następnie pełne powiązanie z ruchem/atakami gracza.
-Geometria scen będzie porównywana z dostępnymi już mapami przy ustalaniu transformacji
-współrzędnych i mapowania 32 konfiguracji na osiem sektorów.
-Poprzednich checkpointów nie nadpisano.
+Próby wykonują oryginalne instrukcje w py65 z modelem MMC3 i uproszczeniem PPU.
+Wektor może być wariantem wejściowym albo krokiem dłuższej sekwencji. Nie są to nagrania z gry,
+pełna emulacja sprzętu ani pomiary czasu rzeczywistego. F_CPU13 zatrzymuje zerowe limity przed
+nieprzeanalizowanym kontaktem z ciałem przeciwnika.
+
+Rozwój nowych prób ujawnił dwa błędne początkowe oczekiwania testu: ignorowanie bramki
+parzystości pętli Pulse Wave oraz szczególny wrap syntetycznego bocznego licznika Lightning=1.
+Poprawiono oczekiwania na podstawie kodu i wykonania; nie poprawiano ROM-u.
+F_CPU11–13 powtórzono wyłącznie dlatego, że ich wyników zabrakło w odczytanym pliku częściowym.
+Pozostałe zaliczone grupy wykorzystano bez powtarzania. Szczegóły i powód tego wyjątku:
+`analysis/stage02D_test_development.json`.
+
+Rekonstrukcja nadal zależy od oryginalnego wejścia:12961 bajtów jest jawnie zapisanych w źródłach
+(w tym nagłówek), a249199 pochodzi z oznaczonych fragmentów `.incbin`.
+Pełna zgodność binarna nie jest pełnym zrozumieniem gry. SHA-256 oryginału i wyniku:
+`00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b`.
+
+## Źródła, niezależność i ograniczenia
+
+Zachowano oryginalny TXT Wyrentha, `maps.zip` i osiem oryginalnych PNG sprays bez zmiany
+rozdzielczości. Aktualny indeks dostępności wskazuje dostępne materiały oraz oczekujące porównanie
+z ROM-em. Nie powtarzano Stage00A. Nie importowano wyników osobistych badań użytkownika.
+Nazwy czarów pozostają korelacją z wcześniej udokumentowanymi źródłami; szczegóły implementacji
+mają osobne dowody ROM/CPU.
+
+Otwarte pozostają: pełny kontrakt i format terenu, scrolling/przejścia/spawny, mapowanie32 scen
+na osiem sektorów, ruch/ataki gracza, kontakt z przeciwnikami, odporności i AI bossów, generowanie
+dropów, targeting sobowtóra, pełny inwentarz zapisów poziomu/HP, `$01A5`, hasła i pozostałe grafika/audio.
+Rozwiązany bank docelowy nie oznacza przeanalizowanej treści wywoływanej procedury.
+
+## Checkpoint i następny krok
+
+Planowany plik tego snapshotu: `kickmaster-ntscu-checkpoint-stage02D.zip`.
+Ten raport znajduje się wewnątrz snapshotu i dlatego nie zawiera jego własnego końcowego SHA-256
+ani wyników późniejszego zapisu/odczytu. W chwili jego utrwalenia te bramki są PENDING.
+Ostateczne wyniki podają osobne `stage02D.verification.json`, `stage02D.reproducibility.json`,
+`stage02D.persistence.json` i `KickMaster_STAGE02D_REPORT.md`; nie wolno wnioskować PASS z planu.
+Oryginalny ani odbudowany ROM nie jest dołączony; wymagany jest osobny, dokładnie zidentyfikowany plik.
+
+Następny odcinek: PRG08:$B81D/$B8B5, fizyka `$BCEF` i kontrakt próbkowania terenu,
+potem pełniejsze dane wrogów i kontakt `$A2C3`. Nie powtarzać domkniętych lokalnych konsumentów
+ani wcześniejszych testów bez konkretnego nowego uzasadnienia. Szczegółowa kolejność: `RESUME.md`.

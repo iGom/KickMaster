@@ -57,3 +57,11 @@ the new text is not implied by header/integrity checks. Use targeted sections wh
 spells, enemies, objects and routes. Map geometry, pixel/world transforms and the32-scene/eight-sector
 mapping must be derived from ROM evidence before assigning coordinates or scene identities.
 Future crops, if needed, use original scale and explicit source rectangles; originals stay untouched.
+
+## Stage02D source continuity — 2026-10-21
+
+The original Wyrenth guide, maps.zip and eight sprays PNGs remain available unchanged under
+research/originals/. Their ten exact hashes and PNG dimensions are checked by the current dataset audit.
+Stage02D added original-ROM collision/consumer analysis; no new external gameplay claims were imported.
+Map-to-ROM geometry/scroll/spawn comparison and32-scene/eight-sector association remain pending.
+The historical Stage00A map-access block does not describe current source availability.

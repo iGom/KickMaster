@@ -147,7 +147,6 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0E,0xC89C,0x01C89C,0xC8A0,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xE204,0x01E204,0xA006,UNRESOLVED,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xE139,0x01E139,0xE11D,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD6F4,0x01D6F4,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEC71,0x01EC71,0xD90C,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEF52,0x01EF52,0xEF56,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC8AF,0x01C8AF,0xC8BA,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -166,10 +165,8 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0F,0xEFA3,0x01EFA3,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEF8B,0x01EF8B,0xF60B,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD5F8,0x01D5F8,0xD600,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD703,0x01D703,0xD708,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xE147,0x01E147,0xF6CC,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD5FA,0x01D5FA,0xD5FF,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD705,0x01D705,0xD7AD,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED2A,0x01ED2A,0xED5A,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC9BB,0x01C9BB,0xC9C1,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xF60D,0x01F60D,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -180,16 +177,13 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0F,0xEF92,0x01EF92,0xEF86,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEF65,0x01EF65,0xA000,UNRESOLVED,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD5FD,0x01D5FD,0xD5F2,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7B0,0x01D7B0,0xD7D3,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED2F,0x01ED2F,0xED55,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEF68,0x01EF68,0xD63B,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD843,0x01D843,0xD83A,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD70E,0x01D70E,0xD713,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEC95,0x01EC95,0xEC9A,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED50,0x01ED50,0xED54,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC8C8,0x01C8C8,0xC8CD,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD609,0x01D609,0xD602,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7B4,0x01D7B4,0xD7D4,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEC97,0x01EC97,0xED02,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED33,0x01ED33,0xED4E,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC9C7,0x01C9C7,0xC9CC,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -204,7 +198,6 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0F,0xEF70,0x01EF70,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xE21E,0x01E21E,0xE25D,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD827,0x01D827,0xB280,UNRESOLVED,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7B8,0x01D7B8,0xD7D0,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEC9D,0x01EC9D,0xED0A,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED04,0x01ED04,0xED1F,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECF1,0x01ECF1,0xD62D,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -221,14 +214,10 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0F,0xF61E,0x01F61E,0xF658,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xEF77,0x01EF77,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD850,0x01D850,0xB283,UNRESOLVED,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD71C,0x01D71C,0xD72F,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECA7,0x01ECA7,0xECAC,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECF7,0x01ECF7,0xD6C3,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED49,0x01ED49,0xED4D,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC964,0x01C964,0xC970,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD72F,0x01D72F,0xD759,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD71E,0x01D71E,0xD759,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7C1,0x01D7C1,0xD7CB,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECA9,0x01ECA9,0xED1A,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED14,0x01ED14,0xED1F,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED0F,0x01ED0F,0xED1F,0F,jump,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -237,23 +226,18 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 0F,0xF622,0x01F622,0xF630,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECFD,0x01ECFD,0xECEE,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD75C,0x01D75C,0xD78A,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7E4,0x01D7E4,0xD7D9,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECB0,0x01ECB0,0xED5A,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED1C,0x01ED1C,0xED1F,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xED17,0x01ED17,0xED1F,0F,jump,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECEE,0x01ECEE,0xEC71,0F,jump,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECFF,0x01ECFF,0xE154,0F,jump,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xF632,0x01F632,0xF638,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD7CE,0x01D7CE,0xD7BC,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECB5,0x01ECB5,0xECBB,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xC976,0x01C976,0xC97C,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xE232,0x01E232,0xE25D,0F,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD764,0x01D764,0xD784,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD73C,0x01D73C,0xD72F,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD72B,0x01D72B,0xD71E,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xECB9,0x01ECB9,0xECBD,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD784,0x01D784,0xD78B,0E,call,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
-0E,0xD72D,0x01D72D,0xD73E,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0F,0xF481,0x01F481,0xF488,0F,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD787,0x01D787,0xA000,UNRESOLVED,jump,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
 0E,0xD76B,0x01D76B,0xD77A,0E,branch,CANDIDATE_SOURCE,fixed-window analysis assumes MMC3 PRG mode 0; no propagated switchable bank state
@@ -1050,3 +1034,113 @@ from_bank,from_cpu,from_prg_offset,to_cpu,to_bank,kind,status,mapping_condition
 09,0xBDB0,0x013DB0,0xBDAA,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
 0E,0xD7EE,0x01D7EE,0xD7FA,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
 0E,0xD7FD,0x01D7FD,0xD7E9,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA236,0x010236,0xA287,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA23E,0x01023E,0xA286,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA248,0x010248,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA24B,0x01024B,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA252,0x010252,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA254,0x010254,0xA354,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA257,0x010257,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA263,0x010263,0xA278,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA26A,0x01026A,0xA278,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA271,0x010271,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA273,0x010273,0xA54D,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA276,0x010276,0xA289,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA278,0x010278,0xA05B,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA27D,0x01027D,0xA25E,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA27F,0x01027F,0xA05B,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA284,0x010284,0xA243,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA287,0x010287,0xA2C3,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA28E,0x01028E,0xA293,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA296,0x010296,0xA2A0,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA298,0x010298,0xA29E,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA29C,0x01029C,0xA2A0,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA2C1,0x0102C1,0xA27F,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA30E,0x01030E,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA311,0x010311,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA313,0x010313,0xA404,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA318,0x010318,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA31A,0x01031A,0xA4EC,08,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA31D,0x01031D,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA32B,0x01032B,0xA332,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA330,0x010330,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA339,0x010339,0xA340,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA342,0x010342,0xA347,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA344,0x010344,0xC76D,0E,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA34A,0x01034A,0xA351,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA34E,0x01034E,0xA309,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA396,0x010396,0xA39A,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA39F,0x01039F,0xA3A3,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA3A7,0x0103A7,0xA3B9,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA3D7,0x0103D7,0xA402,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA3EF,0x0103EF,0xA402,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA503,0x010503,0xA527,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA516,0x010516,0xA51E,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA51B,0x01051B,0xA522,08,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA561,0x010561,0xA564,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA56F,0x01056F,0xA573,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA578,0x010578,0xA57C,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA580,0x010580,0xA592,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA5AA,0x0105AA,0xA5B4,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+08,0xA5CC,0x0105CC,0xA5D6,08,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB565,0x013565,0xB570,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB59C,0x01359C,0xC773,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5A7,0x0135A7,0xC773,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5AC,0x0135AC,0xB5B9,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5BE,0x0135BE,0xB5CB,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5CB,0x0135CB,0xC75B,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5DB,0x0135DB,0xB5E1,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB5F2,0x0135F2,0xB604,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB602,0x013602,0xB645,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB60B,0x01360B,0xB614,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB612,0x013612,0xB645,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB61E,0x01361E,0xB645,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB623,0x013623,0xB632,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB630,0x013630,0xB645,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+09,0xB638,0x013638,0xB645,09,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD6F4,0x01D6F4,0xD6C3,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD703,0x01D703,0xD708,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD705,0x01D705,0xD7AD,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD70E,0x01D70E,0xD713,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD71C,0x01D71C,0xD72F,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD71E,0x01D71E,0xD759,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD72B,0x01D72B,0xD71E,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD72D,0x01D72D,0xD73E,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD72F,0x01D72F,0xD759,0E,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD73C,0x01D73C,0xD72F,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7B0,0x01D7B0,0xD7D3,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7B4,0x01D7B4,0xD7D4,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7B8,0x01D7B8,0xD7D0,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7C1,0x01D7C1,0xD7CB,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7CE,0x01D7CE,0xD7BC,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0E,0xD7E4,0x01D7E4,0xD7D9,0E,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE2FE,0x01E2FE,0xE303,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE301,0x01E301,0xE325,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE308,0x01E308,0xE313,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE30D,0x01E30D,0xE32A,0F,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE311,0x01E311,0xE325,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE318,0x01E318,0xE31F,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE31D,0x01E31D,0xE325,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE32F,0x01E32F,0xE35A,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE338,0x01E338,0xE33C,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE365,0x01E365,0xE392,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE36F,0x01E36F,0xE38A,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE388,0x01E388,0xE38F,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE38A,0x01E38A,0xE3FE,0F,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE413,0x01E413,0xE478,0F,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE41E,0x01E41E,0xE492,0F,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE42E,0x01E42E,0xE433,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE430,0x01E430,0xE4C7,0F,call,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE433,0x01E433,0xE72D,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE48A,0x01E48A,0xE48F,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE48C,0x01E48C,0xE917,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE48F,0x01E48F,0xE90C,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE4A4,0x01E4A4,0xE4A9,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE4A6,0x01E4A6,0xE917,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE4A9,0x01E4A9,0xE90C,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE72F,0x01E72F,0xE74F,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE737,0x01E737,0xE742,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE73F,0x01E73F,0xE74F,0F,jump,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE74B,0x01E74B,0xE74F,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE912,0x01E912,0xE916,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"
+0F,0xE920,0x01E920,0xE924,0F,branch,STATIC_REVIEWED_SOURCE,"mode0; fixed target, same resident window, or explicit R7 domination"

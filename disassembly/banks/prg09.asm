@@ -270,7 +270,15 @@ FrontEndCursorXPair:
 SelectedSpellSpritePointers:
     .byte $71,$AC,$71,$AC,$71,$AC,$71,$AC,$71,$AC,$5B,$AE,$5B,$AE,$71,$AC
     .byte $71,$AC,$71,$AC,$71,$AC,$71,$AC
-    .incbin "inputs/original.nes", $012B3D, $00CA ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $012B3D, $005A ; UNINTERPRETED preserved bytes
+
+; F17: 32 little-endian handler pointers for paired types00..3F; sprite table remains separately addressed.
+ProjectileObjectHandlerPointers:
+    .byte $5C,$B5,$5C,$B5,$5C,$B5,$5C,$B5,$5C,$B5,$70,$B5,$71,$B5,$71,$B5
+    .byte $71,$B5,$71,$B5,$71,$B5,$71,$B5,$EF,$B5,$F4,$B5,$F4,$B5,$F4,$B5
+    .byte $F4,$B5,$F4,$B5,$F4,$B5,$08,$B6,$EF,$B5,$F4,$B5,$F4,$B5,$20,$B6
+    .byte $F4,$B5,$F4,$B5,$F4,$B5,$F4,$B5,$F4,$B5,$3A,$B6,$70,$B5,$70,$B5
+    .incbin "inputs/original.nes", $012BD7, $0030 ; UNINTERPRETED preserved bytes
 
 ; D26: Twelve handler pointers; types70/72 target B6BA/B6CD. Remaining target behavior not inferred.
 SelectedSpellHandlerPointers:
@@ -281,7 +289,137 @@ SelectedSpellHandlerPointers:
 MagicContinuationHandlerPointers:
     .byte $30,$B9,$64,$B9,$72,$B9,$91,$B9,$E1,$B9,$E1,$B9,$19,$BA,$70,$B5
     .byte $C7,$BA,$C7,$BA,$C7,$BA,$C7,$BA
-    .incbin "inputs/original.nes", $012C37, $0A37 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $012C37, $0935 ; UNINTERPRETED preserved bytes
+
+; F18: Increment counter; everythirdcall reset andadvance even typeby2. Type0A dispatches shared RTS B570 andholds finalshape.
+GrowPulseProjectile:
+    INC a:$0590,X            ; B55C 
+    LDA a:$0590,X            ; B55F 
+    SEC                      ; B562 
+    SBC #$03                 ; B563 
+    BNE $b570                ; B565 
+    STA a:$0590,X            ; B567 
+    INC a:$0568,X            ; B56A 
+    INC a:$0568,X            ; B56D 
+    RTS                      ; B570 
+
+; F19: Toggle typebit1; sample separate futureY/futureX and negate corresponding velocity for result&3. Currentpoint result&3 deactivates, bit3setsattribute20; typebit4 determines persistencebit10. Terrain service callees remain partiallyreviewed.
+UpdateBouncingProjectile:
+    LDA a:$0568,X            ; B571 
+    EOR #$02                 ; B574 Alternating type10/12 also selects damage3/2 in R6=06 collision table.
+    STA a:$0568,X            ; B576 
+    LDA #$00                 ; B579 
+    STA a:$0590,X            ; B57B 
+    LDA a:$0518,X            ; B57E 
+    STA $26                  ; B581 
+    LDA a:$052c,X            ; B583 
+    STA $27                  ; B586 
+    LDA a:$04f0,X            ; B588 
+    SEC                      ; B58B 
+    SBC #$08                 ; B58C 
+    STA $28                  ; B58E 
+    LDA a:$0504,X            ; B590 
+    SBC #$00                 ; B593 
+    STA $29                  ; B595 
+    LDA #$00                 ; B597 
+    LDY a:$0554,X            ; B599 
+    JSR a:$c773              ; B59C 
+    STA a:$0590,X            ; B59F 
+    LDA a:$0540,X            ; B5A2 
+    LDY #$00                 ; B5A5 
+    JSR a:$c773              ; B5A7 
+    AND #$03                 ; B5AA 
+    BEQ $b5b9                ; B5AC 
+    LDA a:$0540,X            ; B5AE 
+    EOR #$ff                 ; B5B1 
+    CLC                      ; B5B3 
+    ADC #$01                 ; B5B4 
+    STA a:$0540,X            ; B5B6 
+    LDA a:$0590,X            ; B5B9 
+    AND #$03                 ; B5BC 
+    BEQ $b5cb                ; B5BE 
+    LDA a:$0554,X            ; B5C0 
+    EOR #$ff                 ; B5C3 
+    CLC                      ; B5C5 
+    ADC #$01                 ; B5C6 
+    STA a:$0554,X            ; B5C8 
+    JSR a:$c75b              ; B5CB 
+    PHA                      ; B5CE 
+    AND #$08                 ; B5CF 
+    ASL A                    ; B5D1 
+    ASL A                    ; B5D2 
+    ORA #$80                 ; B5D3 
+    STA a:$057c,X            ; B5D5 
+    PLA                      ; B5D8 
+    AND #$03                 ; B5D9 
+    BEQ $b5e1                ; B5DB 
+    STA a:$057c,X            ; B5DD 
+    RTS                      ; B5E0 
+    LDA a:$0568,X            ; B5E1 
+    AND #$10                 ; B5E4 
+    EOR #$10                 ; B5E6 
+    ORA a:$057c,X            ; B5E8 
+    STA a:$057c,X            ; B5EB 
+    RTS                      ; B5EE 
+
+; F20: EntryB5EF clears activeflags when counterzero; B5F4 advances type by signed05A4, sound93, then anchors toselected slot3; zeroresult clearsflags.
+AdvanceLightningSegment:
+    LDA a:$0590,X            ; B5EF 
+    BEQ $b604                ; B5F2 
+    LDA #$93                 ; B5F4 
+    STA $01                  ; B5F6 
+    LDA a:$0568,X            ; B5F8 
+    CLC                      ; B5FB 
+    ADC a:$05a4,X            ; B5FC 
+    STA a:$0568,X            ; B5FF 
+    BNE $b645                ; B602 
+    STA a:$057c,X            ; B604 
+    RTS                      ; B607 
+
+; F21: Decrementcounter at type26; nonzero resets type20; zero sets deltaFE andtype1E for reversefinish.
+CycleCentralLightningSegment:
+    DEC a:$0590,X            ; B608 
+    BEQ $b614                ; B60B 
+    LDA #$20                 ; B60D 
+    STA a:$0568,X            ; B60F 
+    BNE $b645                ; B612 
+    LDA #$fe                 ; B614 
+    STA a:$05a4,X            ; B616 
+    LDA #$1e                 ; B619 
+    STA a:$0568,X            ; B61B 
+    BNE $b645                ; B61E 
+
+; F22: At type2E/2F decrement counter; nonzero sets step+2 and advances type by2; zero steps back by2 WITHOUT changing step. Synthetic seed1 therefore wraps counter before eventual expiry.
+CycleSideLightningSegment:
+    DEC a:$0590,X            ; B620 
+    BEQ $b632                ; B623 
+    LDA #$02                 ; B625 
+    STA a:$05a4,X            ; B627 
+    INC a:$0568,X            ; B62A 
+    INC a:$0568,X            ; B62D 
+    BNE $b645                ; B630 
+    DEC a:$0568,X            ; B632 
+    DEC a:$0568,X            ; B635 
+    BNE $b645                ; B638 
+
+; F23: At type3A setdeltaFE andstepbackto38.
+ReverseSideLightningSegment:
+    LDA #$fe                 ; B63A 
+    STA a:$05a4,X            ; B63C 
+    DEC a:$0568,X            ; B63F 
+    DEC a:$0568,X            ; B642 
+
+; F24: Copy selectedslot3 16-bitX/Y to currentprojectileslot; no independent velocity here.
+AnchorLightningSegment:
+    LDA a:$04f3              ; B645 
+    STA a:$04f0,X            ; B648 
+    LDA a:$0507              ; B64B 
+    STA a:$0504,X            ; B64E 
+    LDA a:$051b              ; B651 
+    STA a:$0518,X            ; B654 
+    LDA a:$052f              ; B657 
+    STA a:$052c,X            ; B65A 
+    RTS                      ; B65D 
 
 ; E21: Copy selected effect slot3 Y/X pairs to global objectY; preservesY.
 CopySelectedEffectPositionToObject:

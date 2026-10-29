@@ -1,0 +1,13 @@
+{
+  "new_ranges": 35,
+  "new_code_ranges": 22,
+  "new_data_ranges": 13,
+  "new_instructions": 681,
+  "new_bytes": 2127,
+  "projectile_profiles": 32,
+  "player_profiles": 101,
+  "slot_limits": 13,
+  "new_indirect_edges": 32,
+  "unresolved_targets_from_new_code": [],
+  "scope": "localprojectile collision/hit/quake/shield; fullterrain/enemyAI/nativeNES timing notcomplete"
+}
