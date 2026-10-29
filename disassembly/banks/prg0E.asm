@@ -930,7 +930,49 @@ ScheduleEnemyUpdatePass:
 EnemyUpdateOrderCycles:
     .byte $01,$02,$03,$04,$05,$06,$07,$08,$09,$00,$09,$00,$01,$02,$03,$04
     .byte $05,$06,$07,$08
-    .incbin "inputs/original.nes", $01D769, $0054 ; UNINTERPRETED preserved bytes
+
+; H34: Inactive469bit80 clear returns. Matching slotparity/06F9 skipsAI; otherwise kind<46 mapsR6=0B,elseR6=0A, then8000dispatcher. R7=0D required fromD6F0caller forA000 render tail. ActualAI/renderbodies remainopen.
+UpdateOrRenderEnemySlot:
+    LDA a:$0469,X            ; D759 
+    BPL $d78a                ; D75C 
+    TXA                      ; D75E 
+    AND #$01                 ; D75F 
+    CMP a:$06f9              ; D761 
+    BEQ $d784                ; D764 
+    LDA a:$03dd,X            ; D766 
+    CMP #$46                 ; D769 
+    BCS $d77a                ; D76B 
+    LDX #$06                 ; D76D 
+    LDA #$0b                 ; D76F 
+    JSR a:$d6c3              ; D771 
+    JSR a:$8000              ; D774 
+    JMP a:$a000              ; D777 
+    LDX #$06                 ; D77A 
+    LDA #$0a                 ; D77C 
+    JSR a:$d6c3              ; D77E 
+    JSR a:$8000              ; D781 
+    JSR a:$d78b              ; D784 
+    JMP a:$a000              ; D787 
+    RTS                      ; D78A 
+
+; H35: Kind>=50 except5B/60 adds0437,X to0440, unsigned saturating atAF includingcarry. Slot9aliases accumulator; no independent HP field there inthislocalcontract.
+AccumulateSpecialEnemyHp:
+    LDA a:$03dd,X            ; D78B 
+    CMP #$50                 ; D78E 
+    BCC $d7ac                ; D790 
+    CMP #$5b                 ; D792 
+    BEQ $d7ac                ; D794 
+    CMP #$60                 ; D796 
+    BEQ $d7ac                ; D798 
+    LDA a:$0440              ; D79A 0440 aliases0437+9; tested separately.
+    CLC                      ; D79D 
+    ADC a:$0437,X            ; D79E 
+    BCS $d7a7                ; D7A1 
+    CMP #$af                 ; D7A3 
+    BCC $d7a9                ; D7A5 
+    LDA #$af                 ; D7A7 
+    STA a:$0440              ; D7A9 
+    RTS                      ; D7AC 
 
 ; F27: Nonzero03DC increments; beforeincrementD2 addsflag40 tofirst8 flagged10 entries; F0 clears03DC andbits10/40 inallfirst8. Counter1expires after240calls.
 TickQuakeLifetime:

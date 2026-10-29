@@ -1,0 +1,14 @@
+{
+  "new_ranges": 35,
+  "new_code_ranges": 12,
+  "new_data_ranges": 23,
+  "new_instructions": 397,
+  "new_bytes": 2480,
+  "player_attack_profiles": 101,
+  "enemy_body_shapes": 30,
+  "enemy_attack_shapes": 48,
+  "kind_collision_pointers": 99,
+  "new_indirect_edges": 93,
+  "unresolved_targets_from_new_code": [],
+  "scope": "local melee/contact, schemas, AI entry dispatch and HPaggregate; full AI,terrainmutation,nativeNES remainopen"
+}

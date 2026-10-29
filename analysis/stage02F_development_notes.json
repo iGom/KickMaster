@@ -1,0 +1,24 @@
+{
+  "stage": "02F",
+  "updated_utc": "2026-10-22T01:12:23.917955+00:00",
+  "new_cpu_groups": 12,
+  "new_vectors": 27126,
+  "new_trace_rows": 5223,
+  "new_group_failures": [],
+  "old_cpu_suites_rerun": false,
+  "static_changes": [
+    {
+      "change": "Clarified source edge mapping description: explicit R6 writes for AI, caller-established R7=0D for renderer",
+      "reason": "Avoid misleading generic R7-only label on R6 AI targets",
+      "code_or_data_change": false
+    }
+  ],
+  "not_tested": [
+    "Full AI targets",
+    "Terrain mutation callees C773/C776",
+    "Second feet call dynamically",
+    "A2C3 count zero",
+    "Native NES/Ghidra/MesenCE",
+    "Complete scene-to-sector geometry"
+  ]
+}

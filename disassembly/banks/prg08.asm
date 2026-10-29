@@ -60,7 +60,125 @@ GateCollisionWorkAndUnwind:
     PLA                      ; A072 PLA; PLA; RTS deliberately drops the immediate caller continuation.
     PLA                      ; A073 
     RTS                      ; A074 
-    .incbin "inputs/original.nes", $010085, $00DA ; UNINTERPRETED preserved bytes
+
+; H18: Count06F8 zero returns; descending flags>=C0 and473low2zero. Secondary damage zero rejects. First overlapping attack calls playerdamage with directioncarry from high/low position compare.
+CollideEnemyAttackWithPlayer:
+    LDY a:$06f8              ; A075 
+    BEQ $a09c                ; A078 
+    DEY                      ; A07A 
+    STY $3c                  ; A07B 
+    LDY $3c                  ; A07D 
+    LDA a:$0469,Y            ; A07F 
+    BPL $a098                ; A082 
+    ASL A                    ; A084 
+    BPL $a098                ; A085 
+    LDA a:$0473,Y            ; A087 
+    AND #$03                 ; A08A 
+    BNE $a098                ; A08C 
+    JSR a:$a0b0              ; A08E 
+    BCS $a098                ; A091 
+    JSR a:$a4ec              ; A093 
+    BCC $a09d                ; A096 
+    DEC $3c                  ; A098 
+    BPL $a07d                ; A09A 
+    RTS                      ; A09C 
+    LDY $3c                  ; A09D 
+    LDA $cc                  ; A09F 
+    CMP a:$0405,Y            ; A0A1 
+    BCC $a0ab                ; A0A4 
+    LDA $cb                  ; A0A6 
+    CMP a:$03fb,Y            ; A0A8 
+    LDA $26                  ; A0AB 
+    JMP a:$c76d              ; A0AD 
+
+; H19: Kind->state->four-byte frame. Bytes2/3 are secondarydamage/shape; zero damage carryset. Computes low-byte bounds only, without primary-body camera-page gate.
+LoadEnemyAttackBounds:
+    LDA a:$03dd,Y            ; A0B0 
+    ASL A                    ; A0B3 
+    TAX                      ; A0B4 
+    LDA a:$855c,X            ; A0B5 
+    STA $26                  ; A0B8 
+    LDA a:$855d,X            ; A0BA 
+    STA $27                  ; A0BD 
+    LDA a:$040f,Y            ; A0BF 
+    ASL A                    ; A0C2 
+    TAY                      ; A0C3 
+    LDA ($26),Y              ; A0C4 
+    STA $28                  ; A0C6 
+    INY                      ; A0C8 
+    LDA ($26),Y              ; A0C9 
+    STA $29                  ; A0CB 
+    LDY $3c                  ; A0CD 
+    LDA a:$0419,Y            ; A0CF 
+    ASL A                    ; A0D2 
+    ASL A                    ; A0D3 
+    TAY                      ; A0D4 
+    INY                      ; A0D5 
+    INY                      ; A0D6 
+    LDA ($28),Y              ; A0D7 
+    BEQ $a11e                ; A0D9 
+    STA $26                  ; A0DB 
+    INY                      ; A0DD 
+    LDA ($28),Y              ; A0DE 
+    TAY                      ; A0E0 
+    LDA a:$9554,Y            ; A0E1 
+    STA $22                  ; A0E4 
+    LDA a:$9584,Y            ; A0E6 
+    STA $23                  ; A0E9 
+    LDA a:$95b4,Y            ; A0EB 
+    STA $24                  ; A0EE 
+    LDA a:$95e4,Y            ; A0F0 
+    STA $25                  ; A0F3 
+    LDY $3c                  ; A0F5 
+    LDA a:$0469,Y            ; A0F7 
+    LSR A                    ; A0FA 
+    BCS $a105                ; A0FB 
+    LDX $25                  ; A0FD 
+    LDA $24                  ; A0FF 
+    STA $25                  ; A101 
+    STX $24                  ; A103 
+    LDA $25                  ; A105 
+    CLC                      ; A107 
+    ADC $24                  ; A108 
+    STA $25                  ; A10A 
+    LDA a:$03e7,Y            ; A10C 
+    CLC                      ; A10F 
+    ADC $22                  ; A110 
+    STA $22                  ; A112 
+    LDA a:$03fb,Y            ; A114 
+    CLC                      ; A117 
+    ADC $24                  ; A118 
+    STA $24                  ; A11A 
+    CLC                      ; A11C 
+    RTS                      ; A11D 
+    SEC                      ; A11E 
+    RTS                      ; A11F 
+
+; H20: SceneA8C6 flag andA8F2[CD>>1] gate twoC776 calls atX-6/+6,Y+2. FullC776mutations pending.
+ProbePlayerFeetForSceneTerrain:
+    LDY $9a                  ; A120 
+    LDA a:$a8c6,Y            ; A122 
+    BEQ $a14e                ; A125 
+    LDA $cd                  ; A127 
+    LSR A                    ; A129 
+    TAY                      ; A12A 
+    LDA a:$a8f2,Y            ; A12B 
+    BEQ $a14e                ; A12E 
+    LDA $cb                  ; A130 
+    STA $26                  ; A132 
+    LDA $cc                  ; A134 
+    STA $27                  ; A136 
+    LDA $c9                  ; A138 
+    STA $28                  ; A13A 
+    LDA $ca                  ; A13C 
+    STA $29                  ; A13E 
+    LDY #$02                 ; A140 
+    LDA #$fa                 ; A142 
+    JSR a:$c776              ; A144 
+    LDY #$02                 ; A147 
+    LDA #$06                 ; A149 
+    JSR a:$c776              ; A14B 
+    RTS                      ; A14E 
 
 ; D11: Scan indices04EF down to1; types40..6F, active flag, low-coordinate overlap and signed velocity gate precede effect dispatch.
 ScanPlayerCollectibles:
@@ -97,7 +215,82 @@ ScanPlayerCollectibles:
     DEC $3c                  ; A192 
     BNE $a154                ; A194 
     RTS                      ; A196 
-    .incbin "inputs/original.nes", $0101A7, $0099 ; UNINTERPRETED preserved bytes
+
+; H21: CE01 alternate family disables. Zero count returns; descending enemy scan uses primarybody andplayerattack geometry. First overlap: zero8328damage returns, otherwise queue0441,set469bit20,derive047Dlow3. At most one queued enemy per call.
+QueueFirstPlayerMeleeHit:
+    LDA a:$00ce              ; A197 
+    AND #$01                 ; A19A 
+    BNE $a1c5                ; A19C 
+    LDY a:$06f8              ; A19E 
+    BEQ $a1c5                ; A1A1 
+    DEY                      ; A1A3 
+    STY $3c                  ; A1A4 
+    LDY $3c                  ; A1A6 
+    LDA a:$0469,Y            ; A1A8 
+    BPL $a1c1                ; A1AB 
+    ASL A                    ; A1AD 
+    BPL $a1c1                ; A1AE 
+    LDA a:$0473,Y            ; A1B0 
+    AND #$03                 ; A1B3 
+    BNE $a1c1                ; A1B5 
+    JSR a:$a354              ; A1B7 
+    BCS $a1c1                ; A1BA 
+    JSR a:$a452              ; A1BC 
+    BCC $a1c6                ; A1BF 
+    DEC $3c                  ; A1C1 
+    BPL $a1a6                ; A1C3 
+    RTS                      ; A1C5 
+    LDA a:$8328,Y            ; A1C6 
+    BEQ $a1c5                ; A1C9 Zero damage returns from entire scan, not next enemy.
+    LDY $3c                  ; A1CB 
+    STA a:$0441,Y            ; A1CD 
+    LDA a:$0469,Y            ; A1D0 
+    ORA #$20                 ; A1D3 
+    STA a:$0469,Y            ; A1D5 
+    JSR a:$a5ec              ; A1D8 
+    STA $3e                  ; A1DB 
+    LDA a:$047d,Y            ; A1DD 
+    AND #$f8                 ; A1E0 
+    ORA $3e                  ; A1E2 
+    STA a:$047d,Y            ; A1E4 
+    RTS                      ; A1E7 
+
+; H22: SceneA8A6 flag andstrength8457[CD>>1] gateC773. Copyplayer16-bitbase; offsetX mirrored for oddCD,Yfrom838D,strengthto2C. Fullcallee notcomplete.
+ProbePlayerAttackTerrain:
+    LDY $9a                  ; A1E8 
+    LDA a:$a8a6,Y            ; A1EA 
+    BEQ $a22f                ; A1ED 
+    LDA $cb                  ; A1EF 
+    STA $26                  ; A1F1 
+    LDA $cc                  ; A1F3 
+    STA $27                  ; A1F5 
+    LDA $c9                  ; A1F7 
+    STA $28                  ; A1F9 
+    LDA $ca                  ; A1FB 
+    STA $29                  ; A1FD 
+    LDA $cd                  ; A1FF 
+    LSR A                    ; A201 
+    TAX                      ; A202 
+    BCS $a219                ; A203 
+    LDA a:$8457,X            ; A205 
+    BEQ $a216                ; A208 
+    STA $2c                  ; A20A 
+    LDA a:$838d,X            ; A20C 
+    TAY                      ; A20F 
+    LDA a:$83f2,X            ; A210 
+    JSR a:$c773              ; A213 
+    JMP a:$a22f              ; A216 
+    LDA a:$8457,X            ; A219 
+    BEQ $a22f                ; A21C 
+    STA $2c                  ; A21E 
+    LDA a:$838d,X            ; A220 
+    TAY                      ; A223 
+    LDA a:$83f2,X            ; A224 
+    EOR #$ff                 ; A227 
+    CLC                      ; A229 
+    ADC #$01                 ; A22A 
+    JSR a:$c773              ; A22C 
+    RTS                      ; A22F 
 
 ; F10: Selected-effect slot limit; descending enemy scan with flags>=C0 andsecondary&3==0; descending projectile scan; queue first hit per enemy. Nonpersistent projectile cleared before queue; branch withzero slotlimit tails body-contact path.
 CollideMagicProjectilesWithEnemies:
@@ -166,7 +359,39 @@ CollideMagicProjectilesWithEnemies:
     ORA #$20                 ; A2BC 
     STA a:$0469,Y            ; A2BE 
     BNE $a27f                ; A2C1 
-    .incbin "inputs/original.nes", $0102D3, $0042 ; UNINTERPRETED preserved bytes
+
+; H23: Descending count-1 loop; unlikeA075/A197 no countzero guard. GateA05B may unwind whole scan. Flags>=C0 and473low2zero; primarybody damage nonzero andoverlap thenplayerdamage. Validtestedcounts1..10; no zerocount safety claim.
+CollideEnemyBodyWithPlayer:
+    LDY a:$06f8              ; A2C3 
+    DEY                      ; A2C6 No zero-count guard here; tested1..10 only.
+    STY $3c                  ; A2C7 
+    JSR a:$a05b              ; A2C9 
+    LDY $3c                  ; A2CC 
+    LDA a:$0469,Y            ; A2CE 
+    BPL $a300                ; A2D1 
+    ASL A                    ; A2D3 
+    BPL $a300                ; A2D4 
+    LDA a:$0473,Y            ; A2D6 
+    AND #$03                 ; A2D9 
+    BNE $a300                ; A2DB 
+    JSR a:$a354              ; A2DD 
+    BCS $a300                ; A2E0 
+    LDA $26                  ; A2E2 
+    BEQ $a300                ; A2E4 
+    JSR a:$a4ec              ; A2E6 
+    BCS $a300                ; A2E9 
+    LDY $3c                  ; A2EB 
+    LDA $cc                  ; A2ED 
+    CMP a:$0405,Y            ; A2EF 
+    BCC $a2f9                ; A2F2 
+    LDA $cb                  ; A2F4 
+    CMP a:$03fb,Y            ; A2F6 
+    LDA $26                  ; A2F9 
+    BEQ $a304                ; A2FB 
+    JMP a:$c76d              ; A2FD 
+    DEC $3c                  ; A300 
+    BPL $a2c9                ; A302 
+    RTS                      ; A304 
 
 ; F11: Scan10 enemy projectiles; requireactive80 andnot40, nonzero damage and overlap; clear projectile. Selected0A decrements05A7 and absorbs while resultnonnegative, otherwise invokes playerdamage.03D9 may discardcaller return.
 CollideEnemyProjectilesWithPlayer:
@@ -345,7 +570,93 @@ LoadEnemyProjectileCollisionBounds:
     ADC $24                  ; A44D 
     STA $24                  ; A44F 
     RTS                      ; A451 
-    .incbin "inputs/original.nes", $010462, $009A ; UNINTERPRETED preserved bytes
+
+; H24: CD>>1 selects melee shape. Strict modularY comparison; signed16-bitX endpoints, any endpoint outsidecamera page0 replacedwithcameraorigin, thenstrict modularX comparison. Carryclear overlap; Y retains statepair index.
+OverlapPlayerAttackBounds:
+    LDA $cd                  ; A452 
+    LSR A                    ; A454 
+    TAY                      ; A455 
+    LDA $23                  ; A456 
+    CLC                      ; A458 
+    ADC a:$81f9,Y            ; A459 
+    STA $3e                  ; A45C 
+    LDA $22                  ; A45E 
+    CLC                      ; A460 
+    ADC a:$8194,Y            ; A461 
+    SEC                      ; A464 
+    SBC $c9                  ; A465 
+    CMP $3e                  ; A467 
+    BCC $a46c                ; A469 
+    RTS                      ; A46B 
+    LDA #$00                 ; A46C 
+    STA $39                  ; A46E 
+    STA $3b                  ; A470 
+    LDA a:$82c3,Y            ; A472 
+    STA $2a                  ; A475 
+    BPL $a47b                ; A477 
+    DEC $39                  ; A479 
+    LDA a:$825e,Y            ; A47B 
+    STA $2b                  ; A47E 
+    BPL $a484                ; A480 
+    DEC $3b                  ; A482 
+    LDA $cd                  ; A484 
+    LSR A                    ; A486 
+    BCC $a499                ; A487 
+    LDA $2a                  ; A489 
+    LDX $2b                  ; A48B 
+    STX $2a                  ; A48D 
+    STA $2b                  ; A48F 
+    LDA $39                  ; A491 
+    LDX $3b                  ; A493 
+    STX $39                  ; A495 
+    STA $3b                  ; A497 
+    LDA $cb                  ; A499 
+    CLC                      ; A49B 
+    ADC $2a                  ; A49C 
+    STA $38                  ; A49E 
+    LDA $cc                  ; A4A0 
+    ADC $39                  ; A4A2 
+    STA $39                  ; A4A4 
+    LDA $38                  ; A4A6 
+    SEC                      ; A4A8 
+    SBC $a7                  ; A4A9 
+    LDA $39                  ; A4AB 
+    SBC $a8                  ; A4AD 
+    BEQ $a4b8                ; A4AF 
+    LDA $a7                  ; A4B1 Any high-page mismatch maps this endpoint to camera origin, not far edge255.
+    SEC                      ; A4B3 
+    SBC $cb                  ; A4B4 
+    STA $2a                  ; A4B6 
+    LDA $cb                  ; A4B8 
+    SEC                      ; A4BA 
+    SBC $2b                  ; A4BB 
+    STA $3a                  ; A4BD 
+    LDA $cc                  ; A4BF 
+    SBC $3b                  ; A4C1 
+    STA $3b                  ; A4C3 
+    LDA $3a                  ; A4C5 
+    SEC                      ; A4C7 
+    SBC $a7                  ; A4C8 
+    LDA $3b                  ; A4CA 
+    SBC $a8                  ; A4CC 
+    BEQ $a4d7                ; A4CE 
+    LDA $cb                  ; A4D0 
+    SEC                      ; A4D2 
+    SBC $a7                  ; A4D3 
+    STA $2b                  ; A4D5 
+    LDA $25                  ; A4D7 
+    CLC                      ; A4D9 
+    ADC $2a                  ; A4DA 
+    CLC                      ; A4DC 
+    ADC $2b                  ; A4DD 
+    STA $3e                  ; A4DF 
+    LDA $24                  ; A4E1 
+    CLC                      ; A4E3 
+    ADC $2b                  ; A4E4 
+    SEC                      ; A4E6 
+    SBC $cb                  ; A4E7 
+    CMP $3e                  ; A4E9 
+    RTS                      ; A4EB 
 
 ; F14: Strict8-bit modular vertical/horizontal interval tests against CD>>1 profile. Carryclear means overlap; highY isnot checked.
 OverlapPlayerCollisionBounds:
@@ -490,7 +801,56 @@ OverlapMagicProjectileCollisionBounds:
     SBC a:$0518,X            ; A5E6 
     CMP $3e                  ; A5E9 
     RTS                      ; A5EB 
-    .incbin "inputs/original.nes", $0105FC, $0061 ; UNINTERPRETED preserved bytes
+
+; H25: Signed low-byte player-minus-enemy deltas, abs magnitudes and half/double ratio choose16-entry directiontable. High coordinates ignored; result0..7.
+SelectEnemyHitDirectionFromPlayer:
+    LDA #$00                 ; A5EC 
+    STA $40                  ; A5EE 
+    LDA $cb                  ; A5F0 
+    SEC                      ; A5F2 
+    SBC a:$03fb,Y            ; A5F3 
+    STA $3e                  ; A5F6 
+    BPL $a607                ; A5F8 
+    LDA #$08                 ; A5FA 
+    STA $40                  ; A5FC 
+    LDA $3e                  ; A5FE 
+    EOR #$ff                 ; A600 
+    CLC                      ; A602 
+    ADC #$01                 ; A603 
+    STA $3e                  ; A605 
+    LDA $c9                  ; A607 
+    SEC                      ; A609 
+    SBC a:$03e7,Y            ; A60A 
+    STA $3f                  ; A60D 
+    BPL $a620                ; A60F 
+    LDA $40                  ; A611 
+    ORA #$04                 ; A613 
+    STA $40                  ; A615 
+    LDA $3f                  ; A617 
+    EOR #$ff                 ; A619 
+    CLC                      ; A61B 
+    ADC #$01                 ; A61C 
+    STA $3f                  ; A61E 
+    LDX $40                  ; A620 
+    LDA $3f                  ; A622 
+    CMP $3e                  ; A624 
+    BCS $a630                ; A626 
+    LSR $3e                  ; A628 
+    CMP $3e                  ; A62A 
+    BCC $a639                ; A62C 
+    BCS $a638                ; A62E 
+    ASL $3e                  ; A630 
+    CMP $3e                  ; A632 
+    BCC $a637                ; A634 
+    INX                      ; A636 
+    INX                      ; A637 
+    INX                      ; A638 
+    LDA a:$a63d,X            ; A639 
+    RTS                      ; A63C 
+
+; H26: Four four-entry groups for signs of X/Y differences; combines axis/diagonal directioncodes.
+PlayerHitDirectionQuadrants:
+    .byte $06,$07,$07,$00,$06,$05,$05,$04,$02,$01,$01,$00,$02,$03,$03,$04
 
 ; D13: Require type40..6F, clear facing bit, use A629+evenType pointer then JMP(2C).
 DispatchCollectibleEffect:
@@ -798,12 +1158,31 @@ SpawnLevelUpObject:
     LDA #$96                 ; A8A0 
     STA a:$056b,Y            ; A8A2 
     RTS                      ; A8A5 
-    .incbin "inputs/original.nes", $0108B6, $0040 ; UNINTERPRETED preserved bytes
+
+; H27: 32 scene flags enabling A1E8 attack-to-terrain probe.
+ScenePlayerTerrainAttackFlags:
+    .byte $00,$00,$01,$00,$01,$01,$00,$00,$01,$00,$00,$00,$00,$00,$00,$01
+    .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$01,$00,$01,$01,$01,$01
+
+; H28: 32 scene flags enabling A120 feet-to-terrain probes.
+ScenePlayerFootTerrainFlags:
+    .byte $00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
+    .byte $00,$00,$00,$00,$01,$00,$00,$00,$00,$00,$00,$00,$01,$00,$01,$01
 
 ; F16: 13 selected-effect entries:03 and0C=>1;05/06=>2; others0route to bodycontact. Lightning slot2 isnot scanned by this path.
 MagicCollisionLastSlot:
     .byte $00,$00,$00,$01,$00,$02,$02,$00,$00,$00,$00,$00,$01
-    .incbin "inputs/original.nes", $010903, $0223 ; UNINTERPRETED preserved bytes
+
+; H29: Next100 confirmed state-indexed flags; first flag atA8F2 aliases final entry of earlierF16 magic-slot table. This reviewed101-index domain doesnotestablish complete physical array length.
+PlayerFootTerrainFlagsAfterSharedByte:
+    .byte $01,$01,$01,$01,$00,$00,$00,$01,$01,$01,$01,$01,$01,$00,$01,$01
+    .byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    .byte $01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01,$01
+    .byte $01,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01
+    .byte $01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$01,$01,$01,$01
+    .byte $01,$00,$00,$01,$01,$01,$01,$01,$01,$01,$01,$01,$00,$00,$00,$00
+    .byte $00,$00,$00,$00
+    .incbin "inputs/original.nes", $010967, $01BF ; UNINTERPRETED preserved bytes
 
 ; C33: Tail through C79D to scene advance D1AA when F8 bit20 is set.
 PlayerStageAdvanceTail:

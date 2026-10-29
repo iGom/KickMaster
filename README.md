@@ -5,21 +5,19 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and
-`reports/subsystems/PLAYER_CONTROL_JUMP_AND_TERRAIN.md`.
+Start with `RESUME.md`, `reports/stages/SESSION_REPORT.md` and
+`reports/subsystems/MELEE_CONTACT_AND_ENEMY_DISPATCH.md`.
 
-Current snapshot: Stage02E normal player control, jump phases and terrain lookup.
-Stages00/00A/01A/01B/02A/02B/02C/02D remain preserved;02D was freshly verified at resume.
-Comprehensive reverse engineering is **not** complete.231 code ranges,92 data ranges,133 RAM entries.
-Stage02E adds14 CPU groups/11868 cases, no ROM patches or callee stubs. Old suites were not rerun.
-The input-dependent ca65 scaffold matches all262160 original bytes;15194 PRG bytes have reviewed local semantics.
-Current portable exports contain456 symbols and256 indirect dispatch edges.
-
-New results include normal-state input/attack selectors, jump phases, animation call counts,
-cache/ROM terrain contracts and3840 actual scene00 terrain samples. This is not complete level geometry,
-full combat or a32-scene to8-sector mapping. Native NES execution and Ghidra/MesenCE imports remain NOT_TESTED.
-Original guide/maps are unchanged in `research/originals/`; earlier map-access blocks are historical.
-`PROJECT_UPDATES.md` records later source-preservation/checkpoint instructions. Historical reports are retained.
+Current snapshot: Stage02F melee, body/secondary enemy contact, AI entry dispatch and HP aggregate.
+Prior stages00..02E are retained;02E was freshly verified at resume without CPU/build reruns.
+Comprehensive reverse engineering is **not** complete:243 code ranges,115 data ranges,133 RAM roles.
+Stage02F adds12 CPU groups/27126 cases with5223 trace rows, no ROM patches or callee stubs.
+AI/scheduler/terrain-prefix probes stop at explicitly documented boundaries; full callees are not validated.
+The input-dependent ca65 scaffold matches all262160 bytes;17674 PRG bytes have reviewed local semantics.
+Portable exports contain491 symbols and349 indirect table edges. Native NES and Ghidra/MesenCE imports
+remain NOT_TESTED. Full AI, geometry and32-scene to8-sector mapping remain open.
+Original guide/maps are unchanged in `research/originals/`; earlier map-access failures are historical.
+`PROJECT_UPDATES.md` records later source-preservation/checkpoint instructions. Historical reports remain.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),
@@ -40,7 +38,7 @@ The checkpoint excludes input ROMs, local rebuilds and previous checkpoint ZIPs.
 covered by `manifests/SHA256SUMS`, except that manifest itself (to avoid self-reference).
 Archive hashes and post-upload readback receipts live alongside the ZIP, not inside the file being hashed.
 
-Reuse saved CSV/JSON reports instead of rerunning completed analysis. Run `cpu_stage02d.py` only for a
+Reuse saved CSV/JSON reports instead of rerunning completed analysis. Run `cpu_stage02f.py` only for a
 concrete validation need; its recorded results are already included. `prepare_sources.py` intentionally
 regenerates the assembly scaffold; do not use it as a build command after edits.
 MLB syntax was checked against source, but actual MesenCE/Ghidra imports are untested.

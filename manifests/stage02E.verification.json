@@ -1,0 +1,21 @@
+{
+  "archive": "kickmaster-ntscu-checkpoint-stage02E.zip",
+  "sha256": "1ae70fe401ac890e7e083e1c2ec4d5763e3ac314bf4b4ae698ccb1107f55759c",
+  "size_bytes": 4361394,
+  "zip_crc_test": "PASS",
+  "manifest_verification": "PASS",
+  "manifest_file_count": 251,
+  "sample_extraction": "PASS",
+  "sample_paths": [
+    "README.md",
+    "RESUME.md",
+    "manifests/rom_identity.json",
+    "scripts/baseline.py"
+  ],
+  "latest_resume_present": true,
+  "stage": "02E",
+  "checked_utc": "2026-10-21T17:39:25.073053+00:00",
+  "original_ROM_included": false,
+  "native_NES_validation": "NOT_TESTED",
+  "full_extraction_and_clean_build_evidence": "stage02E.reproducibility.json"
+}

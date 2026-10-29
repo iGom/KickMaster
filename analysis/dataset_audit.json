@@ -10,7 +10,7 @@
     "192 scene pointers retain correct R6/R7 address domains; 116 state-table rows match original pointer bytes",
     "preserved stage01A/01B/02A CPU results pass; complete rebuilt image matches",
     "stage02B: 16 groups/52382 CPU vectors pass with no callee stubs; bounded dispatch stops explicitly recorded",
-    "8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and256 indirect edges match original ROM domains",
+    "8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and349 indirect edges match original ROM domains",
     "stage02C:18 groups/16460 vectors pass; scoped stopping boundaries preserved",
     "12 unlock/menu mappings,32 acquisition scene routes and12 R6-qualified description pointers verified",
     "user-supplied guide,ZIP and8 original PNGs retain exact hashes/dimensions; no ROM geometry comparison claimed",
@@ -20,13 +20,17 @@
     "closed02C persistence JSON and final report match actual successful readback receipts; old CPU suites were not rerun",
     "stage02E:14 groups/11868 vectors/34866 trace rows; no patches/callee stubs; old suites not rerun",
     "32 split direction pointers,13 jump steps,33 sequence entries,32 cache flags and3840 actual scene00 attribute samples match ROM",
-    "normal player states00..B8 now have reviewed handler entrypoints; full combat/native NES remain open"
+    "normal player states00..B8 now have reviewed handler entrypoints; full combat/native NES remain open",
+    "stage02F:12 groups/27126 vectors/5223 trace rows; original bytes, no callee stubs, old suites reused",
+    "101 melee/terrain profiles,99 collision-kind records,30 body/48 attack shapes and93 return-address AI targets indexed",
+    "AI, terrain-prefix and scheduler tests explicitly stop at original callee boundaries; no full-callee PASS inferred",
+    "02E resume archive and six sidecars were freshly read and hash-verified before this milestone"
   ],
-  "reviewed_bytes": 15194,
-  "reviewed_instructions": 5624,
-  "symbols": 456,
+  "reviewed_bytes": 17674,
+  "reviewed_instructions": 6021,
+  "symbols": 491,
   "ram_entries": 133,
-  "classification_ranges": 401,
+  "classification_ranges": 429,
   "previous_local_archives_unchanged": [],
   "full_Ghidra_Mesen_import": "NOT_TESTED"
 }
