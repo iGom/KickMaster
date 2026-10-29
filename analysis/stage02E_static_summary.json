@@ -1,0 +1,10 @@
+{
+  "new_ranges": 49,
+  "new_code_ranges": 41,
+  "new_data_ranges": 8,
+  "new_instructions": 1013,
+  "new_bytes": 2249,
+  "new_indirect_edges": 32,
+  "unresolved_targets_from_new_code": [],
+  "scope": "normalplayer inputs/jump/movement/localattacksequence; terrainlookup. No complete combat/terrain mutation/sector mapping/nativeNES claim."
+}

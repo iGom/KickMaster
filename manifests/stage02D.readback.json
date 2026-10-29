@@ -1,0 +1,88 @@
+{
+  "schema": "kickmaster-checkpoint-readback/v1",
+  "stage": "02D",
+  "checked_utc": "2026-10-21T11:53:26.446608+00:00",
+  "status": "PASS",
+  "scope": "All six checkpoint deliverables saved and freshly materialized; exact byte equality for every file. This receipt excludes its own later save/readback to avoid circular self-reference.",
+  "save_method": "standard prepared upload helper; fallback not needed",
+  "results": [
+    {
+      "file_name": "kickmaster-ntscu-checkpoint-stage02D.zip",
+      "library_file_id": "libfile_bcb9e2525a84819192dd9ba369387309",
+      "file_id": "file_00000000ca6c81f5a73a3bc676e9780f",
+      "version": 0,
+      "size_bytes": 3535089,
+      "sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/kickmaster-ntscu-checkpoint-stage02D.zip"
+    },
+    {
+      "file_name": "stage02D.verification.json",
+      "library_file_id": "libfile_3e46de2fea0881918a91e765c8e2a16d",
+      "file_id": "file_000000004c4c81f99d09154ea9205009",
+      "version": 0,
+      "size_bytes": 782,
+      "sha256": "31af96a64736dec718df5410914ffa411c53b11e3be90b890905289aa9d4e130",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/stage02D.verification.json"
+    },
+    {
+      "file_name": "stage02D.reproducibility.json",
+      "library_file_id": "libfile_90ca9c1778308191a31853e7dc6882c7",
+      "file_id": "file_00000000c9ac81f9bb55f6d6ac37fa42",
+      "version": 0,
+      "size_bytes": 3375,
+      "sha256": "54d169f97dafc454611e9738186dfd9ae83d10f8bd35be3d1482afffe377561a",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/stage02D.reproducibility.json"
+    },
+    {
+      "file_name": "KickMaster_STAGE02D_RESUME.md",
+      "library_file_id": "libfile_82ca3d055e3c81918b2f4617cc965af3",
+      "file_id": "file_00000000597481f982f4ef8c78f4932c",
+      "version": 0,
+      "size_bytes": 24708,
+      "sha256": "a9bbe54c817a370d7bcd64c87839424bf84e286cf292f36341a3228ed549c50f",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/KickMaster_STAGE02D_RESUME.md"
+    },
+    {
+      "file_name": "stage02D.persistence.json",
+      "library_file_id": "libfile_5bb2b159412c8191ad5f0fc3d573a239",
+      "file_id": "file_00000000d29881f5ace0ddf79cd9ad43",
+      "version": 0,
+      "size_bytes": 4079,
+      "sha256": "af5bb738f4d494a1dd95bc6d5b6b46e74eaa2e6d07dd707f0b5a797a47eb824a",
+      "byte_for_byte_readback": "PASS"
+    },
+    {
+      "file_name": "KickMaster_STAGE02D_REPORT.md",
+      "library_file_id": "libfile_d2af1986d2e08191972a3af003e9306c",
+      "file_id": "file_00000000a838820ca3e2cfdc1275d4c7",
+      "version": 0,
+      "size_bytes": 9203,
+      "sha256": "db75fcd4c65c4966ca2034a75e2438af93d6ea5e0a8164568cebefa3c06b31fc",
+      "byte_for_byte_readback": "PASS"
+    }
+  ],
+  "readback_archive_verification": {
+    "archive": "kickmaster-ntscu-checkpoint-stage02D.zip",
+    "sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+    "size_bytes": 3535089,
+    "zip_crc_test": "PASS",
+    "manifest_verification": "PASS",
+    "manifest_file_count": 228,
+    "sample_extraction": "PASS",
+    "sample_paths": [
+      "README.md",
+      "RESUME.md",
+      "manifests/rom_identity.json",
+      "scripts/baseline.py"
+    ],
+    "latest_resume_present": true
+  },
+  "all_six_saved_and_read_back": true,
+  "closure_02C_evidence_in_archive": "manifests/stage02C_closure_readback.json",
+  "prior_checkpoints_modified": false,
+  "cpu_tests_repeated_during_persistence": false
+}

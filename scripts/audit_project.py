@@ -101,13 +101,14 @@ def main():
     thresholds=rows('analysis/score_thresholds.csv');assert len(thresholds)==6
     for r in thresholds:assert number(raw(15,0xFDE8+6*int(r['index']),6),0x20)==int(r['score_decimal'])
     indirect=rows('analysis/indirect_dispatch_tables.csv')
-    assert len(indirect)==224 and sum(r['group'].startswith('D_') for r in indirect)==42
+    assert len(indirect)==256 and sum(r['group'].startswith('D_') for r in indirect)==42
     assert sum(r['group'].startswith('E_') for r in indirect)==12
     assert sum(r['group'].startswith('F_') for r in indirect)==32
+    assert sum(r['group'].startswith('G_') for r in indirect)==32
     assert all((r['dispatch_bank'],r['dispatch_cpu']) in keys for r in indirect)
     assert len(rows('analysis/numeric_formats.csv'))==5 and len(rows('analysis/progression_snapshot_layout.csv'))==5
     checks+=['stage02B: 16 groups/52382 CPU vectors pass with no callee stubs; bounded dispatch stops explicitly recorded',
-             '8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and224 indirect edges match original ROM domains']
+             '8 progression rows,24 pickup pairs,13 selected effects,6 score thresholds and256 indirect edges match original ROM domains']
     current=json.loads((ROOT/'analysis/cpu_stage02C.json').read_text())
     assert current['groups']==current['passed_groups']==18 and current['vectors']==16460
     assert current['rom_sha256']==hashlib.sha256(rom).hexdigest()
@@ -184,6 +185,33 @@ def main():
     checks+=['stage02D:16 groups/26832 vectors/117943 trace rows retained; all groups PASS with no callee stubs',
              '32 projectile collision profiles and dispatch pairs,101 player profiles and13 slot limits match original bytes',
              'closed02C persistence JSON and final report match actual successful readback receipts; old CPU suites were not rerun']
+    current=json.loads((ROOT/'analysis/cpu_stage02E.json').read_text())
+    assert current['groups']==current['passed_groups']==14 and current['vectors']==11868
+    assert current['rom_sha256']==hashlib.sha256(rom).hexdigest() and current['old_suites_rerun'] is False
+    assert all(g['status']=='PASS' and not g['boundary_stubs'] for g in current['results'])
+    assert current['vectors']==sum(g['vector_count'] for g in current['results'])
+    assert len(rows('analysis/cpu_stage02E_vectors.csv'))==current['vectors']
+    assert len(rows('analysis/cpu_stage02E_trace.csv'))==current['trace_rows']==34866
+    directions=rows('analysis/player_direction_dispatch.csv');assert len(directions)==32
+    for r in directions:
+        low=rom[int(r['source_file_offset'],16)];high=raw(8,int(r['high_byte_cpu'],16),1)[0]
+        assert low|(high<<8)==int(r['target_cpu'],16)
+    assert len(rows('analysis/player_air_attack_selection.csv'))==256
+    steps=rows('analysis/player_jump_step_table.csv');assert len(steps)==13
+    for r in steps:assert rom[int(r['source_file_offset'],16)]==int(r['magnitude_pixels'])
+    seq=rows('analysis/player_attack42_sequence.csv');assert len(seq)==33
+    for r in seq:assert rom[int(r['source_file_offset'],16)]==int(r['state_even'],16)
+    flags=rows('analysis/scene_terrain_cache_flags.csv');assert len(flags)==32
+    for r in flags:assert rom[int(r['source_file_offset'],16)]==int(r['bypass_flag'])
+    samples=rows('analysis/scene00_terrain_samples.csv');assert len(samples)==3840
+    for r in samples:assert rom[int(r['attribute_file_offset'],16)]==int(r['attribute'])
+    assert {int(r['page_index']) for r in samples}==set(range(16))
+    assert all(r['handler_review']=='STATIC_REVIEWED' for r in states if r['family']=='0' and int(r['CD_even'],16)<=0xB8)
+    receipt=json.loads((ROOT/'manifests/stage02D.readback.json').read_text())
+    # The prior receipts are evidence files; they do not trigger old CPU/build execution.
+    checks+=['stage02E:14 groups/11868 vectors/34866 trace rows; no patches/callee stubs; old suites not rerun',
+             '32 split direction pointers,13 jump steps,33 sequence entries,32 cache flags and3840 actual scene00 attribute samples match ROM',
+             'normal player states00..B8 now have reviewed handler entrypoints; full combat/native NES remain open']
     prior={
       '00':'6c3b48030b66ae25e6fad9b21ca7c42904b1448a4c70d50d077df2ff45678e9f',
       '00A':'88779ce28f16092345a6d87a084855b6b96731d8f75471a2228cfc6e1a82debf',
@@ -191,7 +219,8 @@ def main():
       '01B':'a0c1d35ed1d82a0a12db9ff25d4f625ffad5382f535908b3fbfc56d03847992d',
       '02A':'1dfbc341acfa500072f21a1533ba6108088976ea03b1dbbcb3cceb141c2ee4e4',
       '02B':'397afcb28be6c26ce6fa471b5270531162a4a62b61f810cc02d14681fd5ce07b',
-      '02C':'9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d'}
+      '02C':'9abf1f5c0bdbba3f264bb34ffd9112a5e3bb3803fcd1ba87e84e493e26650a3d',
+      '02D':'dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a'}
     preserved=[]
     for stage,h in prior.items():
         p=ROOT/f'checkpoints/kickmaster-ntscu-checkpoint-stage{stage}.zip'

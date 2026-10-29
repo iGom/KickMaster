@@ -5,19 +5,21 @@ The original ROM is not included in checkpoints. Its separate attachment identit
 recover that exact file after a reset, or supply it again if the attachment is unavailable.
 The project specification is preserved in `project_specification.md`.
 
-Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and `reports/subsystems/PROJECTILE_COLLISION_AND_ENEMY_HITS.md`.
+Start with `RESUME.md`, then `reports/stages/SESSION_REPORT.md` and
+`reports/subsystems/PLAYER_CONTROL_JUMP_AND_TERRAIN.md`.
 
-Current snapshot: Stage 02D projectile/collision and enemy-hit consumers complete as a bounded milestone.
-Stages 00/00A/01A/01B/02A/02B/02C remain preserved;02C durability is now closed. The original guide and eight maps supplied by the user
-are now available unchanged in `research/originals/`; the earlier map-access block is historical.
-Comprehensive reverse engineering is **not** complete. 190 reviewed code ranges, 84 data ranges, 131 RAM entries.
-Stage02D adds 16 CPU groups/26832 vectors with no callee stubs; earlier-stage CPU results remain preserved without rerun.
-The input-dependent ca65 scaffold matches every original byte; 12945 PRG bytes have reviewed local semantics.
-Tables cover 32 scene configurations, 192 scene pointers, 116 player-state pairs, eight progression levels,
-24 collectible pairs, 13 selected effects, 12 unlock/menu mappings, 32 acquisition routes, six score thresholds,32 projectile collision profiles
-and101 player collision profiles.
-Unknown downstream handlers remain explicitly unreviewed. Map geometry has not yet been compared to ROM data.
-`PROJECT_UPDATES.md` records the user's later source-preservation and checkpoint instructions.
+Current snapshot: Stage02E normal player control, jump phases and terrain lookup.
+Stages00/00A/01A/01B/02A/02B/02C/02D remain preserved;02D was freshly verified at resume.
+Comprehensive reverse engineering is **not** complete.231 code ranges,92 data ranges,133 RAM entries.
+Stage02E adds14 CPU groups/11868 cases, no ROM patches or callee stubs. Old suites were not rerun.
+The input-dependent ca65 scaffold matches all262160 original bytes;15194 PRG bytes have reviewed local semantics.
+Current portable exports contain456 symbols and256 indirect dispatch edges.
+
+New results include normal-state input/attack selectors, jump phases, animation call counts,
+cache/ROM terrain contracts and3840 actual scene00 terrain samples. This is not complete level geometry,
+full combat or a32-scene to8-sector mapping. Native NES execution and Ghidra/MesenCE imports remain NOT_TESTED.
+Original guide/maps are unchanged in `research/originals/`; earlier map-access blocks are historical.
+`PROJECT_UPDATES.md` records later source-preservation/checkpoint instructions. Historical reports are retained.
 
 Evidence classes: **FILE** (direct bytes/hashes), **STATIC** (decoded instructions and checked control flow),
 **DOCUMENTED** (external source only), **CPU_TEST** (isolated execution with stated stubs),

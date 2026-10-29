@@ -1,6 +1,6 @@
 # MesenCE integration status
 
-`kickmaster.mlb` contains 405 labels derived only from reviewed ROM ranges and documented local RAM roles.
+`kickmaster.mlb` contains 456 labels derived only from reviewed ROM ranges and documented local RAM roles.
 ROM labels use **PRG-relative offsets excluding the 16-byte NES header**, rather than CPU addresses.
 This preserves physical-bank identity even for switchable regions. RAM labels use physical internal RAM.
 
@@ -28,3 +28,6 @@ Stage01B CPU traces are isolated-harness output, not MesenCE logs.
 Stage02D adds projectile geometry, hit/quake/shield consumers and enemy RAM fields.
 EnemyHpRaw+9 aliases EnemyPassAccumulator at0440; the overlap is intentional and documented.
 CPU02D traces are py65 harness output; no native import or full NES run was performed.
+
+Stage02E adds normalplayer/terrain entries and32 splitdirection pointers; tables/labels remain portable exports.
+CPU02E:14groups/11868cases/34866tracerows; nativeimport/gameplay still NOT_TESTED.

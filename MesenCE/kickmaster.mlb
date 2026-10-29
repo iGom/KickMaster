@@ -90,9 +90,19 @@ NesPrgRom:10B16:PlayerStageAdvanceTail:C33; Tail through C79D to scene advance D
 NesPrgRom:10B19:UpdateAndDrawPlayer:C34; Clear transient D3 bit7, honor advance flag, retain only CE bit0, dispatch player state, compute camera-relative coordinates, service hurt display and draw metasprite.
 NesPrgRom:10CF7:DispatchPlayerState:C35; A selects normal/alternate table family; CD>>1 selects CHR and CD&FE selects metasprite pointer plus handler; tail JMP through 2C/2D.
 NesPrgRom:10D39:SetPlayerStateKeepFacing:C36; Replace CD bits7..1 with A bits7..1, preserve old CD bit0 and clear CF.
+NesPrgRom:10D44:AdvancePlayerAttackPhase:G01; Increment CF; exact equality with Y resets CF and advances CD by2. A is exclusive end; crossing it selects idle preserving facing. Period is handler calls, not measured frames.
+NesPrgRom:10D82:SamplePlayerOffsetTerrain:G02; AD82 copies player16-bit position to26..29, preserves signed X offset A and Y offset; AD94 reuses base; tail C767.
+NesPrgRom:10D98:SampleTwoPlayerTerrainPoints:G03; Entry offsets Y=-28,-2,-5,+4,+3. Sample X=-5,+5 through actualC767 and OR results;42 saves Y.
 NesPrgRom:10DCF:SetPlayerMotionAndScrollFlags:C37; ADCF sets CE bit40; ADD6 sets DB bit80; ADDC clears DB bit80.
 NesPrgRom:10DE2:UpdateFacingFromInputHistory:C38; OR current and two previous held inputs; Right takes precedence and clears CD bit0, otherwise Left sets it.
+NesPrgRom:10DFD:SelectHorizontalPlayerMotion:G04; One-pixel speed; OR held input and two prior samples. Right bit wins simultaneous left/right.
+NesPrgRom:10E14:MovePlayerLeft:G05; Explicit speed entry; three points X-9,Y-28/-14/0 block on bits03. CE04 suppresses translation on oddD8. Wall snap lowX to cellcenter8; camera mode07 and lower pageAF; left screen clamp20.
+NesPrgRom:10EB1:MovePlayerRight:G06; Explicit speed; symmetric X+9 probes. Camera mode05 starts at relativeX128, caps at AF:00; right screen clamp235. Movement CE40 may be set even on slow-terrain skipped tick.
+NesPrgRom:10F47:SelectFreeVerticalPlayerMotion:G07; Speed2; held down wins up; no direction returns via sharedRTS. Not a jump integrator.
+NesPrgRom:10F5A:MovePlayerUp:G08; Unsigned explicit speed; mode03 scroll when relativeY<96, camera-underflow clamp and flagclear; player top clamp31; CE10/40 motion bits.
+NesPrgRom:10FBC:MovePlayerDown:G09; Unsigned explicit speed; mode01 scroll at relativeY>=128 and compare camera limitAD/AE; relativeY>=206 falls through reviewed terminal-fall entryB007. High/low limit compare is not a generic16-bit comparator for arbitrary synthetic pages.
 NesPrgRom:11007:EnterPlayerFallState:C39; Set D3 bit80, CD=C4/C5 preserving facing, CF=0 and CE=0.
+NesPrgRom:11016:MarkDownwardPlayerMotion:G10; Clear CE10/20 then set40; tail after nonterminal downward move.
 NesPrgRom:1102A:InitializePlayerStateBlock:C40; Copy ten bytes to C9..D2, then clear active flags 057C..057C+0013 inclusive under valid small slot-count precondition.
 NesPrgRom:11042:InitialPlayerStateBytes:C41; C9..D2 initial bytes 80 00 80 00 00 00 00 00 00 00.
 NesPrgRom:1104C:DispatchAutomaticCameraStep:C42; Require DB bits08 and01; set DB bit80 and dispatch direction (DB>>1)&3.
@@ -102,12 +112,41 @@ NesPrgRom:11099:PlayerTableFamilyPointers:C45; Three two-entry pointer arrays fo
 NesPrgRom:110A5:PlayerNormalChrTable:C46; 111 CHR bank bytes indexed by CD>>1; table contents identified, not every corresponding state behavior.
 NesPrgRom:11114:PlayerNormalSpritePointers:C47; 111 little-endian metasprite pointers indexed by even CD.
 NesPrgRom:111F2:PlayerNormalHandlerPointers:C48; 111 little-endian handler pointers covering CD pairs 00/01 through DC/DD; many handlers remain unreviewed.
+NesPrgRom:1180A:PlayerJumpStepMagnitudes:G11; 13 bytes:3 fourtimes,2 fourtimes,1 fourtimes,0. D1 low6 indexes; normal domain0..12 only.
+NesPrgRom:11817:PlayerForwardAttackStepMagnitudes:G12; Six unsigned horizontal speeds2,3,3,3,3,2, indexed (CD-A0)/2.
+NesPrgRom:1181D:UpdateStandingPlayer:G13; Two ground probes, vertical alignment and embedded correction; newA wins newB. B selects down beforeup; no attack dispatches full direction nibble.
+NesPrgRom:11881:StandingDirectionSplitPointers:G14; 16 low bytes then16 highbytes: right/left enterwalk; down enterscrouch; other direction combinations RTS.
+NesPrgRom:118A1:EnterWalkOrCrouchPlayer:G15; B8A1 selects02,right; B8A5 selects03,left; both clearCF. B8AE ORs10 for crouch. B8B4 sharedRTS.
+NesPrgRom:118B5:UpdateWalkingPlayer:G16; Ground align; newA/newB priority; direction OR current and twohistorybytes. CD lowbit follows right priority. SBC07 inherits carry from oldCDbit7, so normal low states advance every8 calls, not7.
+NesPrgRom:11912:UpdateJumpingPlayer:G17; BCEF physics then facing and newB dispatch; D1zero returnsidle unless downattack1C wasselected.
+NesPrgRom:1192F:AdvancePlayerAirTransition:G18; Facing/newB; horizontalmove; CD+=2 andD1&=3F. Caller can therefore modify freshly selectedattack code.
+NesPrgRom:11947:UpdateFallingPlayer:G19; Facing/newB; landing probesY-5/+3. Else decrement lowphase but use predecrement index for down speed, thenhorizontalmove.
+NesPrgRom:11972:SelectAirbornePlayerAttack:G20; 16-way held direction nibble split-pointer dispatch; opposing/unsupported combinations return unchanged.
+NesPrgRom:11984:AirborneAttackSplitPointers:G21; No direction normal; horizontal forwardtier; down/down-diagonal downwardtier; up/up-diagonal upwardtier; unsupported masks sharedRTS.
+NesPrgRom:119A4:UpdateCrouchingPlayer:G22; Ground required; newA jump; down current/history preservescrouch; optional facing fromcurrenthorizontal; newB entersBCAE grounded12 withoutlevel2 slidingreplacement.
+NesPrgRom:119D4:UpdateCrouchingAttack:G23; Groundrequired; five states12..1A each3calls, thenreturn10 facingpreserved.
+NesPrgRom:119F8:UpdateDownwardAttack:G24; Horizontalmove; lowerpoints use destructiveC773 withstrength4. Clearsolidbit meansdown4; solidbitalignsY andidle. Destructive highflagcallee remains partlyunreviewed.
+NesPrgRom:11A38:UpdateAttack1E:G25; Physics then linearphase period4 exclusiveend2C.
+NesPrgRom:11A42:UpdateAttack2C:G26; Physics then linearphase period4 exclusiveend42.
+NesPrgRom:11A4C:UpdateAttack42:G27; Physics; D3&A0 freezes animation; otherwise++CF indexes BA63 preserving facing.
+NesPrgRom:11A63:PlayerAttack42Sequence:G28; 33 statecodes; initializedCF0 displays42, firstcallindex1. Index32 returnsidle.
+NesPrgRom:11A84:UpdateAttack5C:G29; Physics then linearphase period3 exclusiveend7E.
+NesPrgRom:11A8E:UpdateAttack7E:G30; Physics then linearphase period3 exclusiveendA0.
+NesPrgRom:11A98:UpdateForwardAttack:G31; Six A0..AA phases6calls. Speed table; two wall probes; wall/end checkshead, normallyenters0A. Blockinghead canflip facing ifCE40clear; seedD1=3. D1=80launch andgroundlaunchsharehandler.
+NesPrgRom:11B21:UpdateAttackAC:G32; Physics then period3 exclusiveendB8; AC..B6 take18calls, despiteB8alsohavingthishandler in dispatchtable.
 NesPrgRom:11B2B:AdvancePlayerDeathAnimation:C49; Set D3 bit80; every exact 0F CF updates advance CD by2; after C2/C3 select CA/CB and reset CF.
 NesPrgRom:11B4F:UpdatePlayerFallExit:C50; Set D3 bit80; add4 to player Y; set CE bit80 if low-byte camera-relative Y >=F0.
 NesPrgRom:11B6E:UpdatePlayerHurtReaction:C51; Set D3 bit80; call unreviewed BCEF; while D2>=30 request horizontal movement by2 using CD bit08, otherwise clear D3 bits30 and reset CD to facing.
 NesPrgRom:11B99:FinishPlayerDeathDelay:C52; Set D3 bit80; increment CF; exact CF=0F sets CE bit80 without resetting CF.
 NesPrgRom:11BAD:AdvanceMagicAcquisitionAnimation:E15; SetD3bit80, clear collected-object flag20, incrementCF; table indexedCF>>3 choosesCC/CE/D0 states. On terminal0 clearCF and pickup then jumpBD56.
 NesPrgRom:11BDC:MagicAcquisitionAnimationStates:E16; Thirteen states CC CE D0 D0 D0 CE CC CC CC CC CC CC 00; startingCF0 reaches presentation on96th invocation.
+NesPrgRom:11C12:EnterIdleJumpOrFall:G33; BC12idle;BC17sound35,state0A,D1=E7 andimmediateup3;BC2Astate0E,D1zero.
+NesPrgRom:11C34:SelectForwardAttackTier:G34; Level>=5 andfacingcompatible direction selectsA0,D1=80;else normalattacktier. Zero horizontal is accepted atthisentry.
+NesPrgRom:11C56:SelectNormalAttackTier:G35; Level0..3=>1E,4..5=>2C,6..7=>7E; BC67 bypasseslevel6replacement. Statehelperpreservesfacing,clearsCF.
+NesPrgRom:11C81:SelectDownwardAttackTier:G36; Level>=1=>1C,D1zero;level0=>fall0E,D1zero.
+NesPrgRom:11C99:SelectGroundDownAttackTier:G37; Level>=2=>A0,D1zero;lowerlevels useBCAE requiringground andstate12. DirectBCAE bypasseshigherlevelreplacement.
+NesPrgRom:11CBE:SelectUpwardAttackTier:G38; Level7=>42;elselevel>=3 plushorizontal=>5C;elseAC. BCCF bypasseslevel7replacement.
+NesPrgRom:11CEF:IntegratePlayerJumpPhase:G39; D1bit40ascending; negativeholdphase continuesup3 whileheldA orhistorylow2. Release seeds40 withoutverticalstep; indexed taper endswith0C; descent uses predecrementindex; groundaligns andclearsD1. Ceilingsblockbit02.
 NesPrgRom:11D56:PresentAcquiredMagicAndRoute:E17; Fade, far-call07:A0BD with layout7, mapR6=3 and read effect description pointer; wait Start/A then fade and use32-entry routing table. Presentation/NMI/text pipeline not fully executed.
 NesPrgRom:11DBB:MagicAcquisitionSceneRoutes:E18; 32 scene routes: FF tails scene-advance serviceC79D; other bytes replace9A then tail restartC77F.
 NesPrgRom:11DDB:MagicDescriptionPointers:E19; Twelve little-endian pointers selected by04E3; explicit R6=03 maps text in8000 window. Text payload semantics unreviewed.
@@ -223,7 +262,14 @@ NesPrgRom:1D90C:WaitNmiAndServiceAudio:B33; Save X/Y, evolve 97 while 95 is nonz
 NesPrgRom:1D949:UpdateControllerState:B34; Shift held-button history; poll twice and AND; compute rising edges, shift A history, restore caller X/Y from stack.
 NesPrgRom:1D977:ReadControllerSerial:B35; Strobe 4016 high then low; read eight times, accept either low data bit, shift into 1F and return it in A.
 NesPrgRom:1D9CB:MixTimingStateWithX:B36; 97 <- ((((X+97) mod 256) XOR AA)+BD) mod 256; preserves X/Y.
+NesPrgRom:1D9E8:SampleTerrainAtBase:G40; Copy26..29 to22..25 then classifyDD5F; zero returns, negativeROMlookup, positivecache.
+NesPrgRom:1DA07:SampleTerrainAtSignedOffset:G41; Signextend A Xoffset andY Yoffset, add16-bit base, classifyDD5F, selectcache/ROM/outside.
+NesPrgRom:1DA3D:LookupTerrainFromSceneRom:G42; Normalize linearY into240pixelpages;32pixelmetatile index and16pixelquadrant; saveR6andX,map03B9; B9pageorder,BB64-bytepages,C1fourattributes/metatile; restoreR6/X. Areturnsattribute but3Cremains03; DB02 caller returns3C ratherthanA.
+NesPrgRom:1DAB3:SampleCachedTerrainAtBase:G43; Direct cache base sampler; no domainclassifier.
+NesPrgRom:1DAC2:SampleCachedTerrainAtSignedOffset:G44; Signed16-bit coordinateaddition; normalizeY withF78B thenindex=(Ymod240&F0)|(Xlow>>4), load05B8+index toAand3C. EntryDAE6acceptsYlow/Ahigh.
 NesPrgRom:1DB02:ClassifyPlayerTerrainSample:C57; Choose sample helper with DB bit04; priority bits40/80 return solid/empty; bit10 may invoke damage (9A+04) except active effect08; accumulate terrain bits0C into CE.
+NesPrgRom:1DD5F:SelectTerrainCacheOrRom:G45; Scene bypassflag=>cache; otherwise negativeworldcoords=>outside, transversepage mismatch=>outside, longitudinalmismatch=>ROM; horizontalrelativeX>=248=>ROM. DD92..DD9B block has no path fromreviewedentry (precedingBCC/BCS exhaustive). Outside sets3C03,A0;ROMsets3C03,AFF.
+NesPrgRom:1DDB9:SceneTerrainCacheBypassFlags:G46; 32 bytes; nonzero7,11,14,18,19,22,23,24,25 bypassDD5Fcoordinatechecks; no sectorassignmentinferred.
 NesPrgRom:1DDD9:ApplyPlayerDamage:C58; Ignore while D2 or01A4 nonzero; subtract raw A from06B9. Borrow starts BA/BB death animation; equality zero takes hurt path. Preserve input carry as reaction direction.
 NesPrgRom:1E0ED:FindFreeCollectibleSlot:D36; Scan04EF-1 down to1 for nonnegative057F,Y, return A=0; full pool A=FF. Tested valid slot counts>=2.
 NesPrgRom:1E2A3:ServicePaletteEffect:B37; Restore palette when 06EE=FF; decrement 03D5 and choose fixed palette colors using D9 bit 10.
@@ -246,6 +292,9 @@ NesPrgRom:1F24B:UploadPalette32ViaStack:A18; Read 0143..0162 through PLA; write 
 NesPrgRom:1F4BA:DisableRendering:A19; Clear PPUMASK and shadows 5F/66; clear bit 1 of 4A.
 NesPrgRom:1F4CA:FarCallViaA000:A20; Save bank tags and registers, map 04EC into A000, call pointer 04EA, restore both PRG windows and result registers/flags.
 NesPrgRom:1F50A:FarCallIndirect:A21; Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
+NesPrgRom:1F50D:ResolveSceneMetatilePagePointer:G47; Read pageID throughB9,Y; add64*ID splitoffsettables toBB/BC; return22/23. 32-byte tablesdefinevalidIDs0..31, no boundscheck.
+NesPrgRom:1F520:ScenePageOffsetLow:G48; 32 lowbytes of64*ID.
+NesPrgRom:1F540:ScenePageOffsetHigh:G49; 32 highbytes of64*ID.
 NesPrgRom:1F65F:RefreshSelectedSpellIcon:D37; Copy four tile IDs indexed06BD*4 fromFF2A to0185..0188; A0=16, fall through HUD staging.
 NesPrgRom:1F681:BuildLevelAndAttemptsHud:D38; Stage icon and fixed tiles; level digit=(D3&7)+60, attempts digit=030E+5F, displaying internal attempts minus1.
 NesPrgRom:1F6CC:WaitCountedUpdates:B39; Call D90C and decrement X until zero; initial X=00 means 256 updates.
@@ -303,18 +352,19 @@ NesInternalRam:AD:CameraVerticalBound:C09; Scene count at B422 multiplied by F0;
 NesInternalRam:AF:CameraHorizontalBoundPage:C09; Scene byte from B402; compared with camera X high byte by downstream movement code.
 NesInternalRam:B6:MetaspritePointer:C35;C59;C60; Pointer chosen by state table and consumed by both normal and flipped sprite renderers.
 NesInternalRam:B8:ObjectAttributeMask:09:BE90;09:B830;07:AE3A; AND mask for object attribute20 in BE90; AE3A resetsFF; effect09 setsDF and togglesbit20 on timer cadence. Visibility/hidden-object semantics remain incomplete.
-NesInternalRam:B9:ScenePointerB9:C09; Scene pointer from B282; target can reside in R6 data bank or resident R7 bank07. Full target format unresolved.
-NesInternalRam:BB:ScenePointerBB:C09; Scene pointer from B2C2. Full target format unresolved.
+NesInternalRam:B9:ScenePageOrderPointer:07:A537;0F:F50D;0E:DA3D; Loaded from07:B282. F50D indexes byte page IDs using world Xpage for horizontal lookup or normalized Ypage for vertical lookup. Valid page-count contract not established for all32 scenes.
+NesInternalRam:BB:SceneMetatilePagesPointer:07:A537;0F:F50D;0E:DA3D; Loaded from07:B2C2. F50D adds64*pageID; DA3D reads metatile ID at row*8+column in a32-pixel grid. Full page dimensions/refill and all scene bounds remain open.
 NesInternalRam:BD:ScenePointerBD:C09; Scene pointer from B342. Full target format unresolved.
 NesInternalRam:BF:ScenePointerBF:C09; Scene pointer from B302. Full target format unresolved.
-NesInternalRam:C1:ScenePointerC1:C09; Scene pointer from B382; downstream terrain query uses it. Full structure not yet reconstructed.
+NesInternalRam:C1:SceneTerrainAttributesPointer:07:A537;0E:DA3D; Loaded from07:B382. DA3D reads four terrain attributes per metatile, selected by16-pixel quadrant. Scene00 samples verified from actual PRG02, not screenshots.
 NesInternalRam:C3:PlayerDispatchTablePointers:C35; C3/C4 CHR table; C5/C6 handler table; C7/C8 metasprite table. ACF7 chooses one of two families.
 NesInternalRam:C9:PlayerWorldY:C08;C34;C50; Player vertical position, initial offset from camera Y. C9 low-byte relative difference drives fall thresholds.
 NesInternalRam:CB:PlayerWorldX:C08;C34; Player horizontal position; CB/CC minus camera X becomes sprite horizontal origin 24/25.
 NesInternalRam:CD:PlayerStateAndFacing:C35;C36;C38; Even part selects one of111 normal state pairs; bit0 selects flipped sprite rendering. Alternate family has5 pairs.
-NesInternalRam:CE:PlayerMotionFlags:C34;C50;C52;C57; AB19 retains only bit01 at update entry, selecting alternate table family. Bit80 signals terminal exit; other flags include terrain0C and motion40. Not a single state ID.
-NesInternalRam:CF:PlayerStateTimer:C36;C49;C52; Per-state counter; death states advance on exact0F and reset, final death delay sets CE80 on exact0F.
+NesInternalRam:CE:PlayerMotionFlags:08:AB19;08:ADCF;08:AE14;08:AEB1;08:AF5A;08:AFBC;0E:DB02; AB19 retains bit01 selecting alternate family; bit80 terminal; terrain0C. Motion helpers use40 movement marker,20 left,10 up; slow-terrain04 suppresses horizontal translation on oddD8 while still setting40. Not a signed direction or guaranteed displacement indicator.
+NesInternalRam:CF:PlayerStateTimer:08:AD39;08:AD44;08:B8B5;08:B9D4;08:BA4C;08:BA98; Player handler-call counter, reset by AD39. Normal walk advances every8 calls (SBC carry inherited from oldCDbit7); attack periods vary3/4/6 or explicit sequence. Not a universal animation frame timer.
 NesInternalRam:D0:PlayerActionObjectIndex:08:A7DB;08:BBAD; Magic acquisition stores collectible-relative slot here; BBAD uses it to animate/deactivate collected object. Other player-action uses not excluded.
+NesInternalRam:D1:PlayerJumpPhase:08:BC17;08:BC34;08:BCEF;08:B947; Normal jump: E7 launch; bit40 ascent; negative phase holds up3 while A held or A-history low2 nonzero. Release seeds40; indexed taper ends0C. Descent uses predecrement low6 index. Landing clears. Forward airborne attack seeds80; not a signed velocity.
 NesInternalRam:D2:PlayerDamageCooldown:C58;C34;C51; Nonzero blocks DDD9 damage; successful nonfatal subtraction sets3C; player update decrements nonzero value and changes sprite attributes.
 NesInternalRam:D3:PlayerLevelAndStatus:08:A6C4;08:AB19;0E:DDD9; Low3 bits are level0..7; EXP comparison can increment once. Bit20 hurt,10 reaction direction,80 transient state gate. Level-up HP lookup uses unmasked D3 and requires caller invariants.
 NesInternalRam:D4:PreviousPlayerPositionSnapshot:C34; Copy of C9..CC after player update unless06BD=0B and0593 nonzero.
@@ -389,6 +439,7 @@ NesInternalRam:568:ObjectTypeAndFacing:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F; 
 NesInternalRam:57C:ObjectActiveFlags:09:BE90;09:BF3E;09:BF68;07:AE3A;08:A14F;08:A230;09:B571; Bit80 active;08 always invokes handler;04 bypasses parity gates;40 skips velocity;20 contributes sprite attribute. Global slot3 is selected effect. Parallel arrays have14-hex stride; collectible-relative indexY maps global indexY+3. Runtime scan count remains caller-dependent. In A230, bit10 preserves a colliding projectile for further enemy hits; a clear bit consumes it.
 NesInternalRam:590:ObjectEffectCounter:09:B747;09:B830;09:B8B7;09:B930;09:BAC7; Parallel object counter/state array; selected slot3 at0593: aim index, timed effect or active marker depending on type. Column/projectile counters use other slots.
 NesInternalRam:5A4:ObjectSecondaryCounter:09:B747;09:B8B7;09:B964;09:B9E1;08:A305;09:B5EF;09:B620; Parallel second counter array; selected slot3 at05A7: aim target, timer high part, shield budget or lightning timer. A305 decrements shield seed0A on qualifying enemy-projectile overlaps: ten absorbed, next negative damages player. Side-lightning objects use signed type-step +2/-2.
+NesInternalRam:5B8:TerrainCollisionCache:0E:DAE6;0E:DB02;0E:DBB7; Cache indexed by (linearY mod240 & F0)|(Xlow>>4); valid remainder gives15 rows of16 cells at16-pixel pitch. All256 allocated addresses follow sampler expression; finalrowF0..FF is not reached by valid normalizedY. Actual producers and scrolling refill remain open.
 NesInternalRam:6B9:PlayerHpRaw:C58;C16;B18; Current raw HP consumed by DDD9. Damage greater than HP selects death; exact equality produces zero and hurt reaction.
 NesInternalRam:6BA:PlayerHpDisplayedRaw:C16;B18; Displayed HP copy: immediately follows decreases, increments by one per HP-bar maintenance invocation on increases.
 NesInternalRam:6BB:PlayerMaximumHpRaw:08:A6FF;08:A78A;09:BD98;07:B04B; Healing clamp and bar capacity; level-up writes table40..B0. B7F4 derived-value restore changes06B9/06BA but leaves this byte unchanged.

@@ -1,0 +1,13 @@
+{
+  "static_registration": {
+    "first_attempt": "Overlap assertion stopped before any output-table mutation: ADCF..ADE2 was already C37.",
+    "correction": "Removed duplicate registration; retained original C37."
+  },
+  "cpu_group14_initial_attempt": {
+    "result": "FAILED_TEST_FIXTURE",
+    "observed": "Timeout at PC0000 on second dispatch call; entry A was stale from prior return.",
+    "entry_contract": "08:ACF7 receives family selector in A (normal family0), not only CD in RAM.",
+    "correction": "Initialize A=0 before each normal-family dispatcher invocation.",
+    "rerun_scope": "Only new group14; groups1..13 preserved from partial result. No old CPU suite rerun."
+  }
+}

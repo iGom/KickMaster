@@ -1,0 +1,24 @@
+{
+  "archive": "kickmaster-ntscu-checkpoint-stage02D.zip",
+  "sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+  "size_bytes": 3535089,
+  "zip_crc_test": "PASS",
+  "manifest_verification": "PASS",
+  "manifest_file_count": 228,
+  "sample_extraction": "PASS",
+  "sample_paths": [
+    "README.md",
+    "RESUME.md",
+    "manifests/rom_identity.json",
+    "scripts/baseline.py"
+  ],
+  "latest_resume_present": true,
+  "schema": "kickmaster-checkpoint-verification/v1",
+  "stage": "02D",
+  "verified_utc": "2026-10-21T11:50:33.560814+00:00",
+  "full_extracted_manifest": "PASS",
+  "full_extraction_file_count": 228,
+  "clean_build_receipt": "stage02D.reproducibility.json",
+  "old_checkpoint_overwritten": false,
+  "original_and_rebuilt_rom_included": false
+}

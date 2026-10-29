@@ -34,4 +34,7 @@ be assigned to the R6 data bank merely because it was read from that scene's con
 
 Stage02D collision tables in PRG06 use R6=06 at8000.32 projectile handler pairs resolve in PRG09
 atA000. Review PROJECTILE_COLLISION_AND_ENEMY_HITS.md and preserve the0440 RAM alias.
-There are405 portable symbols; successful native Ghidra import remains NOT_TESTED.
+There are456 portable symbols; successful native Ghidra import remains NOT_TESTED.
+
+Stage02E adds normalplayer/terrain entries and32 splitdirection pointers; tables/labels remain portable exports.
+CPU02E:14groups/11868cases/34866tracerows; nativeimport/gameplay still NOT_TESTED.

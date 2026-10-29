@@ -1141,7 +1141,174 @@ MixTimingStateWithX:
     ADC #$bd                 ; D9D2 
     STA $97                  ; D9D4 
     RTS                      ; D9D6 
-    .incbin "inputs/original.nes", $01D9E7, $012B ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01D9E7, $0011 ; UNINTERPRETED preserved bytes
+
+; G40: Copy26..29 to22..25 then classifyDD5F; zero returns, negativeROMlookup, positivecache.
+SampleTerrainAtBase:
+    LDA $26                  ; D9E8 
+    STA $22                  ; D9EA 
+    LDA $27                  ; D9EC 
+    STA $23                  ; D9EE 
+    LDA $28                  ; D9F0 
+    STA $24                  ; D9F2 
+    LDA $29                  ; D9F4 
+    STA $25                  ; D9F6 
+    JSR a:$dd5f              ; D9F8 
+    BEQ $da06                ; D9FB 
+    BMI $da3d                ; D9FD 
+    LDY $24                  ; D9FF 
+    LDA $25                  ; DA01 
+    JMP a:$dae6              ; DA03 
+    RTS                      ; DA06 
+
+; G41: Signextend A Xoffset andY Yoffset, add16-bit base, classifyDD5F, selectcache/ROM/outside.
+SampleTerrainAtSignedOffset:
+    PHA                      ; DA07 
+    LDA #$00                 ; DA08 
+    STA $3c                  ; DA0A 
+    STA $3d                  ; DA0C 
+    PLA                      ; DA0E 
+    BPL $da13                ; DA0F 
+    DEC $3c                  ; DA11 
+    CLC                      ; DA13 
+    ADC $26                  ; DA14 
+    STA $22                  ; DA16 
+    LDA $27                  ; DA18 
+    ADC $3c                  ; DA1A 
+    STA $23                  ; DA1C 
+    TYA                      ; DA1E 
+    BPL $da23                ; DA1F 
+    DEC $3d                  ; DA21 
+    CLC                      ; DA23 
+    ADC $28                  ; DA24 
+    STA $24                  ; DA26 
+    LDA $29                  ; DA28 
+    ADC $3d                  ; DA2A 
+    STA $25                  ; DA2C 
+    JSR a:$dd5f              ; DA2E 
+    BEQ $da3c                ; DA31 
+    BMI $da3d                ; DA33 
+    LDY $24                  ; DA35 
+    LDA $25                  ; DA37 
+    JMP a:$dae6              ; DA39 
+    RTS                      ; DA3C 
+
+; G42: Normalize linearY into240pixelpages;32pixelmetatile index and16pixelquadrant; saveR6andX,map03B9; B9pageorder,BB64-bytepages,C1fourattributes/metatile; restoreR6/X. Areturnsattribute but3Cremains03; DB02 caller returns3C ratherthanA.
+LookupTerrainFromSceneRom:
+    LDY $24                  ; DA3D 
+    LDA $25                  ; DA3F 
+    JSR a:$f78b              ; DA41 
+    STA $24                  ; DA44 
+    STY $25                  ; DA46 
+    AND #$e0                 ; DA48 
+    STA $3c                  ; DA4A 
+    LDA $22                  ; DA4C 
+    LSR A                    ; DA4E 
+    LSR A                    ; DA4F 
+    LSR A                    ; DA50 
+    ORA $3c                  ; DA51 
+    LSR A                    ; DA53 
+    LSR A                    ; DA54 
+    STA $3c                  ; DA55 
+    LDA $24                  ; DA57 
+    AND #$10                 ; DA59 
+    LSR A                    ; DA5B 
+    LSR A                    ; DA5C 
+    LSR A                    ; DA5D 
+    STA $3d                  ; DA5E 
+    LDA $22                  ; DA60 
+    AND #$10                 ; DA62 
+    BEQ $da68                ; DA64 
+    INC $3d                  ; DA66 
+    TXA                      ; DA68 
+    PHA                      ; DA69 
+    LDA a:$9fff              ; DA6A 
+    PHA                      ; DA6D 
+    LDX #$06                 ; DA6E 
+    LDA a:$03b9              ; DA70 
+    JSR a:$d6c3              ; DA73 
+    LDA $db                  ; DA76 
+    AND #$04                 ; DA78 
+    BEQ $da81                ; DA7A 
+    LDY $23                  ; DA7C 
+    JMP a:$da83              ; DA7E 
+    LDY $25                  ; DA81 
+    JSR a:$f50d              ; DA83 
+    LDY $3c                  ; DA86 
+    LDA ($22),Y              ; DA88 
+    LDY #$00                 ; DA8A 
+    STY $25                  ; DA8C 
+    ASL A                    ; DA8E 
+    ROL $25                  ; DA8F 
+    ASL A                    ; DA91 
+    ROL $25                  ; DA92 
+    ADC $c1                  ; DA94 
+    STA $24                  ; DA96 
+    LDA $25                  ; DA98 
+    ADC $c2                  ; DA9A 
+    STA $25                  ; DA9C 
+    LDA #$03                 ; DA9E 3C is forced03; actual ROM attribute returned through3D/A.
+    STA $3c                  ; DAA0 
+    LDY $3d                  ; DAA2 
+    LDA ($24),Y              ; DAA4 
+    STA $3d                  ; DAA6 
+    LDX #$06                 ; DAA8 
+    PLA                      ; DAAA 
+    JSR a:$d6c3              ; DAAB 
+    PLA                      ; DAAE 
+    TAX                      ; DAAF 
+    LDA $3d                  ; DAB0 
+    RTS                      ; DAB2 
+
+; G43: Direct cache base sampler; no domainclassifier.
+SampleCachedTerrainAtBase:
+    LDA $26                  ; DAB3 
+    STA $22                  ; DAB5 
+    LDA $27                  ; DAB7 
+    STA $23                  ; DAB9 
+    LDY $28                  ; DABB 
+    LDA $29                  ; DABD 
+    JMP a:$dae6              ; DABF 
+
+; G44: Signed16-bit coordinateaddition; normalizeY withF78B thenindex=(Ymod240&F0)|(Xlow>>4), load05B8+index toAand3C. EntryDAE6acceptsYlow/Ahigh.
+SampleCachedTerrainAtSignedOffset:
+    PHA                      ; DAC2 
+    LDA #$00                 ; DAC3 
+    STA $3c                  ; DAC5 
+    STA $3d                  ; DAC7 
+    PLA                      ; DAC9 
+    BPL $dace                ; DACA 
+    DEC $3c                  ; DACC 
+    CLC                      ; DACE 
+    ADC $26                  ; DACF 
+    STA $22                  ; DAD1 
+    LDA $27                  ; DAD3 
+    ADC $3c                  ; DAD5 
+    STA $23                  ; DAD7 
+    TYA                      ; DAD9 
+    BPL $dade                ; DADA 
+    DEC $3d                  ; DADC 
+    CLC                      ; DADE 
+    ADC $28                  ; DADF 
+    TAY                      ; DAE1 
+    LDA $29                  ; DAE2 
+    ADC $3d                  ; DAE4 
+    JSR a:$f78b              ; DAE6 
+    STA $24                  ; DAE9 
+    STY $25                  ; DAEB 
+    LDA $22                  ; DAED 
+    LSR A                    ; DAEF 
+    LSR A                    ; DAF0 
+    LSR A                    ; DAF1 
+    LSR A                    ; DAF2 
+    STA $3c                  ; DAF3 
+    LDA $24                  ; DAF5 
+    AND #$f0                 ; DAF7 
+    ORA $3c                  ; DAF9 
+    TAY                      ; DAFB 
+    LDA a:$05b8,Y            ; DAFC 
+    STA $3c                  ; DAFF 
+    RTS                      ; DB01 Onlycachepath copies actualattribute to3C.
 
 ; C57: Choose sample helper with DB bit04; priority bits40/80 return solid/empty; bit10 may invoke damage (9A+04) except active effect08; accumulate terrain bits0C into CE.
 ClassifyPlayerTerrainSample:
@@ -1183,7 +1350,62 @@ ClassifyPlayerTerrainSample:
     RTS                      ; DB46 
     LDA #$03                 ; DB47 
     RTS                      ; DB49 
-    .incbin "inputs/original.nes", $01DB5A, $028F ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01DB5A, $0215 ; UNINTERPRETED preserved bytes
+
+; G45: Scene bypassflag=>cache; otherwise negativeworldcoords=>outside, transversepage mismatch=>outside, longitudinalmismatch=>ROM; horizontalrelativeX>=248=>ROM. DD92..DD9B block has no path fromreviewedentry (precedingBCC/BCS exhaustive). Outside sets3C03,A0;ROMsets3C03,AFF.
+SelectTerrainCacheOrRom:
+    LDY $9a                  ; DD5F 
+    LDA a:$ddb9,Y            ; DD61 
+    BNE $dd9c                ; DD64 
+    LDA $22                  ; DD66 
+    SEC                      ; DD68 
+    SBC $a7                  ; DD69 
+    STA $3c                  ; DD6B 
+    LDA $23                  ; DD6D 
+    BMI $dda5                ; DD6F 
+    SBC $a8                  ; DD71 
+    BNE $dd9f                ; DD73 
+    LDA $24                  ; DD75 
+    SEC                      ; DD77 
+    SBC $a9                  ; DD78 
+    STA $3d                  ; DD7A 
+    LDA $25                  ; DD7C 
+    BMI $dda5                ; DD7E 
+    SBC $aa                  ; DD80 
+    BNE $ddac                ; DD82 
+    LDA $db                  ; DD84 
+    AND #$04                 ; DD86 
+    BEQ $dd9c                ; DD88 
+    LDA $3c                  ; DD8A 
+    CMP #$f8                 ; DD8C 
+    BCS $ddb2                ; DD8E 
+    BCC $dd9c                ; DD90 
+    CMP #$08                 ; DD92 
+    BCC $ddb2                ; DD94 
+    LDA $3d                  ; DD96 
+    CMP #$d4                 ; DD98 
+    BCS $ddb2                ; DD9A 
+    LDA #$01                 ; DD9C 
+    RTS                      ; DD9E 
+    LDA $db                  ; DD9F 
+    AND #$04                 ; DDA1 
+    BNE $ddb2                ; DDA3 
+    LDA #$03                 ; DDA5 
+    STA $3c                  ; DDA7 
+    LDA #$00                 ; DDA9 
+    RTS                      ; DDAB 
+    LDA $db                  ; DDAC 
+    AND #$04                 ; DDAE 
+    BNE $dda5                ; DDB0 
+    LDA #$03                 ; DDB2 
+    STA $3c                  ; DDB4 
+    LDA #$ff                 ; DDB6 
+    RTS                      ; DDB8 
+
+; G46: 32 bytes; nonzero7,11,14,18,19,22,23,24,25 bypassDD5Fcoordinatechecks; no sectorassignmentinferred.
+SceneTerrainCacheBypassFlags:
+    .byte $00,$00,$00,$00,$00,$00,$00,$01,$00,$00,$00,$01,$00,$00,$01,$00
+    .byte $00,$00,$01,$01,$00,$00,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00
 
 ; C58: Ignore while D2 or01A4 nonzero; subtract raw A from06B9. Borrow starts BA/BB death animation; equality zero takes hurt path. Preserve input carry as reaction direction.
 ApplyPlayerDamage:

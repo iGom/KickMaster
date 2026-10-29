@@ -540,7 +540,30 @@ FarCallViaA000:
 ; A21: Indirect JMP through RAM 04EA/04EB; called with JSR to make the callee return to wrapper.
 FarCallIndirect:
     JMP ($04ea)              ; F50A 
-    .incbin "inputs/original.nes", $01F51D, $0152 ; UNINTERPRETED preserved bytes
+
+; G47: Read pageID throughB9,Y; add64*ID splitoffsettables toBB/BC; return22/23. 32-byte tablesdefinevalidIDs0..31, no boundscheck.
+ResolveSceneMetatilePagePointer:
+    LDA ($b9),Y              ; F50D 
+    TAY                      ; F50F 
+    LDA a:$f520,Y            ; F510 
+    CLC                      ; F513 
+    ADC $bb                  ; F514 
+    STA $22                  ; F516 
+    LDA a:$f540,Y            ; F518 
+    ADC $bc                  ; F51B 
+    STA $23                  ; F51D 
+    RTS                      ; F51F 
+
+; G48: 32 lowbytes of64*ID.
+ScenePageOffsetLow:
+    .byte $00,$40,$80,$C0,$00,$40,$80,$C0,$00,$40,$80,$C0,$00,$40,$80,$C0
+    .byte $00,$40,$80,$C0,$00,$40,$80,$C0,$00,$40,$80,$C0,$00,$40,$80,$C0
+
+; G49: 32 highbytes of64*ID.
+ScenePageOffsetHigh:
+    .byte $00,$00,$00,$00,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03,$03,$03
+    .byte $04,$04,$04,$04,$05,$05,$05,$05,$06,$06,$06,$06,$07,$07,$07,$07
+    .incbin "inputs/original.nes", $01F570, $00FF ; UNINTERPRETED preserved bytes
 
 ; D37: Copy four tile IDs indexed06BD*4 fromFF2A to0185..0188; A0=16, fall through HUD staging.
 RefreshSelectedSpellIcon:

@@ -945,7 +945,71 @@ SetPlayerStateKeepFacing:
     LDA #$00                 ; AD3F 
     STA $cf                  ; AD41 
     RTS                      ; AD43 
-    .incbin "inputs/original.nes", $010D54, $008B ; UNINTERPRETED preserved bytes
+
+; G01: Increment CF; exact equality with Y resets CF and advances CD by2. A is exclusive end; crossing it selects idle preserving facing. Period is handler calls, not measured frames.
+AdvancePlayerAttackPhase:
+    STA $3d                  ; AD44 
+    STY $3c                  ; AD46 
+    INC $cf                  ; AD48 
+    LDA $cf                  ; AD4A 
+    SEC                      ; AD4C 
+    SBC $3c                  ; AD4D 
+    BNE $ad60                ; AD4F 
+    STA $cf                  ; AD51 
+    LDA $cd                  ; AD53 
+    CLC                      ; AD55 
+    ADC #$02                 ; AD56 
+    CMP $3d                  ; AD58 
+    BCC $ad5e                ; AD5A 
+    AND #$01                 ; AD5C 
+    STA $cd                  ; AD5E 
+    RTS                      ; AD60 
+    .incbin "inputs/original.nes", $010D71, $0021 ; UNINTERPRETED preserved bytes
+
+; G02: AD82 copies player16-bit position to26..29, preserves signed X offset A and Y offset; AD94 reuses base; tail C767.
+SamplePlayerOffsetTerrain:
+    PHA                      ; AD82 
+    LDA $cb                  ; AD83 
+    STA $26                  ; AD85 
+    LDA $cc                  ; AD87 
+    STA $27                  ; AD89 
+    LDA $c9                  ; AD8B 
+    STA $28                  ; AD8D 
+    LDA $ca                  ; AD8F 
+    STA $29                  ; AD91 
+    PLA                      ; AD93 
+    JSR a:$c767              ; AD94 
+    RTS                      ; AD97 
+
+; G03: Entry offsets Y=-28,-2,-5,+4,+3. Sample X=-5,+5 through actualC767 and OR results;42 saves Y.
+SampleTwoPlayerTerrainPoints:
+    LDY #$e4                 ; AD98 
+    BNE $adaa                ; AD9A 
+    LDY #$fe                 ; AD9C 
+    BNE $adaa                ; AD9E 
+    LDY #$fb                 ; ADA0 
+    BNE $adaa                ; ADA2 
+    LDY #$04                 ; ADA4 
+    BNE $adaa                ; ADA6 
+    LDY #$03                 ; ADA8 
+    STY $42                  ; ADAA 
+    LDA $cb                  ; ADAC 
+    STA $26                  ; ADAE 
+    LDA $cc                  ; ADB0 
+    STA $27                  ; ADB2 
+    LDA $c9                  ; ADB4 
+    STA $28                  ; ADB6 
+    LDA $ca                  ; ADB8 
+    STA $29                  ; ADBA 
+    LDA #$fb                 ; ADBC 
+    JSR a:$c767              ; ADBE 
+    STA $3e                  ; ADC1 
+    LDY $42                  ; ADC3 
+    LDA #$05                 ; ADC5 
+    JSR a:$c767              ; ADC7 
+    ORA $3e                  ; ADCA 
+    STA $3e                  ; ADCC 
+    RTS                      ; ADCE 
 
 ; C37: ADCF sets CE bit40; ADD6 sets DB bit80; ADDC clears DB bit80.
 SetPlayerMotionAndScrollFlags:
@@ -980,7 +1044,292 @@ UpdateFacingFromInputHistory:
     SEC                      ; ADF9 
     ROL $cd                  ; ADFA 
     RTS                      ; ADFC 
-    .incbin "inputs/original.nes", $010E0D, $020A ; UNINTERPRETED preserved bytes
+
+; G04: One-pixel speed; OR held input and two prior samples. Right bit wins simultaneous left/right.
+SelectHorizontalPlayerMotion:
+    LDA #$01                 ; ADFD 
+    STA $3e                  ; ADFF 
+    LDA $20                  ; AE01 
+    ORA a:$0713              ; AE03 
+    ORA a:$0714              ; AE06 
+    AND #$03                 ; AE09 
+    BEQ $ae13                ; AE0B 
+    LSR A                    ; AE0D 
+    BCC $ae16                ; AE0E 
+    JMP a:$aeb3              ; AE10 
+    RTS                      ; AE13 
+
+; G05: Explicit speed entry; three points X-9,Y-28/-14/0 block on bits03. CE04 suppresses translation on oddD8. Wall snap lowX to cellcenter8; camera mode07 and lower pageAF; left screen clamp20.
+MovePlayerLeft:
+    STA $3e                  ; AE14 
+    LDA $ce                  ; AE16 
+    AND #$04                 ; AE18 
+    BEQ $ae24                ; AE1A 
+    LDA $d8                  ; AE1C 
+    LSR A                    ; AE1E 
+    BCC $ae24                ; AE1F 
+    JMP a:$ae9b              ; AE21 
+    LDA #$f7                 ; AE24 
+    LDY #$e4                 ; AE26 
+    JSR a:$ad82              ; AE28 
+    STA $3f                  ; AE2B 
+    LDA #$f7                 ; AE2D 
+    LDY #$f2                 ; AE2F 
+    JSR a:$ad94              ; AE31 
+    ORA $3f                  ; AE34 
+    STA $3f                  ; AE36 
+    LDY #$00                 ; AE38 
+    LDA #$f7                 ; AE3A 
+    JSR a:$ad94              ; AE3C 
+    ORA $3f                  ; AE3F 
+    AND #$03                 ; AE41 
+    BNE $aea6                ; AE43 
+    SEC                      ; AE45 
+    LDA $cb                  ; AE46 
+    SBC $3e                  ; AE48 
+    STA $cb                  ; AE4A 
+    BCS $ae50                ; AE4C 
+    DEC $cc                  ; AE4E 
+    SEC                      ; AE50 
+    SBC $a7                  ; AE51 
+    STA $22                  ; AE53 
+    BMI $ae86                ; AE55 
+    LDA $db                  ; AE57 
+    AND #$0f                 ; AE59 
+    CMP #$07                 ; AE5B 
+    BNE $ae86                ; AE5D 
+    JSR a:$add6              ; AE5F 
+    SEC                      ; AE62 
+    LDA $a7                  ; AE63 
+    SBC $3e                  ; AE65 
+    STA $a7                  ; AE67 
+    BCS $ae6d                ; AE69 
+    DEC $a8                  ; AE6B 
+    LDA $a8                  ; AE6D 
+    BMI $ae77                ; AE6F 
+    LDA $a8                  ; AE71 
+    CMP $af                  ; AE73 
+    BCS $ae86                ; AE75 
+    LDA #$00                 ; AE77 
+    STA $a7                  ; AE79 
+    LDA $af                  ; AE7B 
+    STA $a8                  ; AE7D 
+    LDA $cb                  ; AE7F 
+    SEC                      ; AE81 
+    SBC $a7                  ; AE82 
+    STA $22                  ; AE84 
+    LDA $22                  ; AE86 
+    CMP #$14                 ; AE88 
+    BCS $ae9b                ; AE8A 
+    LDA $a7                  ; AE8C 
+    CLC                      ; AE8E 
+    ADC #$14                 ; AE8F 
+    STA $cb                  ; AE91 
+    LDA $a8                  ; AE93 
+    ADC #$00                 ; AE95 
+    STA $cc                  ; AE97 
+    CLC                      ; AE99 
+    RTS                      ; AE9A 
+    LDA $ce                  ; AE9B 
+    ORA #$20                 ; AE9D 
+    STA $ce                  ; AE9F 
+    JSR a:$adcf              ; AEA1 
+    SEC                      ; AEA4 
+    RTS                      ; AEA5 
+    LDA $cb                  ; AEA6 
+    AND #$f0                 ; AEA8 
+    CLC                      ; AEAA 
+    ADC #$08                 ; AEAB 
+    STA $cb                  ; AEAD 
+    CLC                      ; AEAF 
+    RTS                      ; AEB0 
+
+; G06: Explicit speed; symmetric X+9 probes. Camera mode05 starts at relativeX128, caps at AF:00; right screen clamp235. Movement CE40 may be set even on slow-terrain skipped tick.
+MovePlayerRight:
+    STA $3e                  ; AEB1 
+    LDA $ce                  ; AEB3 
+    AND #$04                 ; AEB5 
+    BEQ $aec1                ; AEB7 
+    LDA $d8                  ; AEB9 
+    LSR A                    ; AEBB 
+    BCC $aec1                ; AEBC 
+    JMP a:$af33              ; AEBE 
+    LDA #$09                 ; AEC1 
+    LDY #$e4                 ; AEC3 
+    JSR a:$ad82              ; AEC5 
+    STA $3f                  ; AEC8 
+    LDA #$09                 ; AECA 
+    LDY #$f2                 ; AECC 
+    JSR a:$ad94              ; AECE 
+    ORA $3f                  ; AED1 
+    STA $3f                  ; AED3 
+    LDY #$00                 ; AED5 
+    LDA #$09                 ; AED7 
+    JSR a:$ad94              ; AED9 
+    ORA $3f                  ; AEDC 
+    AND #$03                 ; AEDE 
+    BNE $af3c                ; AEE0 
+    CLC                      ; AEE2 
+    LDA $cb                  ; AEE3 
+    ADC $3e                  ; AEE5 
+    STA $cb                  ; AEE7 
+    BCC $aeed                ; AEE9 
+    INC $cc                  ; AEEB 
+    SEC                      ; AEED 
+    SBC $a7                  ; AEEE 
+    STA $22                  ; AEF0 
+    BPL $af1f                ; AEF2 
+    LDA $db                  ; AEF4 
+    AND #$0f                 ; AEF6 
+    CMP #$05                 ; AEF8 
+    BNE $af1f                ; AEFA 
+    JSR a:$add6              ; AEFC 
+    CLC                      ; AEFF 
+    LDA $a7                  ; AF00 
+    ADC $3e                  ; AF02 
+    STA $a7                  ; AF04 
+    BCC $af0a                ; AF06 
+    INC $a8                  ; AF08 
+    LDA $a8                  ; AF0A 
+    CMP $af                  ; AF0C 
+    BCC $af1f                ; AF0E 
+    LDA $af                  ; AF10 
+    STA $a8                  ; AF12 
+    LDA #$00                 ; AF14 
+    STA $a7                  ; AF16 
+    LDA $cb                  ; AF18 
+    SEC                      ; AF1A 
+    SBC $a7                  ; AF1B 
+    STA $22                  ; AF1D 
+    LDA $22                  ; AF1F 
+    CMP #$eb                 ; AF21 
+    BCC $af33                ; AF23 
+    LDA $a7                  ; AF25 
+    CLC                      ; AF27 
+    ADC #$eb                 ; AF28 
+    STA $cb                  ; AF2A 
+    LDA $a8                  ; AF2C 
+    ADC #$00                 ; AF2E 
+    STA $cc                  ; AF30 
+    RTS                      ; AF32 
+    LDA $ce                  ; AF33 
+    AND #$df                 ; AF35 
+    STA $ce                  ; AF37 
+    JMP a:$adcf              ; AF39 
+    LDA $cb                  ; AF3C 
+    AND #$f0                 ; AF3E 
+    CLC                      ; AF40 
+    ADC #$08                 ; AF41 
+    STA $cb                  ; AF43 
+    CLC                      ; AF45 
+    RTS                      ; AF46 
+
+; G07: Speed2; held down wins up; no direction returns via sharedRTS. Not a jump integrator.
+SelectFreeVerticalPlayerMotion:
+    LDA #$02                 ; AF47 
+    STA $3e                  ; AF49 
+    LDA $20                  ; AF4B 
+    AND #$0c                 ; AF4D 
+    BEQ $af57                ; AF4F 
+    AND #$04                 ; AF51 
+    BNE $afbe                ; AF53 
+    BEQ $af5c                ; AF55 
+    JMP a:$add5              ; AF57 
+
+; G08: Unsigned explicit speed; mode03 scroll when relativeY<96, camera-underflow clamp and flagclear; player top clamp31; CE10/40 motion bits.
+MovePlayerUp:
+    STA $3e                  ; AF5A 
+    SEC                      ; AF5C 
+    LDA $c9                  ; AF5D 
+    SBC $3e                  ; AF5F 
+    STA $c9                  ; AF61 
+    BCS $af67                ; AF63 
+    DEC $ca                  ; AF65 
+    SEC                      ; AF67 
+    SBC $a9                  ; AF68 
+    STA $22                  ; AF6A 
+    CMP #$60                 ; AF6C 
+    BCS $af9f                ; AF6E 
+    LDA $db                  ; AF70 
+    AND #$0f                 ; AF72 
+    CMP #$03                 ; AF74 
+    BNE $af9f                ; AF76 
+    JSR a:$add6              ; AF78 
+    SEC                      ; AF7B 
+    LDA $a9                  ; AF7C 
+    SBC $3e                  ; AF7E 
+    STA $a9                  ; AF80 
+    BCS $af86                ; AF82 
+    DEC $aa                  ; AF84 
+    LDA $aa                  ; AF86 
+    CMP #$ff                 ; AF88 
+    BCC $af90                ; AF8A 
+    LDA $a9                  ; AF8C 
+    CMP #$f0                 ; AF8E 
+    BCC $af9f                ; AF90 
+    LDA #$00                 ; AF92 
+    STA $a9                  ; AF94 
+    STA $aa                  ; AF96 
+    LDA $c9                  ; AF98 
+    STA $22                  ; AF9A 
+    JSR a:$addc              ; AF9C 
+    LDA $22                  ; AF9F 
+    CMP #$1f                 ; AFA1 
+    BCS $afb3                ; AFA3 
+    LDA $a9                  ; AFA5 
+    CLC                      ; AFA7 
+    ADC #$1f                 ; AFA8 
+    STA $c9                  ; AFAA 
+    LDA $aa                  ; AFAC 
+    ADC #$00                 ; AFAE 
+    STA $ca                  ; AFB0 
+    RTS                      ; AFB2 
+    LDA $ce                  ; AFB3 
+    ORA #$10                 ; AFB5 
+    STA $ce                  ; AFB7 
+    JMP a:$adcf              ; AFB9 
+
+; G09: Unsigned explicit speed; mode01 scroll at relativeY>=128 and compare camera limitAD/AE; relativeY>=206 falls through reviewed terminal-fall entryB007. High/low limit compare is not a generic16-bit comparator for arbitrary synthetic pages.
+MovePlayerDown:
+    STA $3e                  ; AFBC 
+    CLC                      ; AFBE 
+    LDA $c9                  ; AFBF 
+    ADC $3e                  ; AFC1 
+    STA $c9                  ; AFC3 
+    BCC $afc9                ; AFC5 
+    INC $ca                  ; AFC7 
+    SEC                      ; AFC9 
+    SBC $a9                  ; AFCA 
+    STA $22                  ; AFCC 
+    BPL $b001                ; AFCE 
+    LDA $db                  ; AFD0 
+    AND #$0f                 ; AFD2 
+    CMP #$01                 ; AFD4 
+    BNE $b001                ; AFD6 
+    JSR a:$add6              ; AFD8 
+    CLC                      ; AFDB 
+    LDA $a9                  ; AFDC 
+    ADC $3e                  ; AFDE 
+    STA $a9                  ; AFE0 
+    BCC $afe6                ; AFE2 
+    INC $aa                  ; AFE4 
+    LDA $aa                  ; AFE6 
+    CMP $ae                  ; AFE8 
+    BCC $aff0                ; AFEA 
+    LDA $a9                  ; AFEC 
+    CMP $ad                  ; AFEE 
+    BCC $b001                ; AFF0 
+    LDA $ad                  ; AFF2 
+    STA $a9                  ; AFF4 
+    LDA $ae                  ; AFF6 
+    STA $aa                  ; AFF8 
+    LDA $c9                  ; AFFA 
+    SEC                      ; AFFC 
+    SBC $a9                  ; AFFD 
+    STA $22                  ; AFFF 
+    LDA $22                  ; B001 
+    CMP #$ce                 ; B003 
+    BCC $b016                ; B005 
 
 ; C39: Set D3 bit80, CD=C4/C5 preserving facing, CF=0 and CE=0.
 EnterPlayerFallState:
@@ -992,7 +1341,14 @@ EnterPlayerFallState:
     LDA #$00                 ; B011 
     STA $ce                  ; B013 
     RTS                      ; B015 
-    .incbin "inputs/original.nes", $011026, $0014 ; UNINTERPRETED preserved bytes
+
+; G10: Clear CE10/20 then set40; tail after nonterminal downward move.
+MarkDownwardPlayerMotion:
+    LDA $ce                  ; B016 
+    AND #$cf                 ; B018 
+    STA $ce                  ; B01A 
+    JMP a:$adcf              ; B01C 
+    .incbin "inputs/original.nes", $01102F, $000B ; UNINTERPRETED preserved bytes
 
 ; C40: Copy ten bytes to C9..D2, then clear active flags 057C..057C+0013 inclusive under valid small slot-count precondition.
 InitializePlayerStateBlock:
@@ -1107,7 +1463,406 @@ PlayerNormalHandlerPointers:
     .byte $21,$BB,$21,$BB,$21,$BB,$21,$BB,$21,$BB,$2B,$BB,$2B,$BB,$2B,$BB
     .byte $2B,$BB,$2B,$BB,$4F,$BB,$6E,$BB,$6E,$BB,$99,$BB,$AD,$BB,$AD,$BB
     .byte $AD,$BB,$E9,$BB,$E9,$BB,$E9,$BB,$E9,$BB,$B4,$B8,$B4,$B8
-    .incbin "inputs/original.nes", $0112E0, $085B ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $0112E0, $053A ; UNINTERPRETED preserved bytes
+
+; G11: 13 bytes:3 fourtimes,2 fourtimes,1 fourtimes,0. D1 low6 indexes; normal domain0..12 only.
+PlayerJumpStepMagnitudes:
+    .byte $03,$03,$03,$03,$02,$02,$02,$02,$01,$01,$01,$01,$00
+
+; G12: Six unsigned horizontal speeds2,3,3,3,3,2, indexed (CD-A0)/2.
+PlayerForwardAttackStepMagnitudes:
+    .byte $02,$03,$03,$03,$03,$02
+
+; G13: Two ground probes, vertical alignment and embedded correction; newA wins newB. B selects down beforeup; no attack dispatches full direction nibble.
+UpdateStandingPlayer:
+    JSR a:$ad9c              ; B81D 
+    LSR A                    ; B820 
+    BCS $b863                ; B821 
+    JSR a:$ada8              ; B823 
+    LSR A                    ; B826 
+    BCC $b87e                ; B827 
+    LDA $c9                  ; B829 
+    AND #$f0                 ; B82B 
+    ORA #$0f                 ; B82D 
+    STA $c9                  ; B82F 
+    BIT $1f                  ; B831 
+    BMI $b84d                ; B833 
+    BVS $b850                ; B835 
+    LDA #$00                 ; B837 
+    STA $d1                  ; B839 
+    LDA $20                  ; B83B 
+    AND #$0f                 ; B83D 
+    TAY                      ; B83F 
+    LDA a:$b881,Y            ; B840 
+    STA $2c                  ; B843 
+    LDA a:$b891,Y            ; B845 
+    STA $2d                  ; B848 
+    JMP ($002c)              ; B84A 
+    JMP a:$bc17              ; B84D 
+    LDA $20                  ; B850 
+    AND #$0c                 ; B852 
+    BEQ $b860                ; B854 
+    AND #$04                 ; B856 
+    BEQ $b85d                ; B858 
+    JMP a:$bc99              ; B85A 
+    JMP a:$bcbe              ; B85D 
+    JMP a:$bc56              ; B860 
+    LDA $c9                  ; B863 
+    AND #$0f                 ; B865 
+    CMP #$07                 ; B867 
+    BCS $b878                ; B869 
+    LDA $c9                  ; B86B 
+    AND #$f0                 ; B86D 
+    STA $c9                  ; B86F 
+    BNE $b875                ; B871 
+    DEC $ca                  ; B873 
+    DEC $c9                  ; B875 
+    RTS                      ; B877 
+    INC $c9                  ; B878 
+    BNE $b87e                ; B87A 
+    INC $ca                  ; B87C 
+    JMP a:$bc2a              ; B87E 
+
+; G14: 16 low bytes then16 highbytes: right/left enterwalk; down enterscrouch; other direction combinations RTS.
+StandingDirectionSplitPointers:
+    .byte $B4,$A1,$A5,$B4,$AE,$B4,$B4,$B4,$B4,$B4,$B4,$B4,$B4,$B4,$B4,$B4
+    .byte $B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8,$B8
+
+; G15: B8A1 selects02,right; B8A5 selects03,left; both clearCF. B8AE ORs10 for crouch. B8B4 sharedRTS.
+EnterWalkOrCrouchPlayer:
+    LDA #$02                 ; B8A1 
+    BNE $b8a7                ; B8A3 
+    LDA #$03                 ; B8A5 
+    STA $cd                  ; B8A7 
+    LDA #$00                 ; B8A9 
+    STA $cf                  ; B8AB 
+    RTS                      ; B8AD 
+    LDA $cd                  ; B8AE 
+    ORA #$10                 ; B8B0 
+    STA $cd                  ; B8B2 
+    RTS                      ; B8B4 
+
+; G16: Ground align; newA/newB priority; direction OR current and twohistorybytes. CD lowbit follows right priority. SBC07 inherits carry from oldCDbit7, so normal low states advance every8 calls, not7.
+UpdateWalkingPlayer:
+    JSR a:$ada8              ; B8B5 
+    LSR A                    ; B8B8 
+    BCC $b87e                ; B8B9 
+    LDA $c9                  ; B8BB 
+    AND #$f0                 ; B8BD 
+    CLC                      ; B8BF 
+    ADC #$0f                 ; B8C0 
+    STA $c9                  ; B8C2 
+    BIT $1f                  ; B8C4 
+    BMI $b8d9                ; B8C6 
+    BVS $b8dc                ; B8C8 
+    LDA $20                  ; B8CA 
+    ORA a:$0713              ; B8CC 
+    ORA a:$0714              ; B8CF 
+    AND #$03                 ; B8D2 
+    BNE $b8ef                ; B8D4 
+    JMP a:$bc12              ; B8D6 
+    JMP a:$bc17              ; B8D9 
+    LDA $20                  ; B8DC 
+    LSR A                    ; B8DE 
+    LSR A                    ; B8DF 
+    LSR A                    ; B8E0 
+    BCS $b8e9                ; B8E1 
+    LSR A                    ; B8E3 
+    BCS $b8ec                ; B8E4 
+    JMP a:$bc56              ; B8E6 
+    JMP a:$bc99              ; B8E9 
+    JMP a:$bcbe              ; B8EC 
+    EOR #$01                 ; B8EF 
+    LSR $cd                  ; B8F1 
+    LSR A                    ; B8F3 
+    ROL $cd                  ; B8F4 
+    INC $cf                  ; B8F6 
+    LDA $cf                  ; B8F8 
+    SBC #$07                 ; B8FA Carry from old CD bit7; normal walking states need8 calls.
+    BCC $b90f                ; B8FC 
+    LDA #$00                 ; B8FE 
+    STA $cf                  ; B900 
+    LDA $cd                  ; B902 
+    CLC                      ; B904 
+    ADC #$02                 ; B905 
+    CMP #$0a                 ; B907 
+    BCC $b90d                ; B909 
+    SBC #$08                 ; B90B 
+    STA $cd                  ; B90D 
+    JMP a:$adfd              ; B90F 
+
+; G17: BCEF physics then facing and newB dispatch; D1zero returnsidle unless downattack1C wasselected.
+UpdateJumpingPlayer:
+    JSR a:$bcef              ; B912 
+    JSR a:$ade2              ; B915 
+    BIT $1f                  ; B918 
+    BVC $b91f                ; B91A 
+    JSR a:$b972              ; B91C 
+    LDA $d1                  ; B91F 
+    BNE $b92e                ; B921 
+    LDA $cd                  ; B923 
+    AND #$fe                 ; B925 
+    CMP #$1c                 ; B927 
+    BEQ $b92e                ; B929 
+    JMP a:$bc12              ; B92B 
+    RTS                      ; B92E 
+
+; G18: Facing/newB; horizontalmove; CD+=2 andD1&=3F. Caller can therefore modify freshly selectedattack code.
+AdvancePlayerAirTransition:
+    JSR a:$ade2              ; B92F 
+    BIT $1f                  ; B932 
+    BVC $b939                ; B934 
+    JSR a:$b972              ; B936 
+    JSR a:$adfd              ; B939 
+    INC $cd                  ; B93C 
+    INC $cd                  ; B93E 
+    LDA $d1                  ; B940 
+    AND #$3f                 ; B942 
+    STA $d1                  ; B944 
+    RTS                      ; B946 
+
+; G19: Facing/newB; landing probesY-5/+3. Else decrement lowphase but use predecrement index for down speed, thenhorizontalmove.
+UpdateFallingPlayer:
+    JSR a:$ade2              ; B947 
+    BIT $1f                  ; B94A 
+    BVC $b951                ; B94C 
+    JSR a:$b972              ; B94E 
+    JSR a:$ada0              ; B951 
+    LSR A                    ; B954 
+    BCS $b95d                ; B955 
+    JSR a:$ada8              ; B957 
+    LSR A                    ; B95A 
+    BCS $b96f                ; B95B 
+    LDA $d1                  ; B95D 
+    AND #$3f                 ; B95F 
+    BEQ $b965                ; B961 
+    DEC $d1                  ; B963 
+    TAY                      ; B965 
+    LDA a:$b80a,Y            ; B966 
+    JSR a:$afbc              ; B969 
+    JMP a:$adfd              ; B96C 
+    JMP a:$bc12              ; B96F 
+
+; G20: 16-way held direction nibble split-pointer dispatch; opposing/unsupported combinations return unchanged.
+SelectAirbornePlayerAttack:
+    LDA $20                  ; B972 
+    AND #$0f                 ; B974 
+    TAY                      ; B976 
+    LDA a:$b984,Y            ; B977 
+    STA $2e                  ; B97A 
+    LDA a:$b994,Y            ; B97C 
+    STA $2f                  ; B97F 
+    JMP ($002e)              ; B981 
+
+; G21: No direction normal; horizontal forwardtier; down/down-diagonal downwardtier; up/up-diagonal upwardtier; unsupported masks sharedRTS.
+AirborneAttackSplitPointers:
+    .byte $56,$34,$34,$B4,$81,$81,$81,$B4,$BE,$BE,$BE,$B4,$B4,$B4,$B4,$B4
+    .byte $BC,$BC,$BC,$B8,$BC,$BC,$BC,$B8,$BC,$BC,$BC,$B8,$B8,$B8,$B8,$B8
+
+; G22: Ground required; newA jump; down current/history preservescrouch; optional facing fromcurrenthorizontal; newB entersBCAE grounded12 withoutlevel2 slidingreplacement.
+UpdateCrouchingPlayer:
+    JSR a:$ada8              ; B9A4 
+    LSR A                    ; B9A7 
+    BCC $b9d1                ; B9A8 
+    LDA $1f                  ; B9AA 
+    BMI $b9cb                ; B9AC 
+    LDA $20                  ; B9AE 
+    ORA a:$0713              ; B9B0 
+    ORA a:$0714              ; B9B3 
+    AND #$04                 ; B9B6 
+    BEQ $b9ce                ; B9B8 
+    LDA $20                  ; B9BA 
+    AND #$03                 ; B9BC 
+    BEQ $b9c3                ; B9BE 
+    JSR a:$ade2              ; B9C0 
+    BIT $1f                  ; B9C3 
+    BVC $b9ca                ; B9C5 
+    JMP a:$bcae              ; B9C7 
+    RTS                      ; B9CA 
+    JMP a:$bc17              ; B9CB 
+    JMP a:$bc12              ; B9CE 
+    JMP a:$bc2a              ; B9D1 
+
+; G23: Groundrequired; five states12..1A each3calls, thenreturn10 facingpreserved.
+UpdateCrouchingAttack:
+    JSR a:$ada8              ; B9D4 
+    LSR A                    ; B9D7 
+    BCC $b9f5                ; B9D8 
+    INC $cf                  ; B9DA 
+    LDA $cf                  ; B9DC 
+    SEC                      ; B9DE 
+    SBC #$03                 ; B9DF 
+    BNE $b9f4                ; B9E1 
+    STA $cf                  ; B9E3 
+    LDA $cd                  ; B9E5 
+    CLC                      ; B9E7 
+    ADC #$02                 ; B9E8 
+    CMP #$1c                 ; B9EA 
+    BCC $b9f2                ; B9EC 
+    AND #$01                 ; B9EE 
+    ORA #$10                 ; B9F0 
+    STA $cd                  ; B9F2 
+    RTS                      ; B9F4 
+    JMP a:$bc2a              ; B9F5 
+
+; G24: Horizontalmove; lowerpoints use destructiveC773 withstrength4. Clearsolidbit meansdown4; solidbitalignsY andidle. Destructive highflagcallee remains partlyunreviewed.
+UpdateDownwardAttack:
+    JSR a:$adfd              ; B9F8 
+    JSR a:$ada4              ; B9FB 
+    LDA #$04                 ; B9FE 
+    STA $2c                  ; BA00 
+    LDY #$05                 ; BA02 
+    LDA #$fb                 ; BA04 
+    JSR a:$c773              ; BA06 
+    STA $3e                  ; BA09 
+    LDA #$04                 ; BA0B 
+    STA $2c                  ; BA0D 
+    LDY #$05                 ; BA0F 
+    LDA #$05                 ; BA11 
+    JSR a:$c773              ; BA13 
+    ORA $3e                  ; BA16 
+    LSR A                    ; BA18 
+    BCS $ba20                ; BA19 
+    LDA #$04                 ; BA1B 
+    JMP a:$afbc              ; BA1D 
+    LDA $c9                  ; BA20 
+    SBC #$04                 ; BA22 
+    STA $c9                  ; BA24 
+    LDA $ca                  ; BA26 
+    SBC #$00                 ; BA28 
+    STA $ca                  ; BA2A 
+    LDA $c9                  ; BA2C 
+    AND #$f0                 ; BA2E 
+    CLC                      ; BA30 
+    ADC #$0f                 ; BA31 
+    STA $c9                  ; BA33 
+    JMP a:$bc12              ; BA35 
+
+; G25: Physics then linearphase period4 exclusiveend2C.
+UpdateAttack1E:
+    JSR a:$bcef              ; BA38 
+    LDY #$04                 ; BA3B 
+    LDA #$2c                 ; BA3D 
+    JMP a:$ad44              ; BA3F 
+
+; G26: Physics then linearphase period4 exclusiveend42.
+UpdateAttack2C:
+    JSR a:$bcef              ; BA42 
+    LDY #$04                 ; BA45 
+    LDA #$42                 ; BA47 
+    JMP a:$ad44              ; BA49 
+
+; G27: Physics; D3&A0 freezes animation; otherwise++CF indexes BA63 preserving facing.
+UpdateAttack42:
+    JSR a:$bcef              ; BA4C 
+    LDA $d3                  ; BA4F 
+    AND #$a0                 ; BA51 
+    BNE $ba62                ; BA53 
+    INC $cf                  ; BA55 
+    LDY $cf                  ; BA57 
+    LDA $cd                  ; BA59 
+    AND #$01                 ; BA5B 
+    ORA a:$ba63,Y            ; BA5D 
+    STA $cd                  ; BA60 
+    RTS                      ; BA62 
+
+; G28: 33 statecodes; initializedCF0 displays42, firstcallindex1. Index32 returnsidle.
+PlayerAttack42Sequence:
+    .byte $42,$44,$46,$48,$4A,$4C,$4E,$50,$52,$54,$56,$44,$46,$48,$4A,$4C
+    .byte $4E,$50,$52,$54,$56,$44,$46,$48,$4A,$4C,$4E,$50,$52,$54,$56,$5A
+    .byte $00
+
+; G29: Physics then linearphase period3 exclusiveend7E.
+UpdateAttack5C:
+    JSR a:$bcef              ; BA84 
+    LDY #$03                 ; BA87 
+    LDA #$7e                 ; BA89 
+    JMP a:$ad44              ; BA8B 
+
+; G30: Physics then linearphase period3 exclusiveendA0.
+UpdateAttack7E:
+    JSR a:$bcef              ; BA8E 
+    LDY #$03                 ; BA91 
+    LDA #$a0                 ; BA93 
+    JMP a:$ad44              ; BA95 
+
+; G31: Six A0..AA phases6calls. Speed table; two wall probes; wall/end checkshead, normallyenters0A. Blockinghead canflip facing ifCE40clear; seedD1=3. D1=80launch andgroundlaunchsharehandler.
+UpdateForwardAttack:
+    LDA $cf                  ; BA98 
+    AND #$7f                 ; BA9A 
+    STA $cf                  ; BA9C 
+    JSR a:$ada8              ; BA9E 
+    LSR A                    ; BAA1 
+    BCS $baa9                ; BAA2 
+    LDA #$01                 ; BAA4 
+    JSR a:$afbc              ; BAA6 
+    LDA $cd                  ; BAA9 
+    SEC                      ; BAAB 
+    SBC #$a0                 ; BAAC 
+    LSR A                    ; BAAE 
+    TAY                      ; BAAF 
+    BCS $bad2                ; BAB0 
+    LDA a:$b817,Y            ; BAB2 
+    STA $3e                  ; BAB5 
+    LDA #$0b                 ; BAB7 
+    LDY #$f1                 ; BAB9 
+    JSR a:$ad82              ; BABB 
+    STA $3f                  ; BABE 
+    LDA #$0b                 ; BAC0 
+    LDY #$00                 ; BAC2 
+    JSR a:$ad94              ; BAC4 
+    ORA $3f                  ; BAC7 
+    LSR A                    ; BAC9 
+    BCS $bb03                ; BACA 
+    JSR a:$aede              ; BACC 
+    JMP a:$baef              ; BACF 
+    LDA a:$b817,Y            ; BAD2 
+    STA $3e                  ; BAD5 
+    LDA #$f5                 ; BAD7 
+    LDY #$f1                 ; BAD9 
+    JSR a:$ad82              ; BADB 
+    STA $3f                  ; BADE 
+    LDA #$f5                 ; BAE0 
+    LDY #$00                 ; BAE2 
+    JSR a:$ad94              ; BAE4 
+    ORA $3f                  ; BAE7 
+    LSR A                    ; BAE9 
+    BCS $bb03                ; BAEA 
+    JSR a:$ae41              ; BAEC 
+    INC $cf                  ; BAEF 
+    LDA $cf                  ; BAF1 
+    SEC                      ; BAF3 
+    SBC #$06                 ; BAF4 
+    BNE $bb11                ; BAF6 
+    STA $cf                  ; BAF8 
+    LDA $cd                  ; BAFA 
+    CLC                      ; BAFC 
+    ADC #$02                 ; BAFD 
+    CMP #$ac                 ; BAFF 
+    BCC $bb0f                ; BB01 
+    JSR a:$ad98              ; BB03 
+    LSR A                    ; BB06 
+    BCS $bb12                ; BB07 
+    LDA $cd                  ; BB09 
+    AND #$01                 ; BB0B 
+    ORA #$0a                 ; BB0D 
+    STA $cd                  ; BB0F 
+    RTS                      ; BB11 
+    BIT $ce                  ; BB12 
+    BVS $bb1c                ; BB14 
+    LDA $cd                  ; BB16 
+    EOR #$01                 ; BB18 
+    STA $cd                  ; BB1A 
+    LDA #$03                 ; BB1C 
+    STA $d1                  ; BB1E 
+    RTS                      ; BB20 
+
+; G32: Physics then period3 exclusiveendB8; AC..B6 take18calls, despiteB8alsohavingthishandler in dispatchtable.
+UpdateAttackAC:
+    JSR a:$bcef              ; BB21 
+    LDY #$03                 ; BB24 
+    LDA #$b8                 ; BB26 
+    JMP a:$ad44              ; BB28 
 
 ; C49: Set D3 bit80; every exact 0F CF updates advance CD by2; after C2/C3 select CA/CB and reset CF.
 AdvancePlayerDeathAnimation:
@@ -1222,7 +1977,181 @@ AdvanceMagicAcquisitionAnimation:
 ; E16: Thirteen states CC CE D0 D0 D0 CE CC CC CC CC CC CC 00; startingCF0 reaches presentation on96th invocation.
 MagicAcquisitionAnimationStates:
     .byte $CC,$CE,$D0,$D0,$D0,$CE,$CC,$CC,$CC,$CC,$CC,$CC,$00
-    .incbin "inputs/original.nes", $011BF9, $016D ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $011BF9, $0029 ; UNINTERPRETED preserved bytes
+
+; G33: BC12idle;BC17sound35,state0A,D1=E7 andimmediateup3;BC2Astate0E,D1zero.
+EnterIdleJumpOrFall:
+    LDA #$00                 ; BC12 
+    JMP a:$ad39              ; BC14 
+    LDA #$35                 ; BC17 
+    STA a:$0001              ; BC19 
+    LDA #$0a                 ; BC1C 
+    JSR a:$ad39              ; BC1E 
+    LDA #$e7                 ; BC21 
+    STA $d1                  ; BC23 
+    LDA #$03                 ; BC25 
+    JMP a:$af5a              ; BC27 
+    LDA #$00                 ; BC2A 
+    STA $d1                  ; BC2C 
+    LDA #$0e                 ; BC2E 
+    JSR a:$ad39              ; BC30 
+    RTS                      ; BC33 
+
+; G34: Level>=5 andfacingcompatible direction selectsA0,D1=80;else normalattacktier. Zero horizontal is accepted atthisentry.
+SelectForwardAttackTier:
+    LDA $d3                  ; BC34 
+    AND #$07                 ; BC36 
+    CMP #$05                 ; BC38 
+    BCC $bc5a                ; BC3A 
+    LDA $20                  ; BC3C 
+    AND #$03                 ; BC3E 
+    BEQ $bc49                ; BC40 
+    EOR #$01                 ; BC42 
+    EOR $cd                  ; BC44 
+    LSR A                    ; BC46 
+    BCS $bc56                ; BC47 
+    LDA #$16                 ; BC49 
+    STA $01                  ; BC4B 
+    LDA #$80                 ; BC4D 
+    STA $d1                  ; BC4F 
+    LDA #$a0                 ; BC51 
+    JMP a:$ad39              ; BC53 
+
+; G35: Level0..3=>1E,4..5=>2C,6..7=>7E; BC67 bypasseslevel6replacement. Statehelperpreservesfacing,clearsCF.
+SelectNormalAttackTier:
+    LDA $d3                  ; BC56 
+    AND #$07                 ; BC58 
+    CMP #$06                 ; BC5A 
+    BCC $bc6b                ; BC5C 
+    LDA #$16                 ; BC5E 
+    STA $01                  ; BC60 
+    LDA #$7e                 ; BC62 
+    JMP a:$ad39              ; BC64 
+    LDA $d3                  ; BC67 
+    AND #$07                 ; BC69 
+    CMP #$04                 ; BC6B 
+    BCC $bc78                ; BC6D 
+    LDA #$16                 ; BC6F 
+    STA $01                  ; BC71 
+    LDA #$2c                 ; BC73 
+    JMP a:$ad39              ; BC75 
+    LDA #$16                 ; BC78 
+    STA $01                  ; BC7A 
+    LDA #$1e                 ; BC7C 
+    JMP a:$ad39              ; BC7E 
+
+; G36: Level>=1=>1C,D1zero;level0=>fall0E,D1zero.
+SelectDownwardAttackTier:
+    LDA $d3                  ; BC81 
+    AND #$07                 ; BC83 
+    CMP #$01                 ; BC85 
+    BCC $bc96                ; BC87 
+    LDA #$16                 ; BC89 
+    STA $01                  ; BC8B 
+    LDA #$00                 ; BC8D 
+    STA $d1                  ; BC8F 
+    LDA #$1c                 ; BC91 
+    JMP a:$ad39              ; BC93 
+    JMP a:$bc2a              ; BC96 
+
+; G37: Level>=2=>A0,D1zero;lowerlevels useBCAE requiringground andstate12. DirectBCAE bypasseshigherlevelreplacement.
+SelectGroundDownAttackTier:
+    LDA $d3                  ; BC99 
+    AND #$07                 ; BC9B 
+    CMP #$02                 ; BC9D 
+    BCC $bcae                ; BC9F 
+    LDA #$00                 ; BCA1 
+    STA $d1                  ; BCA3 
+    LDA #$16                 ; BCA5 
+    STA $01                  ; BCA7 
+    LDA #$a0                 ; BCA9 
+    JMP a:$ad39              ; BCAB 
+    JSR a:$ada8              ; BCAE 
+    LSR A                    ; BCB1 
+    BCC $bcbd                ; BCB2 
+    LDA #$16                 ; BCB4 
+    STA $01                  ; BCB6 
+    LDA #$12                 ; BCB8 
+    JMP a:$ad39              ; BCBA 
+    RTS                      ; BCBD 
+
+; G38: Level7=>42;elselevel>=3 plushorizontal=>5C;elseAC. BCCF bypasseslevel7replacement.
+SelectUpwardAttackTier:
+    LDA $d3                  ; BCBE 
+    AND #$07                 ; BCC0 
+    CMP #$07                 ; BCC2 
+    BCC $bcd3                ; BCC4 
+    LDA #$16                 ; BCC6 
+    STA $01                  ; BCC8 
+    LDA #$42                 ; BCCA 
+    JMP a:$ad39              ; BCCC 
+    LDA $d3                  ; BCCF 
+    AND #$07                 ; BCD1 
+    CMP #$03                 ; BCD3 
+    BCC $bce6                ; BCD5 
+    LDA $20                  ; BCD7 
+    AND #$03                 ; BCD9 
+    BEQ $bce6                ; BCDB 
+    LDA #$16                 ; BCDD 
+    STA $01                  ; BCDF 
+    LDA #$5c                 ; BCE1 
+    JMP a:$ad39              ; BCE3 
+    LDA #$16                 ; BCE6 
+    STA $01                  ; BCE8 
+    LDA #$ac                 ; BCEA 
+    JMP a:$ad39              ; BCEC 
+
+; G39: D1bit40ascending; negativeholdphase continuesup3 whileheldA orhistorylow2. Release seeds40 withoutverticalstep; indexed taper endswith0C; descent uses predecrementindex; groundaligns andclearsD1. Ceilingsblockbit02.
+IntegratePlayerJumpPhase:
+    BIT $d1                  ; BCEF 
+    BVC $bd30                ; BCF1 
+    JSR a:$ad98              ; BCF3 
+    AND #$02                 ; BCF6 
+    BNE $bd14                ; BCF8 
+    INC $d1                  ; BCFA 
+    BMI $bd19                ; BCFC 
+    BNE $bd04                ; BCFE 
+    LDA #$40                 ; BD00 
+    STA $d1                  ; BD02 
+    LDA $d1                  ; BD04 
+    AND #$3f                 ; BD06 
+    TAY                      ; BD08 
+    LDA a:$b80a,Y            ; BD09 
+    BEQ $bd14                ; BD0C 
+    JSR a:$af5a              ; BD0E 
+    JMP a:$adfd              ; BD11 
+    LDA #$0c                 ; BD14 
+    STA $d1                  ; BD16 
+    RTS                      ; BD18 
+    BIT $20                  ; BD19 
+    BMI $bd23                ; BD1B 
+    LDA $21                  ; BD1D 
+    AND #$03                 ; BD1F 
+    BEQ $bd29                ; BD21 
+    JSR a:$bc25              ; BD23 
+    JMP a:$adfd              ; BD26 
+    LDA #$40                 ; BD29 
+    STA $d1                  ; BD2B 
+    JMP a:$adfd              ; BD2D 
+    JSR a:$ada8              ; BD30 
+    LSR A                    ; BD33 
+    BCS $bd48                ; BD34 
+    LDA $d1                  ; BD36 
+    AND #$3f                 ; BD38 
+    BEQ $bd3e                ; BD3A 
+    DEC $d1                  ; BD3C 
+    TAY                      ; BD3E 
+    LDA a:$b80a,Y            ; BD3F Lookup uses phase before decrement.
+    JSR a:$afbc              ; BD42 
+    JMP a:$adfd              ; BD45 
+    LDA $c9                  ; BD48 
+    AND #$f0                 ; BD4A 
+    CLC                      ; BD4C 
+    ADC #$0f                 ; BD4D 
+    STA $c9                  ; BD4F 
+    LDA #$00                 ; BD51 
+    STA $d1                  ; BD53 
+    RTS                      ; BD55 
 
 ; E17: Fade, far-call07:A0BD with layout7, mapR6=3 and read effect description pointer; wait Start/A then fade and use32-entry routing table. Presentation/NMI/text pipeline not fully executed.
 PresentAcquiredMagicAndRoute:

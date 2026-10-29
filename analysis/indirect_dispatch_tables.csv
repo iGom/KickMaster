@@ -1,97 +1,97 @@
 group,dispatch_bank,dispatch_cpu,index,selector,table_bank,table_cpu,target_bank,target_cpu,target_semantics
-PlayerStateFamily0,08,0xAD36,0,CD&FE byte offset; A selects family,08,0xB1F2,08,0xB81D,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,1,CD&FE byte offset; A selects family,08,0xB1F4,08,0xB8B5,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,2,CD&FE byte offset; A selects family,08,0xB1F6,08,0xB8B5,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,3,CD&FE byte offset; A selects family,08,0xB1F8,08,0xB8B5,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,4,CD&FE byte offset; A selects family,08,0xB1FA,08,0xB8B5,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,5,CD&FE byte offset; A selects family,08,0xB1FC,08,0xB912,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,6,CD&FE byte offset; A selects family,08,0xB1FE,08,0xB92F,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,7,CD&FE byte offset; A selects family,08,0xB200,08,0xB947,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,8,CD&FE byte offset; A selects family,08,0xB202,08,0xB9A4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,9,CD&FE byte offset; A selects family,08,0xB204,08,0xB9D4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,10,CD&FE byte offset; A selects family,08,0xB206,08,0xB9D4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,11,CD&FE byte offset; A selects family,08,0xB208,08,0xB9D4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,12,CD&FE byte offset; A selects family,08,0xB20A,08,0xB9D4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,13,CD&FE byte offset; A selects family,08,0xB20C,08,0xB9D4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,14,CD&FE byte offset; A selects family,08,0xB20E,08,0xB9F8,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,15,CD&FE byte offset; A selects family,08,0xB210,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,16,CD&FE byte offset; A selects family,08,0xB212,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,17,CD&FE byte offset; A selects family,08,0xB214,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,18,CD&FE byte offset; A selects family,08,0xB216,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,19,CD&FE byte offset; A selects family,08,0xB218,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,20,CD&FE byte offset; A selects family,08,0xB21A,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,21,CD&FE byte offset; A selects family,08,0xB21C,08,0xBA38,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,22,CD&FE byte offset; A selects family,08,0xB21E,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,23,CD&FE byte offset; A selects family,08,0xB220,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,24,CD&FE byte offset; A selects family,08,0xB222,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,25,CD&FE byte offset; A selects family,08,0xB224,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,26,CD&FE byte offset; A selects family,08,0xB226,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,27,CD&FE byte offset; A selects family,08,0xB228,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,28,CD&FE byte offset; A selects family,08,0xB22A,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,29,CD&FE byte offset; A selects family,08,0xB22C,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,30,CD&FE byte offset; A selects family,08,0xB22E,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,31,CD&FE byte offset; A selects family,08,0xB230,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,32,CD&FE byte offset; A selects family,08,0xB232,08,0xBA42,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,33,CD&FE byte offset; A selects family,08,0xB234,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,34,CD&FE byte offset; A selects family,08,0xB236,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,35,CD&FE byte offset; A selects family,08,0xB238,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,36,CD&FE byte offset; A selects family,08,0xB23A,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,37,CD&FE byte offset; A selects family,08,0xB23C,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,38,CD&FE byte offset; A selects family,08,0xB23E,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,39,CD&FE byte offset; A selects family,08,0xB240,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,40,CD&FE byte offset; A selects family,08,0xB242,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,41,CD&FE byte offset; A selects family,08,0xB244,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,42,CD&FE byte offset; A selects family,08,0xB246,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,43,CD&FE byte offset; A selects family,08,0xB248,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,44,CD&FE byte offset; A selects family,08,0xB24A,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,45,CD&FE byte offset; A selects family,08,0xB24C,08,0xBA4C,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,46,CD&FE byte offset; A selects family,08,0xB24E,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,47,CD&FE byte offset; A selects family,08,0xB250,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,48,CD&FE byte offset; A selects family,08,0xB252,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,49,CD&FE byte offset; A selects family,08,0xB254,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,50,CD&FE byte offset; A selects family,08,0xB256,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,51,CD&FE byte offset; A selects family,08,0xB258,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,52,CD&FE byte offset; A selects family,08,0xB25A,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,53,CD&FE byte offset; A selects family,08,0xB25C,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,54,CD&FE byte offset; A selects family,08,0xB25E,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,55,CD&FE byte offset; A selects family,08,0xB260,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,56,CD&FE byte offset; A selects family,08,0xB262,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,57,CD&FE byte offset; A selects family,08,0xB264,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,58,CD&FE byte offset; A selects family,08,0xB266,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,59,CD&FE byte offset; A selects family,08,0xB268,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,60,CD&FE byte offset; A selects family,08,0xB26A,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,61,CD&FE byte offset; A selects family,08,0xB26C,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,62,CD&FE byte offset; A selects family,08,0xB26E,08,0xBA84,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,63,CD&FE byte offset; A selects family,08,0xB270,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,64,CD&FE byte offset; A selects family,08,0xB272,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,65,CD&FE byte offset; A selects family,08,0xB274,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,66,CD&FE byte offset; A selects family,08,0xB276,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,67,CD&FE byte offset; A selects family,08,0xB278,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,68,CD&FE byte offset; A selects family,08,0xB27A,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,69,CD&FE byte offset; A selects family,08,0xB27C,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,70,CD&FE byte offset; A selects family,08,0xB27E,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,71,CD&FE byte offset; A selects family,08,0xB280,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,72,CD&FE byte offset; A selects family,08,0xB282,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,73,CD&FE byte offset; A selects family,08,0xB284,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,74,CD&FE byte offset; A selects family,08,0xB286,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,75,CD&FE byte offset; A selects family,08,0xB288,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,76,CD&FE byte offset; A selects family,08,0xB28A,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,77,CD&FE byte offset; A selects family,08,0xB28C,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,78,CD&FE byte offset; A selects family,08,0xB28E,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,79,CD&FE byte offset; A selects family,08,0xB290,08,0xBA8E,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,80,CD&FE byte offset; A selects family,08,0xB292,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,81,CD&FE byte offset; A selects family,08,0xB294,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,82,CD&FE byte offset; A selects family,08,0xB296,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,83,CD&FE byte offset; A selects family,08,0xB298,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,84,CD&FE byte offset; A selects family,08,0xB29A,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,85,CD&FE byte offset; A selects family,08,0xB29C,08,0xBA98,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,86,CD&FE byte offset; A selects family,08,0xB29E,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,87,CD&FE byte offset; A selects family,08,0xB2A0,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,88,CD&FE byte offset; A selects family,08,0xB2A2,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,89,CD&FE byte offset; A selects family,08,0xB2A4,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,90,CD&FE byte offset; A selects family,08,0xB2A6,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,91,CD&FE byte offset; A selects family,08,0xB2A8,08,0xBB21,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,92,CD&FE byte offset; A selects family,08,0xB2AA,08,0xBB21,UNREVIEWED
+PlayerStateFamily0,08,0xAD36,0,CD&FE byte offset; A selects family,08,0xB1F2,08,0xB81D,UpdateStandingPlayer
+PlayerStateFamily0,08,0xAD36,1,CD&FE byte offset; A selects family,08,0xB1F4,08,0xB8B5,UpdateWalkingPlayer
+PlayerStateFamily0,08,0xAD36,2,CD&FE byte offset; A selects family,08,0xB1F6,08,0xB8B5,UpdateWalkingPlayer
+PlayerStateFamily0,08,0xAD36,3,CD&FE byte offset; A selects family,08,0xB1F8,08,0xB8B5,UpdateWalkingPlayer
+PlayerStateFamily0,08,0xAD36,4,CD&FE byte offset; A selects family,08,0xB1FA,08,0xB8B5,UpdateWalkingPlayer
+PlayerStateFamily0,08,0xAD36,5,CD&FE byte offset; A selects family,08,0xB1FC,08,0xB912,UpdateJumpingPlayer
+PlayerStateFamily0,08,0xAD36,6,CD&FE byte offset; A selects family,08,0xB1FE,08,0xB92F,AdvancePlayerAirTransition
+PlayerStateFamily0,08,0xAD36,7,CD&FE byte offset; A selects family,08,0xB200,08,0xB947,UpdateFallingPlayer
+PlayerStateFamily0,08,0xAD36,8,CD&FE byte offset; A selects family,08,0xB202,08,0xB9A4,UpdateCrouchingPlayer
+PlayerStateFamily0,08,0xAD36,9,CD&FE byte offset; A selects family,08,0xB204,08,0xB9D4,UpdateCrouchingAttack
+PlayerStateFamily0,08,0xAD36,10,CD&FE byte offset; A selects family,08,0xB206,08,0xB9D4,UpdateCrouchingAttack
+PlayerStateFamily0,08,0xAD36,11,CD&FE byte offset; A selects family,08,0xB208,08,0xB9D4,UpdateCrouchingAttack
+PlayerStateFamily0,08,0xAD36,12,CD&FE byte offset; A selects family,08,0xB20A,08,0xB9D4,UpdateCrouchingAttack
+PlayerStateFamily0,08,0xAD36,13,CD&FE byte offset; A selects family,08,0xB20C,08,0xB9D4,UpdateCrouchingAttack
+PlayerStateFamily0,08,0xAD36,14,CD&FE byte offset; A selects family,08,0xB20E,08,0xB9F8,UpdateDownwardAttack
+PlayerStateFamily0,08,0xAD36,15,CD&FE byte offset; A selects family,08,0xB210,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,16,CD&FE byte offset; A selects family,08,0xB212,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,17,CD&FE byte offset; A selects family,08,0xB214,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,18,CD&FE byte offset; A selects family,08,0xB216,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,19,CD&FE byte offset; A selects family,08,0xB218,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,20,CD&FE byte offset; A selects family,08,0xB21A,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,21,CD&FE byte offset; A selects family,08,0xB21C,08,0xBA38,UpdateAttack1E
+PlayerStateFamily0,08,0xAD36,22,CD&FE byte offset; A selects family,08,0xB21E,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,23,CD&FE byte offset; A selects family,08,0xB220,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,24,CD&FE byte offset; A selects family,08,0xB222,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,25,CD&FE byte offset; A selects family,08,0xB224,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,26,CD&FE byte offset; A selects family,08,0xB226,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,27,CD&FE byte offset; A selects family,08,0xB228,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,28,CD&FE byte offset; A selects family,08,0xB22A,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,29,CD&FE byte offset; A selects family,08,0xB22C,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,30,CD&FE byte offset; A selects family,08,0xB22E,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,31,CD&FE byte offset; A selects family,08,0xB230,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,32,CD&FE byte offset; A selects family,08,0xB232,08,0xBA42,UpdateAttack2C
+PlayerStateFamily0,08,0xAD36,33,CD&FE byte offset; A selects family,08,0xB234,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,34,CD&FE byte offset; A selects family,08,0xB236,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,35,CD&FE byte offset; A selects family,08,0xB238,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,36,CD&FE byte offset; A selects family,08,0xB23A,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,37,CD&FE byte offset; A selects family,08,0xB23C,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,38,CD&FE byte offset; A selects family,08,0xB23E,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,39,CD&FE byte offset; A selects family,08,0xB240,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,40,CD&FE byte offset; A selects family,08,0xB242,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,41,CD&FE byte offset; A selects family,08,0xB244,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,42,CD&FE byte offset; A selects family,08,0xB246,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,43,CD&FE byte offset; A selects family,08,0xB248,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,44,CD&FE byte offset; A selects family,08,0xB24A,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,45,CD&FE byte offset; A selects family,08,0xB24C,08,0xBA4C,UpdateAttack42
+PlayerStateFamily0,08,0xAD36,46,CD&FE byte offset; A selects family,08,0xB24E,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,47,CD&FE byte offset; A selects family,08,0xB250,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,48,CD&FE byte offset; A selects family,08,0xB252,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,49,CD&FE byte offset; A selects family,08,0xB254,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,50,CD&FE byte offset; A selects family,08,0xB256,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,51,CD&FE byte offset; A selects family,08,0xB258,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,52,CD&FE byte offset; A selects family,08,0xB25A,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,53,CD&FE byte offset; A selects family,08,0xB25C,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,54,CD&FE byte offset; A selects family,08,0xB25E,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,55,CD&FE byte offset; A selects family,08,0xB260,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,56,CD&FE byte offset; A selects family,08,0xB262,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,57,CD&FE byte offset; A selects family,08,0xB264,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,58,CD&FE byte offset; A selects family,08,0xB266,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,59,CD&FE byte offset; A selects family,08,0xB268,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,60,CD&FE byte offset; A selects family,08,0xB26A,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,61,CD&FE byte offset; A selects family,08,0xB26C,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,62,CD&FE byte offset; A selects family,08,0xB26E,08,0xBA84,UpdateAttack5C
+PlayerStateFamily0,08,0xAD36,63,CD&FE byte offset; A selects family,08,0xB270,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,64,CD&FE byte offset; A selects family,08,0xB272,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,65,CD&FE byte offset; A selects family,08,0xB274,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,66,CD&FE byte offset; A selects family,08,0xB276,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,67,CD&FE byte offset; A selects family,08,0xB278,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,68,CD&FE byte offset; A selects family,08,0xB27A,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,69,CD&FE byte offset; A selects family,08,0xB27C,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,70,CD&FE byte offset; A selects family,08,0xB27E,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,71,CD&FE byte offset; A selects family,08,0xB280,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,72,CD&FE byte offset; A selects family,08,0xB282,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,73,CD&FE byte offset; A selects family,08,0xB284,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,74,CD&FE byte offset; A selects family,08,0xB286,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,75,CD&FE byte offset; A selects family,08,0xB288,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,76,CD&FE byte offset; A selects family,08,0xB28A,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,77,CD&FE byte offset; A selects family,08,0xB28C,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,78,CD&FE byte offset; A selects family,08,0xB28E,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,79,CD&FE byte offset; A selects family,08,0xB290,08,0xBA8E,UpdateAttack7E
+PlayerStateFamily0,08,0xAD36,80,CD&FE byte offset; A selects family,08,0xB292,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,81,CD&FE byte offset; A selects family,08,0xB294,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,82,CD&FE byte offset; A selects family,08,0xB296,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,83,CD&FE byte offset; A selects family,08,0xB298,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,84,CD&FE byte offset; A selects family,08,0xB29A,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,85,CD&FE byte offset; A selects family,08,0xB29C,08,0xBA98,UpdateForwardAttack
+PlayerStateFamily0,08,0xAD36,86,CD&FE byte offset; A selects family,08,0xB29E,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,87,CD&FE byte offset; A selects family,08,0xB2A0,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,88,CD&FE byte offset; A selects family,08,0xB2A2,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,89,CD&FE byte offset; A selects family,08,0xB2A4,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,90,CD&FE byte offset; A selects family,08,0xB2A6,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,91,CD&FE byte offset; A selects family,08,0xB2A8,08,0xBB21,UpdateAttackAC
+PlayerStateFamily0,08,0xAD36,92,CD&FE byte offset; A selects family,08,0xB2AA,08,0xBB21,UpdateAttackAC
 PlayerStateFamily0,08,0xAD36,93,CD&FE byte offset; A selects family,08,0xB2AC,08,0xBB2B,AdvancePlayerDeathAnimation
 PlayerStateFamily0,08,0xAD36,94,CD&FE byte offset; A selects family,08,0xB2AE,08,0xBB2B,AdvancePlayerDeathAnimation
 PlayerStateFamily0,08,0xAD36,95,CD&FE byte offset; A selects family,08,0xB2B0,08,0xBB2B,AdvancePlayerDeathAnimation
@@ -108,8 +108,8 @@ PlayerStateFamily0,08,0xAD36,105,CD&FE byte offset; A selects family,08,0xB2C4,0
 PlayerStateFamily0,08,0xAD36,106,CD&FE byte offset; A selects family,08,0xB2C6,08,0xBBE9,UNREVIEWED
 PlayerStateFamily0,08,0xAD36,107,CD&FE byte offset; A selects family,08,0xB2C8,08,0xBBE9,UNREVIEWED
 PlayerStateFamily0,08,0xAD36,108,CD&FE byte offset; A selects family,08,0xB2CA,08,0xBBE9,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,109,CD&FE byte offset; A selects family,08,0xB2CC,08,0xB8B4,UNREVIEWED
-PlayerStateFamily0,08,0xAD36,110,CD&FE byte offset; A selects family,08,0xB2CE,08,0xB8B4,UNREVIEWED
+PlayerStateFamily0,08,0xAD36,109,CD&FE byte offset; A selects family,08,0xB2CC,08,0xB8B4,EnterWalkOrCrouchPlayer
+PlayerStateFamily0,08,0xAD36,110,CD&FE byte offset; A selects family,08,0xB2CE,08,0xB8B4,EnterWalkOrCrouchPlayer
 PlayerStateFamily1,08,0xAD36,0,CD&FE byte offset; A selects family,08,0xBE02,08,0xBE88,UNREVIEWED
 PlayerStateFamily1,08,0xAD36,1,CD&FE byte offset; A selects family,08,0xBE04,08,0xBEBE,UNREVIEWED
 PlayerStateFamily1,08,0xAD36,2,CD&FE byte offset; A selects family,08,0xBE06,08,0xBED0,UNREVIEWED
@@ -223,3 +223,35 @@ F_Projectiles,09,0xBF65,28,"0568,X&FE equals0x38",09,0xABBF,09,0xB5F4,AdvanceLig
 F_Projectiles,09,0xBF65,29,"0568,X&FE equals0x3A",09,0xABC1,09,0xB63A,ReverseSideLightningSegment
 F_Projectiles,09,0xBF65,30,"0568,X&FE equals0x3C",09,0xABC3,09,0xB570,GrowPulseProjectile
 F_Projectiles,09,0xBF65,31,"0568,X&FE equals0x3E",09,0xABC5,09,0xB570,GrowPulseProjectile
+G_Standing,08,0xB84A,0,held20&0F equals00,08,0xB881,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,1,held20&0F equals01,08,0xB882,08,0xB8A1,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,2,held20&0F equals02,08,0xB883,08,0xB8A5,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,3,held20&0F equals03,08,0xB884,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,4,held20&0F equals04,08,0xB885,08,0xB8AE,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,5,held20&0F equals05,08,0xB886,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,6,held20&0F equals06,08,0xB887,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,7,held20&0F equals07,08,0xB888,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,8,held20&0F equals08,08,0xB889,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,9,held20&0F equals09,08,0xB88A,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,10,held20&0F equals0A,08,0xB88B,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,11,held20&0F equals0B,08,0xB88C,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,12,held20&0F equals0C,08,0xB88D,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,13,held20&0F equals0D,08,0xB88E,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,14,held20&0F equals0E,08,0xB88F,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_Standing,08,0xB84A,15,held20&0F equals0F,08,0xB890,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,0,held20&0F equals00,08,0xB984,08,0xBC56,SelectNormalAttackTier
+G_AirAttack,08,0xB981,1,held20&0F equals01,08,0xB985,08,0xBC34,SelectForwardAttackTier
+G_AirAttack,08,0xB981,2,held20&0F equals02,08,0xB986,08,0xBC34,SelectForwardAttackTier
+G_AirAttack,08,0xB981,3,held20&0F equals03,08,0xB987,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,4,held20&0F equals04,08,0xB988,08,0xBC81,SelectDownwardAttackTier
+G_AirAttack,08,0xB981,5,held20&0F equals05,08,0xB989,08,0xBC81,SelectDownwardAttackTier
+G_AirAttack,08,0xB981,6,held20&0F equals06,08,0xB98A,08,0xBC81,SelectDownwardAttackTier
+G_AirAttack,08,0xB981,7,held20&0F equals07,08,0xB98B,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,8,held20&0F equals08,08,0xB98C,08,0xBCBE,SelectUpwardAttackTier
+G_AirAttack,08,0xB981,9,held20&0F equals09,08,0xB98D,08,0xBCBE,SelectUpwardAttackTier
+G_AirAttack,08,0xB981,10,held20&0F equals0A,08,0xB98E,08,0xBCBE,SelectUpwardAttackTier
+G_AirAttack,08,0xB981,11,held20&0F equals0B,08,0xB98F,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,12,held20&0F equals0C,08,0xB990,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,13,held20&0F equals0D,08,0xB991,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,14,held20&0F equals0E,08,0xB992,08,0xB8B4,EnterWalkOrCrouchPlayer
+G_AirAttack,08,0xB981,15,held20&0F equals0F,08,0xB993,08,0xB8B4,EnterWalkOrCrouchPlayer

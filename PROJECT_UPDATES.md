@@ -21,3 +21,5 @@ Poniższe późniejsze instrukcje użytkownika obowiązują przy dalszej pracy.
 
 Realizacja 02B: osobne potwierdzenia i odczyt w `manifests/stage02B_sidecars_readback.json`.
 Źródła: `research/originals_manifest.csv`. Bieżący stan i następne zadania: `RESUME.md`.
+
+Wznowienie02E (2026-10-21):02D ZIP i sześć osobnych plików odczytano ponownie; hashy, CRC, manifest228 plików i pełna ekstrakcja są poprawne. Zachowane dowody: manifests/stage02D_resume_verification.json. Bez powtarzania wcześniejszych CPU/buildów.

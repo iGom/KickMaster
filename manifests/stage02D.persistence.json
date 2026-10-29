@@ -1,0 +1,89 @@
+{
+  "schema": "kickmaster-checkpoint-persistence/v1",
+  "stage": "02D",
+  "status": "PASS",
+  "scope": "New02D ZIP plus verification,reproducibility and external RESUME saved and freshly read back byte-for-byte. Self/final-report save follows and is recorded separately.",
+  "checked_utc": "2026-10-21T11:52:44.641440+00:00",
+  "archive": {
+    "file_name": "kickmaster-ntscu-checkpoint-stage02D.zip",
+    "library_file_id": "libfile_bcb9e2525a84819192dd9ba369387309",
+    "file_id": "file_00000000ca6c81f5a73a3bc676e9780f",
+    "version": 0,
+    "size_bytes": 3535089,
+    "sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+    "byte_for_byte_readback": "PASS",
+    "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/kickmaster-ntscu-checkpoint-stage02D.zip"
+  },
+  "expected_archive_sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+  "archive_sha256_match": "PASS",
+  "zip_crc": "PASS",
+  "complete_manifest": "PASS",
+  "manifest_file_count": 228,
+  "readback_sample_extraction": "PASS",
+  "full_clean_extraction_before_upload": "PASS",
+  "full_clean_extraction_file_count": 228,
+  "readback_files": [
+    {
+      "file_name": "kickmaster-ntscu-checkpoint-stage02D.zip",
+      "library_file_id": "libfile_bcb9e2525a84819192dd9ba369387309",
+      "file_id": "file_00000000ca6c81f5a73a3bc676e9780f",
+      "version": 0,
+      "size_bytes": 3535089,
+      "sha256": "dbc9cf8ab43668c8042ed80dc25aeb966579968d7e7b8c39628d62b8af30609a",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/kickmaster-ntscu-checkpoint-stage02D.zip"
+    },
+    {
+      "file_name": "stage02D.verification.json",
+      "library_file_id": "libfile_3e46de2fea0881918a91e765c8e2a16d",
+      "file_id": "file_000000004c4c81f99d09154ea9205009",
+      "version": 0,
+      "size_bytes": 782,
+      "sha256": "31af96a64736dec718df5410914ffa411c53b11e3be90b890905289aa9d4e130",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/stage02D.verification.json"
+    },
+    {
+      "file_name": "stage02D.reproducibility.json",
+      "library_file_id": "libfile_90ca9c1778308191a31853e7dc6882c7",
+      "file_id": "file_00000000c9ac81f9bb55f6d6ac37fa42",
+      "version": 0,
+      "size_bytes": 3375,
+      "sha256": "54d169f97dafc454611e9738186dfd9ae83d10f8bd35be3d1482afffe377561a",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/stage02D.reproducibility.json"
+    },
+    {
+      "file_name": "KickMaster_STAGE02D_RESUME.md",
+      "library_file_id": "libfile_82ca3d055e3c81918b2f4617cc965af3",
+      "file_id": "file_00000000597481f982f4ef8c78f4932c",
+      "version": 0,
+      "size_bytes": 24708,
+      "sha256": "a9bbe54c817a370d7bcd64c87839424bf84e286cf292f36341a3228ed549c50f",
+      "byte_for_byte_readback": "PASS",
+      "local_readback_path": "/workspace/scratch/073d0612ec00/readback-stage02D/KickMaster_STAGE02D_RESUME.md"
+    }
+  ],
+  "clean_reproducibility": {
+    "status": "PASS",
+    "verified_utc": "2026-10-21T11:49:57.703722+00:00",
+    "evidence": "stage02D.reproducibility.json",
+    "full_byte_comparison": "PASS",
+    "compared_bytes": 262160,
+    "source_regeneration": false,
+    "cpu_suites_rerun": false
+  },
+  "save_method": "prepared upload helper; all four ordered results succeeded with local metadata applied",
+  "archive_uploaded_once": true,
+  "prior_02C_archive_reuploaded": false,
+  "earlier_checkpoints_modified": false,
+  "original_and_rebuilt_rom_included": false,
+  "previous_cpu_suites_rerun": false,
+  "not_performed": [
+    "Native NES emulator validation",
+    "MesenCE or Ghidra native import",
+    "Complete map-to-ROM geometry comparison",
+    "Full gameplay timing or enemy/boss AI coverage"
+  ],
+  "self_record_note": "This JSON proves completed core readback. Its own save/readback and the final report are recorded by stage02D.readback.json, avoiding circular self-hashes."
+}
