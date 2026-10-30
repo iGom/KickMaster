@@ -1,0 +1,77 @@
+{
+  "schema": "kickmaster-final-sidecar-readback/v1",
+  "stage": "02F",
+  "checked_utc": "2026-10-22T01:14:58.505842+00:00",
+  "files": [
+    {
+      "file_name": "kickmaster-ntscu-checkpoint-stage02F.zip",
+      "library_file_id": "libfile_bf686b66ed9c8191bd03c7887310493e",
+      "file_id": "file_000000007298823086f81cbd0afaa230",
+      "version": 0,
+      "size_bytes": 4846323,
+      "sha256": "618f67d900fddd41b1d4dc4166a9f67ae24b6637db3dc631ecd26efb61909ca2",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    },
+    {
+      "file_name": "stage02F.verification.json",
+      "library_file_id": "libfile_335d46a1d9cc8191ac963ce6c951f8d0",
+      "file_id": "file_0000000079b48230ba65166cfa3f1a54",
+      "version": 0,
+      "size_bytes": 440,
+      "sha256": "00024997b6abbf3eee73e1e2cf43b1bf47eff737ebfed28e88e7feabe230fc71",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    },
+    {
+      "file_name": "stage02F.reproducibility.json",
+      "library_file_id": "libfile_daf526be6e8c8191b6207d75c06aac1d",
+      "file_id": "file_00000000664c8230ae4d5337ec057cd7",
+      "version": 0,
+      "size_bytes": 3375,
+      "sha256": "91f122d959844c84a8ca50c99e004bfe0037d13ef7e966530ffdb140d44c5d7e",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    },
+    {
+      "file_name": "KickMaster_STAGE02F_RESUME.md",
+      "library_file_id": "libfile_eaf57d95c5648191bc5265b830262e22",
+      "file_id": "file_00000000b4e481fd938a90f771f045b2",
+      "version": 0,
+      "size_bytes": 12199,
+      "sha256": "90ae867bb26afdf1e0b1fc89e2ec261db09a26a8188be56993e4b52e10d274af",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    },
+    {
+      "file_name": "stage02F.persistence.json",
+      "library_file_id": "libfile_f6f6bd605bac81918cce9f13a77af74d",
+      "file_id": "file_0000000062d081f5a4069a0bba9594c5",
+      "version": 0,
+      "size_bytes": 2963,
+      "sha256": "677ad5c204d5244edb19b70ebfe5d39631e256c22d93195ff2669214993e8626",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    },
+    {
+      "file_name": "KickMaster_STAGE02F_REPORT.md",
+      "library_file_id": "libfile_93f2f41f13cc8191af34e4b53fa9bad2",
+      "file_id": "file_000000002ac081f5a4b2c964d5720f21",
+      "version": 0,
+      "size_bytes": 5710,
+      "sha256": "b86387f328906dc75daf3afcfcae9dff1d1d0bde0096bd014152aa75979b5b7a",
+      "save": "PASS",
+      "fresh_readback_byte_equality": "PASS"
+    }
+  ],
+  "all_six_files_saved_and_freshly_read_back": "PASS",
+  "archive_zip_crc": "PASS",
+  "archive_full_manifest_and_extraction": "PASS",
+  "manifest_file_count": 278,
+  "clean_archived_source_build": "PASS",
+  "compared_ROM_bytes": 262160,
+  "native_NES": "NOT_TESTED",
+  "old_tests_repeated": false,
+  "old_archives_reuploaded_or_overwritten": false,
+  "scope": "Records completed reads of the ZIP plus five preceding sidecars. This receipt itself must be saved and read back afterwards; no recursive self-hash or future self-PASS is asserted."
+}

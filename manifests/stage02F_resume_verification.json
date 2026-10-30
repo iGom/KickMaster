@@ -1,0 +1,17 @@
+{
+  "stage_resumed": "02F",
+  "next_stage": "02G",
+  "checked_utc": "2026-10-22T07:07:22.450528+00:00",
+  "archive_sha256": "618f67d900fddd41b1d4dc4166a9f67ae24b6637db3dc631ecd26efb61909ca2",
+  "archive_library_file_id": "libfile_bf686b66ed9c8191bd03c7887310493e",
+  "fresh_library_readback": "PASS",
+  "zip_crc": "PASS",
+  "complete_manifest": "PASS",
+  "full_extraction": "PASS",
+  "files": 278,
+  "six_sidecars_match_recorded_hashes": "PASS",
+  "rom_sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+  "prior_cpu_suites_rerun": false,
+  "prior_build_rerun": false,
+  "prior_checkpoints_modified_or_reuploaded": false
+}

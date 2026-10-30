@@ -163,7 +163,27 @@ EnemyKindCollisionStatePointers:
     .byte $A8,$87,$B0,$87,$BC,$87,$CA,$87,$D8,$87,$E4,$87,$F2,$87,$FC,$87
     .byte $06,$88,$0E,$88,$1A,$88,$40,$88,$84,$86,$A8,$87,$BC,$87,$CA,$87
     .byte $40,$88,$2C,$88,$36,$88
-    .incbin "inputs/original.nes", $00C632, $0EBA ; UNINTERPRETED preserved bytes
+
+; I01: Six normal state pointers; virtual AI selectors6/7/8 are death/hit/quake, not three more normal collision states.
+Kind00CollisionStatePointers:
+    .byte $00,$90,$20,$90,$24,$90,$48,$90,$6C,$90,$90,$90
+    .incbin "inputs/original.nes", $00C63E, $09D2 ; UNINTERPRETED preserved bytes
+
+; I02: 45 four-byte frames: normal state counts8,1,9,9,9,9; independently corroborated by AI frame loops and next kind pointer.
+Kind00CollisionFrames:
+    .byte $00,$00,$06,$00,$00,$00,$06,$00,$00,$00,$06,$00,$00,$00,$06,$00
+    .byte $00,$00,$06,$00,$00,$00,$06,$00,$00,$00,$06,$00,$00,$00,$06,$00
+    .byte $06,$00,$00,$00,$00,$01,$06,$27,$00,$01,$06,$27,$00,$01,$06,$27
+    .byte $00,$01,$06,$27,$00,$01,$06,$27,$00,$01,$06,$27,$00,$01,$06,$27
+    .byte $00,$01,$06,$27,$00,$01,$06,$27,$00,$00,$06,$00,$00,$00,$06,$19
+    .byte $00,$00,$06,$1A,$00,$00,$06,$1A,$00,$00,$06,$1A,$00,$00,$06,$1A
+    .byte $00,$00,$06,$1A,$00,$00,$06,$19,$00,$00,$06,$00,$06,$00,$06,$00
+    .byte $06,$00,$06,$00,$06,$00,$06,$19,$06,$00,$06,$1A,$06,$00,$06,$1A
+    .byte $06,$00,$06,$1A,$06,$00,$06,$19,$06,$00,$06,$00,$06,$00,$06,$00
+    .byte $06,$00,$06,$00,$06,$00,$06,$00,$06,$00,$06,$19,$06,$00,$06,$1A
+    .byte $06,$00,$06,$1A,$06,$00,$06,$1A,$06,$00,$06,$19,$06,$00,$06,$00
+    .byte $06,$00,$08,$00
+    .incbin "inputs/original.nes", $00D0C4, $0428 ; UNINTERPRETED preserved bytes
 
 ; H10: 30 byte shape offsets used byA354.
 EnemyBodyVerticalOffset:

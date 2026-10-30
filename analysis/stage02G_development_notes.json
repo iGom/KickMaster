@@ -1,0 +1,37 @@
+{
+  "stage": "02G",
+  "analysis_and_tests_date": "2026-10-22",
+  "documentation_and_checkpoint_date": "2026-10-29",
+  "old_cpu_suites_rerun": false,
+  "new_groups_passed": 15,
+  "saved_observations": 4050,
+  "trace_rows": 11437,
+  "issues_resolved": [
+    {
+      "kind": "generator_error",
+      "description": "Initial architecture_stage02g.py had Disassembler initialization accidentally conditional on fixed-bank mapping, causing UnboundLocalError before output files were written.",
+      "resolution": "Made initialization unconditional and ran the previously failed generation. No completed earlier stage was regenerated."
+    },
+    {
+      "kind": "failed_new_test_expectation",
+      "group": 7,
+      "description": "The first walk expectation assumed repeated grounded walking while the fixture explicitly disabled terrain handling. The original movement result was36=0, correctly selecting state1 falling after the first step.",
+      "resolution": "Replaced the expectation with three-call walk entry followed by state1 fall steps. Re-ran group7 and continued previously unexecuted groups8..15. Passed groups1..6 were retained. ROM bytes were not changed."
+    },
+    {
+      "kind": "annotation_correction",
+      "description": "The phrase absolute distance24..31 was too broad. Executed distance-band tests establish signed enemy-minus-target X windows-32..-25 and24..31.",
+      "resolution": "Corrected duplicated source/index/test scope descriptions without changing observations or rerunning CPU tests."
+    }
+  ],
+  "source_support_change": "One logical STA $0543,Y at0E:DFFF spans two fixed banks. Sources emit opcode99 and operands43 05 in their respective physical banks; the instruction index counts it once. Full build and dataset audit passed.",
+  "not_tested": [
+    "Full native NES execution and frame timing",
+    "Native MesenCE and Ghidra imports",
+    "Complete E4AC enemy terrain handling",
+    "Complete C773/C776 terrain mutation and cache refill",
+    "Alive kind50 AI bodies and all other enemy AI",
+    "Complete Twin Power targeting provenance",
+    "PNG-to-ROM geometry and32-scenes-to8-sectors mapping"
+  ]
+}

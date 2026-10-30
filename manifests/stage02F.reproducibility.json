@@ -1,0 +1,100 @@
+{
+  "schema": "kickmaster-checkpoint-reproducibility/v1",
+  "stage": "02F",
+  "verified_utc": "2026-10-22T01:12:40.065550+00:00",
+  "archive": "kickmaster-ntscu-checkpoint-stage02F.zip",
+  "archive_sha256": "618f67d900fddd41b1d4dc4166a9f67ae24b6637db3dc631ecd26efb61909ca2",
+  "fresh_extraction_directory": "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re",
+  "zip_crc": "PASS",
+  "complete_archive_manifest": "PASS",
+  "full_extracted_manifest": "PASS",
+  "manifest_file_count": 278,
+  "build_performed_this_session": true,
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "scripts/build.py",
+    "/workspace/scratch/073d0612ec00/continuation-02F/kickmaster-ntscu-re/inputs/original.nes"
+  ],
+  "working_directory": "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re",
+  "exit_code": 0,
+  "source_regeneration_performed": false,
+  "previous_cpu_suites_rerun": false,
+  "any_cpu_suite_rerun": false,
+  "python": "3.12.14",
+  "tool_versions": [
+    {
+      "executable": "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re/tools/bin/ca65",
+      "version_exit_code": 0,
+      "version": "ca65 V2.19 - Git 8d86ca7"
+    },
+    {
+      "executable": "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re/tools/bin/ld65",
+      "version_exit_code": 0,
+      "version": "ld65 V2.19 - Git 8d86ca7"
+    }
+  ],
+  "build_commands": [
+    {
+      "argv": [
+        "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re/tools/bin/ca65",
+        "-g",
+        "-I",
+        "disassembly",
+        "-I",
+        ".",
+        "disassembly/main.asm",
+        "-o",
+        "builds/main.o",
+        "-l",
+        "builds/main.lst"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/workspace/scratch/073d0612ec00/clean-stage02F/kickmaster-ntscu-re/tools/bin/ld65",
+        "-C",
+        "disassembly/linker.cfg",
+        "builds/main.o",
+        "-o",
+        "builds/kickmaster-rebuilt.nes",
+        "--dbgfile",
+        "builds/kickmaster.dbg",
+        "-m",
+        "builds/kickmaster.map",
+        "-Ln",
+        "builds/kickmaster.lbl"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ],
+  "rebuild_verification": {
+    "status": "PASS",
+    "comparison": "complete byte-for-byte comparison",
+    "requires_original_ROM": true,
+    "original": {
+      "size": 262160,
+      "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+      "sha1": "e329254370f4a66b110fee46988da585989a586e",
+      "crc32": "EABD6104"
+    },
+    "rebuilt": {
+      "size": 262160,
+      "sha256": "00ad4a0c6612319bb9f918ca36d6e93b4e5d996716c0570a3ec92bd60533881b",
+      "sha1": "e329254370f4a66b110fee46988da585989a586e",
+      "crc32": "EABD6104"
+    },
+    "binary_reconstruction_bytes": 262160,
+    "interpretation": "Input-dependent mixed assembly/incbin scaffold. Exact reconstruction does not establish semantic understanding.",
+    "original_and_rebuilt_ROM_in_checkpoint": false
+  },
+  "full_byte_comparison": "PASS",
+  "compared_bytes": 262160,
+  "rom_required_separately": true,
+  "native_NES_emulator_validation": "NOT_TESTED",
+  "reason": "Required clean-extraction gate for this new checkpoint; build uses only saved assembly plus exact external ROM."
+}

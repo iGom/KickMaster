@@ -11,6 +11,10 @@ def main():
     with (ROOT/'analysis/reviewed_ranges.csv').open() as f:ranges=list(csv.DictReader(f))
     with (ROOT/'analysis/reviewed_instructions.csv').open() as f:
         comments={(int(r['bank'],16),int(r['cpu'],16)):r['comment'] for r in csv.DictReader(f)}
+    split_path=ROOT/'analysis/cross_bank_instructions.csv'
+    splits=list(csv.DictReader(split_path.open())) if split_path.exists() else []
+    split_starts={(int(r['bank'],16),int(r['cpu'],16)):r for r in splits}
+    split_tails={(int(r['continuation_bank'],16),int(r['continuation_cpu'],16)):r for r in splits}
     main=['; Input-dependent byte-matching scaffold. Unknown regions remain explicit .incbin slices.',
           '; Run prepare_sources.py only when intentionally regenerating source.','.setcpu "6502"',
           '.segment "HEADER"','.byte '+','.join(f'${x:02X}' for x in b[:16])]
@@ -39,6 +43,16 @@ def main():
             else:
                 pc=lo
                 while pc<hi:
+                    # Fixed-window instruction operands can physically begin in the next bank.
+                    # Emit each physical fragment exactly once; retain one logical instruction index.
+                    if (bank,pc) in split_tails:
+                        r=split_tails[(bank,pc)];n=int(r['continuation_size'])
+                        assert pc+n<=hi
+                        lines.append('    .byte '+','.join(f'${x:02X}' for x in m.memory[pc:pc+n])+f" ; operands of {r['bank']}:{r['cpu']} {r['instruction']}");pc+=n;continue
+                    if (bank,pc) in split_starts:
+                        r=split_starts[(bank,pc)];n=int(r['size'])-int(r['continuation_size'])
+                        assert pc+n==hi==base+8192
+                        lines.append('    .byte '+','.join(f'${x:02X}' for x in m.memory[pc:pc+n])+f" ; {pc:04X} {r['instruction']}; operands in next fixed bank");pc+=n;continue
                     n,t=d.instruction_at(pc);op,mode=m.disassemble[m.memory[pc]]
                     if mode in {'abs','abx','aby'}:t=t.replace(' $',' a:$',1)
                     lines.append(f'    {t:24} ; {pc:04X} {comments.get((bank,pc),"")}');pc+=n

@@ -25,3 +25,7 @@ Realizacja 02B: osobne potwierdzenia i odczyt w `manifests/stage02B_sidecars_rea
 Wznowienie02E (2026-10-21):02D ZIP i sześć osobnych plików odczytano ponownie; hashy, CRC, manifest228 plików i pełna ekstrakcja są poprawne. Zachowane dowody: manifests/stage02D_resume_verification.json. Bez powtarzania wcześniejszych CPU/buildów.
 
 Wznowienie02F:02E ZIP i sześć sidecarów odczytano i porównano; CRC, manifest251 plików i pełna ekstrakcja PASS. Dowód: manifests/stage02E_resume_verification.json. Stage02F dodaje lokalne kontrakty walki i wejścia AI; nie powtarza Stage00A ani wcześniejszych CPU/buildów. Oryginały źródeł i status oczekującego porównania map pozostają zachowane.
+
+Wznowienie02G (2026-10-22):02F ZIP i sześć osobnych plików odczytano ponownie i porównano z zapisanymi SHA-256. CRC, pełny manifest278 plików i pełna ekstrakcja PASS. Dowód: manifests/stage02F_resume_verification.json. Bez ponownego przesyłania poprawnych wcześniejszych checkpointów i bez powtarzania starych CPU/buildów.
+
+Domknięcie dokumentacji02G (2026-10-29):zachowano wyniki15 nowych grup/4050 obserwacji oraz opis błędnego pierwszego oczekiwania w grupie7 i jego selektywnej korekty. Stage02G obejmuje AI rodzaju00, dropy i cykle śmierci5B/60; pełny teren i pozostałe AI pozostają otwarte. Oryginalne mapy i poradnik nadal są niezmienione. Wewnętrzny raport nie oznacza przyszłych kontroli archiwum/zapisu jako PASS; ich wyniki mają osobne potwierdzenia. Następny priorytet02H:pełne C773/C776, cache i teren, następnie geometria oraz porównanie map.

@@ -1,0 +1,12 @@
+{
+  "new_ranges": 46,
+  "new_code_ranges": 31,
+  "new_data_ranges": 15,
+  "new_instructions": 769,
+  "new_bytes": 2164,
+  "new_indirect_edges": 34,
+  "kind00_normal_collision_frames": 45,
+  "cross_bank_instructions": 1,
+  "unresolved_target_banks": [],
+  "scope": "kind00 local AI, reward creation and special death lifecycle; full terrain and other AI remain open"
+}

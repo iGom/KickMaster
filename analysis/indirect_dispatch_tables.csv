@@ -255,7 +255,7 @@ G_AirAttack,08,0xB981,12,held20&0F equals0C,08,0xB990,08,0xB8B4,EnterWalkOrCrouc
 G_AirAttack,08,0xB981,13,held20&0F equals0D,08,0xB991,08,0xB8B4,EnterWalkOrCrouchPlayer
 G_AirAttack,08,0xB981,14,held20&0F equals0E,08,0xB992,08,0xB8B4,EnterWalkOrCrouchPlayer
 G_AirAttack,08,0xB981,15,held20&0F equals0F,08,0xB993,08,0xB8B4,EnterWalkOrCrouchPlayer
-H_EnemyAi0B,0B,0x800F,0,kind=00; validphysicaltableonly,0B,0x8011,0B,0x814C,UNREVIEWED_BODY
+H_EnemyAi0B,0B,0x800F,0,kind=00; validphysicaltableonly,0B,0x8011,0B,0x814C,DispatchKind00State
 H_EnemyAi0B,0B,0x800F,1,kind=01; validphysicaltableonly,0B,0x8013,0B,0x8307,UNREVIEWED_BODY
 H_EnemyAi0B,0B,0x800F,2,kind=02; validphysicaltableonly,0B,0x8015,0B,0x8351,UNREVIEWED_BODY
 H_EnemyAi0B,0B,0x800F,3,kind=03; validphysicaltableonly,0B,0x8017,0B,0x8497,UNREVIEWED_BODY
@@ -329,7 +329,7 @@ H_EnemyAi0A,0A,0x8015,6,kind=4C; validphysicaltableonly,0A,0x8023,0A,0x8016,Disp
 H_EnemyAi0A,0A,0x8015,7,kind=4D; validphysicaltableonly,0A,0x8025,0A,0x8016,DispatchSpecialEnemyAi
 H_EnemyAi0A,0A,0x8015,8,kind=4E; validphysicaltableonly,0A,0x8027,0A,0x8016,DispatchSpecialEnemyAi
 H_EnemyAi0A,0A,0x8015,9,kind=4F; validphysicaltableonly,0A,0x8029,0A,0x9F1E,UNREVIEWED_BODY
-H_EnemyAi0A,0A,0x8015,10,kind=50; validphysicaltableonly,0A,0x802B,0A,0x816E,UNREVIEWED_BODY
+H_EnemyAi0A,0A,0x8015,10,kind=50; validphysicaltableonly,0A,0x802B,0A,0x816E,DispatchKind50State
 H_EnemyAi0A,0A,0x8015,11,kind=51; validphysicaltableonly,0A,0x802D,0A,0x82FC,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,12,kind=52; validphysicaltableonly,0A,0x802F,0A,0x8586,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,13,kind=53; validphysicaltableonly,0A,0x8031,0A,0x8875,UNREVIEWED_BODY
@@ -340,11 +340,45 @@ H_EnemyAi0A,0A,0x8015,17,kind=57; validphysicaltableonly,0A,0x8039,0A,0x8B54,UNR
 H_EnemyAi0A,0A,0x8015,18,kind=58; validphysicaltableonly,0A,0x803B,0A,0x8D7F,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,19,kind=59; validphysicaltableonly,0A,0x803D,0A,0x91A9,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,20,kind=5A; validphysicaltableonly,0A,0x803F,0A,0x94EA,UNREVIEWED_BODY
-H_EnemyAi0A,0A,0x8015,21,kind=5B; validphysicaltableonly,0A,0x8041,0A,0x89FA,UNREVIEWED_BODY
+H_EnemyAi0A,0A,0x8015,21,kind=5B; validphysicaltableonly,0A,0x8041,0A,0x89FA,DispatchSpecialDeathObject
 H_EnemyAi0A,0A,0x8015,22,kind=5C; validphysicaltableonly,0A,0x8043,0A,0x8F4C,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,23,kind=5D; validphysicaltableonly,0A,0x8045,0A,0x8150,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,24,kind=5E; validphysicaltableonly,0A,0x8047,0A,0x855F,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,25,kind=5F; validphysicaltableonly,0A,0x8049,0A,0x8842,UNREVIEWED_BODY
-H_EnemyAi0A,0A,0x8015,26,kind=60; validphysicaltableonly,0A,0x804B,0A,0x8B1A,UNREVIEWED_BODY
+H_EnemyAi0A,0A,0x8015,26,kind=60; validphysicaltableonly,0A,0x804B,0A,0x8B1A,AlternateSpecialDeathLifecycle
 H_EnemyAi0A,0A,0x8015,27,kind=61; validphysicaltableonly,0A,0x804D,0A,0x9C20,UNREVIEWED_BODY
 H_EnemyAi0A,0A,0x8015,28,kind=62; validphysicaltableonly,0A,0x804F,0A,0x9CF1,UNREVIEWED_BODY
+I_Kind00,0B,0x815B,0,Kind00 local index,0B,0x815C,0B,0x816E,Kind00WalkAndChooseAttack
+I_Kind00,0B,0x815B,1,Kind00 local index,0B,0x815E,0B,0x81F0,Kind00FallAndStationaryAttacks
+I_Kind00,0B,0x815B,2,Kind00 local index,0B,0x8160,0B,0x8211,Kind00FallAndStationaryAttacks
+I_Kind00,0B,0x815B,3,Kind00 local index,0B,0x8162,0B,0x8211,Kind00FallAndStationaryAttacks
+I_Kind00,0B,0x815B,4,Kind00 local index,0B,0x8164,0B,0x8211,Kind00FallAndStationaryAttacks
+I_Kind00,0B,0x815B,5,Kind00 local index,0B,0x8166,0B,0x8228,Kind00ArcingAttack
+I_Kind00,0B,0x815B,6,Kind00 local index,0B,0x8168,0B,0x80D5,OrdinaryEnemyDeathLifecycle
+I_Kind00,0B,0x815B,7,Kind00 local index,0B,0x816A,0E,0xC7A3,see reviewed entry and explicitcallee boundaries
+I_Kind00,0B,0x815B,8,Kind00 local index,0B,0x816C,0B,0x8010,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,0,Kind50 local index,0A,0x817E,0A,0x818C,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,1,Kind50 local index,0A,0x8180,0A,0x81B9,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,2,Kind50 local index,0A,0x8182,0A,0x8202,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,3,Kind50 local index,0A,0x8184,0A,0x8282,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,4,Kind50 local index,0A,0x8186,0A,0x82C5,ConvertKind50DeathAndCheckCompanion
+I_Kind50,0A,0x817D,5,Kind50 local index,0A,0x8188,0E,0xC7A3,see reviewed entry and explicitcallee boundaries
+I_Kind50,0A,0x817D,6,Kind50 local index,0A,0x818A,0A,0x8016,see reviewed entry and explicitcallee boundaries
+I_Death5B,0A,0x8A0D,0,Death5B local index,0A,0x8A0E,0A,0x8A12,SpecialDeathBurstRewardAndDelay
+I_Death5B,0A,0x8A0D,1,Death5B local index,0A,0x8A10,0A,0x8A43,SpecialDeathBurstRewardAndDelay
+I_SpecialDrop,0E,0xDF78,0,SpecialDrop local index,0E,0xDFBB,0F,0xE01F,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,1,SpecialDrop local index,0E,0xDFBD,0F,0xE023,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,2,SpecialDrop local index,0E,0xDFBF,0F,0xE027,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,3,SpecialDrop local index,0E,0xDFC1,0F,0xE02B,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,4,SpecialDrop local index,0E,0xDFC3,0F,0xE02F,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,5,SpecialDrop local index,0E,0xDFC5,0F,0xE03B,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,6,SpecialDrop local index,0E,0xDFC7,0F,0xE033,SpawnEnemyDropObject
+I_SpecialDrop,0E,0xDF78,7,SpecialDrop local index,0E,0xDFC9,0F,0xE037,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,0,OrdinaryDrop local index,0E,0xDFBB,0F,0xE01F,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,1,OrdinaryDrop local index,0E,0xDFBD,0F,0xE023,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,2,OrdinaryDrop local index,0E,0xDFBF,0F,0xE027,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,3,OrdinaryDrop local index,0E,0xDFC1,0F,0xE02B,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,4,OrdinaryDrop local index,0E,0xDFC3,0F,0xE02F,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,5,OrdinaryDrop local index,0E,0xDFC5,0F,0xE03B,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,6,OrdinaryDrop local index,0E,0xDFC7,0F,0xE033,SpawnEnemyDropObject
+I_OrdinaryDrop,0F,0xE018,7,OrdinaryDrop local index,0E,0xDFC9,0F,0xE037,SpawnEnemyDropObject

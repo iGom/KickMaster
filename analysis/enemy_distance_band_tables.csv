@@ -1,0 +1,6 @@
+selector,source_bank,source_cpu,source_bank_offset,source_prg_offset,source_file_offset,source_mapping_condition,negative_far,negative_middle,negative_near,positive_far,positive_middle,positive_near
+0,0F,0xEBA9,0x0BA9,0x01EBA9,0x01EBB9,last bank fixed at E000,212,228,244,44,28,12
+1,0F,0xEBAA,0x0BAA,0x01EBAA,0x01EBBA,last bank fixed at E000,216,224,232,40,32,24
+2,0F,0xEBAB,0x0BAB,0x01EBAB,0x01EBBB,last bank fixed at E000,208,224,240,48,32,16
+3,0F,0xEBAC,0x0BAC,0x01EBAC,0x01EBBC,last bank fixed at E000,224,240,255,16,8,1
+4,0F,0xEBAD,0x0BAD,0x01EBAD,0x01EBBD,last bank fixed at E000,144,176,192,112,80,64

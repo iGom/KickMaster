@@ -1,0 +1,2 @@
+bank,cpu,file_offset,size,bytes,instruction,continuation_bank,continuation_cpu,continuation_size,mapping_condition
+0E,0xDFFF,0x01E00F,3,99 43 05,"STA $0543,Y",0F,0xE000,2,Both fixed windows adjacent in MMC3mode0; CPU fetch spans physical banks0E/0F

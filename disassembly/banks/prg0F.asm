@@ -2,7 +2,130 @@
 ; For unreviewed banks, the base is a scaffold convention, not a recovered mapping.
 .segment "PRG0F"
 .org $E000
-    .incbin "inputs/original.nes", $01E010, $00ED ; UNINTERPRETED preserved bytes
+
+; I28: Operandbytes43 05 completing0E:DFFF opcode99. Notanentrypoint; one logicalinstructionisindexedatDFFF.
+OrdinaryDropInstructionOperands:
+    .byte $43,$05 ; operands of 0E:0xDFFF STA $0543,Y
+
+; I29: Third correlated draw andsharedDF7Bselector dispatcher; E019 discards savedindex onallocationfailure.
+SpawnOrdinaryDeathDropTail:
+    PLA                      ; E002 
+    CLC                      ; E003 
+    ADC #$0a                 ; E004 
+    AND #$1f                 ; E006 
+    TAY                      ; E008 
+    LDA a:$df7b,Y            ; E009 
+    AND #$07                 ; E00C 
+    ASL A                    ; E00E 
+    TAY                      ; E00F 
+    LDA a:$dfbc,Y            ; E010 
+    PHA                      ; E013 
+    LDA a:$dfbb,Y            ; E014 
+    PHA                      ; E017 
+    RTS                      ; E018 
+    PLA                      ; E019 
+    RTS                      ; E01A 
+
+; I30: Literaltypes6A,46,48,4B,43,44,41,69,4C toE03D. ExistingallocatorE0ED excludes0. CopyenemyXY withY-16,initializevelocity0/-7,timer7,counter0,flagsFEDE. Returncarry failure; preserveenemyX.
+SpawnEnemyDropObject:
+    LDA #$6a                 ; E01B 
+    BNE $e03d                ; E01D 
+    LDA #$46                 ; E01F 
+    BNE $e03d                ; E021 
+    LDA #$48                 ; E023 
+    BNE $e03d                ; E025 
+    LDA #$4b                 ; E027 
+    BNE $e03d                ; E029 
+    LDA #$43                 ; E02B 
+    BNE $e03d                ; E02D 
+    LDA #$44                 ; E02F 
+    BNE $e03d                ; E031 
+    LDA #$41                 ; E033 
+    BNE $e03d                ; E035 
+    LDA #$69                 ; E037 
+    BNE $e03d                ; E039 
+    LDA #$4c                 ; E03B 
+    PHA                      ; E03D 
+    JSR a:$e0ed              ; E03E 
+    BMI $e08a                ; E041 
+    LDA a:$03e7,X            ; E043 
+    SEC                      ; E046 
+    SBC #$10                 ; E047 
+    STA a:$04f3,Y            ; E049 
+    LDA a:$03f1,X            ; E04C 
+    SBC #$00                 ; E04F 
+    STA a:$0507,Y            ; E051 
+    LDA a:$03fb,X            ; E054 
+    STA a:$051b,Y            ; E057 
+    LDA a:$0405,X            ; E05A 
+    STA a:$052f,Y            ; E05D 
+    LDA #$00                 ; E060 
+    STA a:$0593,Y            ; E062 
+    STA a:$0543,Y            ; E065 
+    LDA #$07                 ; E068 
+    STA a:$05a7,Y            ; E06A 
+    LDA #$f9                 ; E06D 
+    STA a:$0557,Y            ; E06F 
+    PLA                      ; E072 
+    STA a:$056b,Y            ; E073 
+    TXA                      ; E076 
+    PHA                      ; E077 
+    LDA a:$056b,Y            ; E078 
+    SEC                      ; E07B 
+    SBC #$40                 ; E07C 
+    LSR A                    ; E07E 
+    TAX                      ; E07F 
+    LDA a:$fede,X            ; E080 
+    STA a:$057f,Y            ; E083 
+    PLA                      ; E086 
+    TAX                      ; E087 
+    CLC                      ; E088 
+    RTS                      ; E089 
+    PLA                      ; E08A 
+    SEC                      ; E08B 
+    RTS                      ; E08C 
+
+; I31: E0D5[(type-40)>>1] selects forcedslot1 ifnonzero elseallocator. Forcedslot replaces activeobject. CopyenemyXY,type,flagsFEDE|40,zerovelocities; doesnot reset0593or05A7; Xisclobberedtotypeindex.
+SpawnRewardObjectAtEnemy:
+    PHA                      ; E08D 
+    SEC                      ; E08E 
+    SBC #$40                 ; E08F 
+    LSR A                    ; E091 
+    TAY                      ; E092 
+    LDA a:$e0d5,Y            ; E093 
+    BNE $e09f                ; E096 
+    JSR a:$e0ed              ; E098 
+    BMI $e0d3                ; E09B 
+    BPL $e0a1                ; E09D 
+    LDY #$01                 ; E09F 
+    LDA a:$03e7,X            ; E0A1 
+    STA a:$04f3,Y            ; E0A4 
+    LDA a:$03f1,X            ; E0A7 
+    STA a:$0507,Y            ; E0AA 
+    LDA a:$03fb,X            ; E0AD 
+    STA a:$051b,Y            ; E0B0 
+    LDA a:$0405,X            ; E0B3 
+    STA a:$052f,Y            ; E0B6 
+    PLA                      ; E0B9 
+    STA a:$056b,Y            ; E0BA 
+    SEC                      ; E0BD 
+    SBC #$40                 ; E0BE 
+    LSR A                    ; E0C0 
+    TAX                      ; E0C1 
+    LDA a:$fede,X            ; E0C2 
+    ORA #$40                 ; E0C5 
+    STA a:$057f,Y            ; E0C7 
+    LDA #$00                 ; E0CA 
+    STA a:$0543,Y            ; E0CC 
+    STA a:$0557,Y            ; E0CF 
+    RTS                      ; E0D2 
+    PLA                      ; E0D3 
+    RTS                      ; E0D4 
+
+; I32: 24 flags for typepairs40..6E; nonzero bypassesallocatorandforces slot1.
+RewardForcedSlotFlags:
+    .byte $00,$00,$00,$00,$00,$00,$00,$00,$80,$80,$80,$80,$80,$80,$80,$80
+    .byte $80,$80,$80,$80,$00,$00,$00,$00
 
 ; D36: Scan04EF-1 down to1 for nonnegative057F,Y, return A=0; full pool A=FF. Tested valid slot counts>=2.
 FindFreeCollectibleSlot:
@@ -143,7 +266,58 @@ TickEnemyHitRecovery:
     LDA #$00                 ; E38D 
     STA a:$0423,X            ; E38F 
     RTS                      ; E392 
-    .incbin "inputs/original.nes", $01E3A3, $006B ; UNINTERPRETED preserved bytes
+
+; I17: Subtract target snapshotD6/D7 from enemyX andD4/D5 fromenemyY; EB63 selectorY1/3 and eight-entry masks produce3F.
+ClassifyEnemyTargetDistance:
+    LDA a:$03fb,X            ; E393 
+    STA $22                  ; E396 
+    LDA a:$0405,X            ; E398 
+    STA $23                  ; E39B 
+    LDY #$01                 ; E39D 
+    LDA $22                  ; E39F 
+    SEC                      ; E3A1 
+    SBC a:$00d6              ; E3A2 
+    STA $22                  ; E3A5 
+    LDA $23                  ; E3A7 
+    SBC a:$00d7              ; E3A9 
+    STA $23                  ; E3AC 
+    LDA $23                  ; E3AE 
+    JSR a:$eb63              ; E3B0 
+    TAY                      ; E3B3 
+    LDA a:$e3e2,Y            ; E3B4 
+    STA $3f                  ; E3B7 
+    LDA a:$03e7,X            ; E3B9 
+    STA $22                  ; E3BC 
+    LDA a:$03f1,X            ; E3BE 
+    STA $23                  ; E3C1 
+    LDY #$03                 ; E3C3 
+    LDA $22                  ; E3C5 
+    SEC                      ; E3C7 
+    SBC a:$00d4              ; E3C8 
+    STA $22                  ; E3CB 
+    LDA $23                  ; E3CD 
+    SBC a:$00d5              ; E3CF 
+    STA $23                  ; E3D2 
+    LDA $23                  ; E3D4 
+    JSR a:$eb63              ; E3D6 
+    TAY                      ; E3D9 
+    LDA a:$e3ea,Y            ; E3DA 
+    ORA $3f                  ; E3DD 
+    STA $3f                  ; E3DF 
+    RTS                      ; E3E1 
+
+; I18: Eight X masks followed by eight Y masks, ORcombined. Does not read current player coordinates directly.
+EnemyTargetDistanceMasks:
+    .byte $44,$44,$04,$80,$40,$08,$88,$88,$11,$11,$01,$20,$10,$02,$22,$22
+
+; I19: 30=469low2 direction;36=0 movement result scratch.
+InitializeEnemyMovementFlags:
+    LDA a:$0469,X            ; E3F2 
+    AND #$03                 ; E3F5 
+    STA $30                  ; E3F7 
+    LDA #$00                 ; E3F9 
+    STA $36                  ; E3FB 
+    RTS                      ; E3FD 
 
 ; F31: Direction047Dlow3 selects3 eight-byte tables; compute targetY/X, optionally terrain-adjust when0473negative, thencommit. Terrainadjustment notfullyreviewed.
 StepEnemyHitKnockback:
@@ -176,7 +350,27 @@ StepEnemyHitKnockback:
 EnemyHitKnockbackTables:
     .byte $02,$01,$01,$01,$01,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
     .byte $00,$02,$02,$02,$00,$02,$02,$02
-    .incbin "inputs/original.nes", $01E45E, $002A ; UNINTERPRETED preserved bytes
+
+; I20: Store A/Y magnitudes3D/3E, initialize flags, compute16-bit targets, optional terrain pathE4AC if473negative, then commitE72D. Terrain callee remains unreviewed.
+StepEnemyByMagnitude:
+    STA $3d                  ; E44E 
+    STY $3e                  ; E450 
+    JSR a:$e3f2              ; E452 
+    JSR a:$e478              ; E455 
+    LDA $22                  ; E458 
+    STA $32                  ; E45A 
+    LDA $23                  ; E45C 
+    STA $33                  ; E45E 
+    JSR a:$e492              ; E460 
+    LDA $22                  ; E463 
+    STA $34                  ; E465 
+    LDA $23                  ; E467 
+    STA $35                  ; E469 
+    LDX $2c                  ; E46B 
+    LDA a:$0473,X            ; E46D 
+    BPL $e475                ; E470 
+    JSR a:$e4ac              ; E472 
+    JMP a:$e72d              ; E475 
 
 ; F33: Twoentrypoints derive16-bitY/X target usingunsigned magnitudes3E/3D anddirectionbits30; originaladd/sub helpers.
 CalculateEnemyPositionStep:
@@ -251,7 +445,52 @@ OffsetUnsigned16ByX:
     BCS $e924                ; E920 
     DEC $23                  ; E922 
     RTS                      ; E924 
-    .incbin "inputs/original.nes", $01E935, $06EB ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01E935, $023E ; UNINTERPRETED preserved bytes
+
+; I21: Uses entry N plus22/23 signed16-bit difference and selectorY0..4. Six threshold arrays distinguish bands0..7; local tests use coherent N/high byte.
+ClassifySignedDistanceEightBands:
+    BPL $eb88                ; EB63 
+    LDA $23                  ; EB65 
+    CMP #$ff                 ; EB67 
+    BNE $eb85                ; EB69 
+    LDA $22                  ; EB6B 
+    CMP a:$ebb3,Y            ; EB6D 
+    BCC $eb75                ; EB70 
+    LDA #$04                 ; EB72 
+    RTS                      ; EB74 
+    CMP a:$ebae,Y            ; EB75 
+    BCC $eb7d                ; EB78 
+    LDA #$05                 ; EB7A 
+    RTS                      ; EB7C 
+    CMP a:$eba9,Y            ; EB7D 
+    BCC $eb85                ; EB80 
+    LDA #$06                 ; EB82 
+    RTS                      ; EB84 
+    LDA #$07                 ; EB85 
+    RTS                      ; EB87 
+    LDA $23                  ; EB88 
+    BNE $eba6                ; EB8A 
+    LDA $22                  ; EB8C 
+    CMP a:$ebc2,Y            ; EB8E 
+    BCS $eb96                ; EB91 
+    LDA #$03                 ; EB93 
+    RTS                      ; EB95 
+    CMP a:$ebbd,Y            ; EB96 
+    BCS $eb9e                ; EB99 
+    LDA #$02                 ; EB9B 
+    RTS                      ; EB9D 
+    CMP a:$ebb8,Y            ; EB9E 
+    BCS $eba6                ; EBA1 
+    LDA #$01                 ; EBA3 
+    RTS                      ; EBA5 
+    LDA #$00                 ; EBA6 
+    RTS                      ; EBA8 
+
+; I22: Six arrays of five bytes: negative far/middle/near then positive far/middle/near.
+SignedDistanceBandThresholds:
+    .byte $D4,$D8,$D0,$E0,$90,$E4,$E0,$E0,$F0,$B0,$F4,$E8,$F0,$FF,$C0,$2C
+    .byte $28,$30,$10,$70,$1C,$20,$20,$08,$50,$0C,$18,$10,$01,$40
+    .incbin "inputs/original.nes", $01EBD7, $0449 ; UNINTERPRETED preserved bytes
 
 ; A12: Initialize hardware, bank mapping, selected RAM, PPU shadow and palette; jump to PRG0E CF50.
 ResetEntry:
@@ -947,7 +1186,11 @@ SceneIrqProfiles:
     .byte $71,$00,$F0,$00,$00,$00,$83,$00,$0D,$00,$3B,$00,$F0,$01,$AF,$01
     .byte $1E,$00,$F0,$00,$3D,$02,$50,$01,$3E,$00,$F0,$00,$00,$00,$61,$00
     .byte $3F,$00,$2C,$00,$F0,$01
-    .incbin "inputs/original.nes", $01FEEE, $0018 ; UNINTERPRETED preserved bytes
+
+; I33: 24 initial flags indexed(type-40)>>1; sharedbydrop/rewardspawners.
+CollectibleInitialFlags:
+    .byte $84,$84,$80,$80,$80,$84,$80,$80,$82,$82,$82,$82,$82,$82,$82,$82
+    .byte $82,$82,$82,$82,$80,$80,$80,$80
 
 ; E51: Thirteen four-byte icon argument groups; two A/X pairs consumed by menu sprite calls; last group used for locked icons.
 MagicMenuIconSpriteArguments:

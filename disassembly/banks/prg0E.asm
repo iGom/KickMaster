@@ -1183,7 +1183,18 @@ MixTimingStateWithX:
     ADC #$bd                 ; D9D2 
     STA $97                  ; D9D4 
     RTS                      ; D9D6 
-    .incbin "inputs/original.nes", $01D9E7, $0011 ; UNINTERPRETED preserved bytes
+
+; I23: Scan469bit80 fromindex0 to06F8-1. Free returnsA1,Yindex; exhausted returnsAfromlastactiveflags, ZfromCPY. Callers8061 useZ. Countzero contract notestablished.
+FindInactiveEnemySlot:
+    LDY #$00                 ; D9D7 
+    LDA a:$0469,Y            ; D9D9 
+    BPL $d9e5                ; D9DC 
+    INY                      ; D9DE 
+    CPY a:$06f8              ; D9DF 
+    BNE $d9d9                ; D9E2 
+    RTS                      ; D9E4 
+    LDA #$01                 ; D9E5 
+    RTS                      ; D9E7 
 
 ; G40: Copy26..29 to22..25 then classifyDD5F; zero returns, negativeROMlookup, positivecache.
 SampleTerrainAtBase:
@@ -1500,4 +1511,85 @@ ApplyPlayerDamage:
     ORA #$10                 ; DE32 
     STA $d3                  ; DE34 
     RTS                      ; DE36 
-    .incbin "inputs/original.nes", $01DE47, $01C9 ; UNINTERPRETED preserved bytes
+    .incbin "inputs/original.nes", $01DE47, $0100 ; UNINTERPRETED preserved bytes
+
+; I24: Three correlated draws using(D8>>1)&1F and+10,+20. DF9B table; firsttwo velocityX-1/+1,Y-6,thirddefault0/-7. Stopatfirstallocationfailure; no rare1UP gate.
+SpawnSpecialDeathDropTriple:
+    LDA $d8                  ; DF37 
+    LSR A                    ; DF39 
+    AND #$1f                 ; DF3A 
+    PHA                      ; DF3C 
+    JSR a:$df68              ; DF3D 
+    BCS $df79                ; DF40 
+    LDA #$fa                 ; DF42 
+    STA a:$0557,Y            ; DF44 
+    LDA #$ff                 ; DF47 
+    STA a:$0543,Y            ; DF49 
+    PLA                      ; DF4C 
+    CLC                      ; DF4D 
+    ADC #$0a                 ; DF4E 
+    AND #$1f                 ; DF50 
+    PHA                      ; DF52 
+    JSR a:$df68              ; DF53 
+    BCS $df79                ; DF56 
+    LDA #$fa                 ; DF58 
+    STA a:$0557,Y            ; DF5A 
+    LDA #$01                 ; DF5D 
+    STA a:$0543,Y            ; DF5F 
+    PLA                      ; DF62 
+    CLC                      ; DF63 
+    ADC #$0a                 ; DF64 
+    AND #$1f                 ; DF66 
+    TAY                      ; DF68 
+    LDA a:$df9b,Y            ; DF69 
+    AND #$07                 ; DF6C 
+    ASL A                    ; DF6E 
+    TAY                      ; DF6F 
+    LDA a:$dfbc,Y            ; DF70 
+    PHA                      ; DF73 
+    LDA a:$dfbb,Y            ; DF74 
+    PHA                      ; DF77 
+    RTS                      ; DF78 
+    PLA                      ; DF79 
+    RTS                      ; DF7A 
+
+; I25: Two32-byte tables; ordinary includesselector6 HP and7 damage, special tableonly0..5. Frequencies underuniformindex are not measured gameplay probabilities.
+EnemyDropChoiceTables:
+    .byte $00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$02,$02,$02,$02,$03,$03
+    .byte $03,$03,$03,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05,$05,$06,$07
+    .byte $00,$00,$00,$00,$00,$00,$01,$01,$01,$01,$01,$02,$02,$02,$02,$02
+    .byte $03,$03,$03,$03,$03,$03,$04,$04,$04,$04,$04,$05,$05,$05,$05,$05
+
+; I26: Eight storedreturn addresses into0F:E01F..E037; targetsword+1.
+EnemyDropSpawnReturnPointers:
+    .byte $1E,$E0,$22,$E0,$26,$E0,$2A,$E0,$2E,$E0,$3A,$E0,$32,$E0,$36,$E0
+
+; I27: IfDA&3==0 andD9&FC==0 spawnone6A extraattempt; else three correlatedDF7Bdraws. InstructionSTA0543,Y atDFFF straddlesfixed0E/0F boundary.
+SpawnOrdinaryDeathDropPrefix:
+    LDA $da                  ; DFCB 
+    AND #$03                 ; DFCD 
+    BNE $dfd7                ; DFCF 
+    LDA $d9                  ; DFD1 
+    AND #$fc                 ; DFD3 
+    BEQ $e01b                ; DFD5 
+    LDA $d8                  ; DFD7 
+    LSR A                    ; DFD9 
+    AND #$1f                 ; DFDA 
+    PHA                      ; DFDC 
+    JSR a:$e008              ; DFDD 
+    BCS $e019                ; DFE0 
+    LDA #$fa                 ; DFE2 
+    STA a:$0557,Y            ; DFE4 
+    LDA #$ff                 ; DFE7 
+    STA a:$0543,Y            ; DFE9 
+    PLA                      ; DFEC 
+    CLC                      ; DFED 
+    ADC #$0a                 ; DFEE 
+    AND #$1f                 ; DFF0 
+    PHA                      ; DFF2 
+    JSR a:$e008              ; DFF3 
+    BCS $e019                ; DFF6 
+    LDA #$fa                 ; DFF8 
+    STA a:$0557,Y            ; DFFA 
+    LDA #$01                 ; DFFD 
+    .byte $99 ; DFFF STA $0543,Y; operands in next fixed bank
